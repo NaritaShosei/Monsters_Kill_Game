@@ -4,8 +4,11 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] float _moveSpeed;
+    [SerializeField] float _rollSpeed;
     [SerializeField] float _jumpPower;
     [SerializeField] float _life;
+    [SerializeField] float _attackInterval; //UŒ‚‚Å‚«‚éƒCƒ“ƒ^[ƒoƒ‹
+    [SerializeField] float _attackComboTime; //UŒ‚‚ÌƒRƒ“ƒ{‚ª“rØ‚ê‚é‚Ü‚Å‚ÌŽžŠÔ
     Rigidbody2D _rb2d;
     float _hMove;
     Animator _anim;
@@ -13,7 +16,11 @@ public class PlayerManager : MonoBehaviour
     bool _isGround;
     bool _isAttack;
     bool _isBlock;
+    bool _isDeath;
+    public bool _isRoll;
     float _attackTimer;
+    float _rollTimer;
+    int _attackCount;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,18 +32,33 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_isBlock)
+        _rollTimer += Time.deltaTime;
+        if (_rollTimer > 0.25)
         {
-            Move();
-            Jump();
-            Attack();
+            _isRoll = false;
         }
-        Block();
+        if (!_isDeath)
+        {
+            _hMove = Input.GetAxisRaw("Horizontal");
+            if (!_isBlock)
+            {
+                Jump();
+                Attack();
+                Move();
+            }
+            Block();
+        }
     }
     void Move()
     {
-        _hMove = Input.GetAxisRaw("Horizontal");
         _rb2d.AddForce(_hMove * _moveSpeed * Vector2.right, ForceMode2D.Force);
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll)
+        {
+            _isRoll = true;
+            var rollSpeed = _rollSpeed * (_sprite.flipX ? -1 : 1);
+            _rb2d.AddForce(Vector2.right * rollSpeed, ForceMode2D.Impulse);
+            _rollTimer = 0;
+        }
     }
     void Jump()
     {
@@ -50,22 +72,26 @@ public class PlayerManager : MonoBehaviour
     }
     void Attack()
     {
-        _attackTimer += Time.deltaTime;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && _attackInterval + _attackTimer < Time.time)
         {
+            Debug.Log("a");
             _isAttack = true;
+            _attackTimer = Time.time;
+            _attackCount++;
+            _anim.SetTrigger("Attack");
         }
-        else if (_attackTimer > 0.25)
+        else if (_attackInterval + _attackTimer + _attackComboTime < Time.time)
         {
             _isAttack = false;
+            _attackCount = 0;
+        }
+        if (_attackCount > 3)
+        {
+            _attackCount = 1;
         }
     }
     void Block()
     {
-        if (_isBlock)
-        {
-            _hMove = Input.GetAxisRaw("Horizontal");
-        }
         if (Input.GetMouseButton(1))
         {
             _isBlock = true;
@@ -75,10 +101,15 @@ public class PlayerManager : MonoBehaviour
             _isBlock = false;
         }
     }
-    void Life(float plusLife, float minusLife)
+    public void Life(float plusLife, float minusLife)
     {
         var life = plusLife + -minusLife;
         _life += life;
+        if (_life <= 0)
+        {
+            _anim.Play("Death");
+            _isDeath = true;
+        }
     }
 
     private void LateUpdate()
@@ -92,9 +123,14 @@ public class PlayerManager : MonoBehaviour
             _anim.SetFloat("MoveX", Mathf.Abs(_rb2d.velocity.x));
             _anim.SetBool("IsGround", _isGround);
             _anim.SetFloat("MoveY", _rb2d.velocity.y);
-            _anim.SetBool("IsAttack", _isAttack);
             _anim.SetBool("IsBlock", _isBlock);
+            _anim.SetBool("IsRoll", _isRoll);
+            _anim.SetInteger("AttackCount", _attackCount);
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Life(0, 0);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
