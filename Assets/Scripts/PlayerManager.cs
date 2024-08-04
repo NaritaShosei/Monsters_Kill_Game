@@ -9,6 +9,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] float _life;
     [SerializeField] float _attackInterval; //攻撃できるインターバル
     [SerializeField] float _attackComboTime; //攻撃のコンボが途切れるまでの時間
+    [SerializeField] float _longRangeAttackInterval;
+    [SerializeField] BoxCollider2D _rightCollider;
+    [SerializeField] BoxCollider2D _leftCollider;
     Rigidbody2D _rb2d;
     float _hMove;
     Animator _anim;
@@ -18,8 +21,9 @@ public class PlayerManager : MonoBehaviour
     bool _isBlock;
     bool _isDeath;
     public bool _isRoll;
-    float _attackTimer;
+    float _attackTime;
     float _rollTimer;
+    public float _longRangeAttackTimer;
     int _attackCount;
     // Start is called before the first frame update
     void Start()
@@ -27,12 +31,14 @@ public class PlayerManager : MonoBehaviour
         _rb2d = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         _sprite = GetComponent<SpriteRenderer>();
+        _longRangeAttackTimer = _longRangeAttackInterval;
     }
 
     // Update is called once per frame
     void Update()
     {
         _rollTimer += Time.deltaTime;
+        _longRangeAttackTimer += Time.deltaTime;
         if (_rollTimer > 0.25)
         {
             _isRoll = false;
@@ -72,15 +78,15 @@ public class PlayerManager : MonoBehaviour
     }
     void Attack()
     {
-        if (Input.GetMouseButtonDown(0) && _attackInterval + _attackTimer < Time.time)
+        if (Input.GetMouseButtonDown(0) && _attackInterval + _attackTime < Time.time)
         {
             Debug.Log("a");
             _isAttack = true;
-            _attackTimer = Time.time;
+            _attackTime = Time.time;
             _attackCount++;
             _anim.SetTrigger("Attack");
         }
-        else if (_attackInterval + _attackTimer + _attackComboTime < Time.time)
+        else if (_attackInterval + _attackTime + _attackComboTime < Time.time)
         {
             _isAttack = false;
             _attackCount = 0;
@@ -88,6 +94,11 @@ public class PlayerManager : MonoBehaviour
         if (_attackCount > 3)
         {
             _attackCount = 1;
+        }
+        if (Input.GetMouseButtonDown(2) && !_isRoll && !_isAttack && _longRangeAttackTimer > _longRangeAttackInterval)
+        {
+            _anim.Play("Attack");
+            _longRangeAttackTimer = 0;
         }
     }
     void Block()
@@ -118,19 +129,16 @@ public class PlayerManager : MonoBehaviour
         {
             _sprite.flipX = _hMove < 0;
         }
-        if (_anim)
-        {
             _anim.SetFloat("MoveX", Mathf.Abs(_rb2d.velocity.x));
             _anim.SetBool("IsGround", _isGround);
             _anim.SetFloat("MoveY", _rb2d.velocity.y);
             _anim.SetBool("IsBlock", _isBlock);
             _anim.SetBool("IsRoll", _isRoll);
             _anim.SetInteger("AttackCount", _attackCount);
-        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Life(0, 0);
+       // Life(0, 0);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
