@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] float _longRangeAttackInterval;
     [SerializeField] BoxCollider2D _rightCollider;
     [SerializeField] BoxCollider2D _leftCollider;
+    [SerializeField] GameObject _longRangeAttackObject;
     Rigidbody2D _rb2d;
     float _hMove;
     Animator _anim;
@@ -97,8 +98,9 @@ public class PlayerManager : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(2) && !_isRoll && !_isAttack && _longRangeAttackTimer > _longRangeAttackInterval)
         {
-            _anim.Play("Attack");
+            _anim.Play("LongRangeAttack");
             _longRangeAttackTimer = 0;
+            Instantiate(_longRangeAttackObject, transform.position, Quaternion.identity);
         }
     }
     void Block()
@@ -129,16 +131,16 @@ public class PlayerManager : MonoBehaviour
         {
             _sprite.flipX = _hMove < 0;
         }
-            _anim.SetFloat("MoveX", Mathf.Abs(_rb2d.velocity.x));
-            _anim.SetBool("IsGround", _isGround);
-            _anim.SetFloat("MoveY", _rb2d.velocity.y);
-            _anim.SetBool("IsBlock", _isBlock);
-            _anim.SetBool("IsRoll", _isRoll);
-            _anim.SetInteger("AttackCount", _attackCount);
+        _anim.SetFloat("MoveX", Mathf.Abs(_rb2d.velocity.x));
+        _anim.SetBool("IsGround", _isGround);
+        _anim.SetFloat("MoveY", _rb2d.velocity.y);
+        _anim.SetBool("IsBlock", _isBlock);
+        _anim.SetBool("IsRoll", _isRoll);
+        _anim.SetInteger("AttackCount", _attackCount);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       // Life(0, 0);
+        // Life(0, 0);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
