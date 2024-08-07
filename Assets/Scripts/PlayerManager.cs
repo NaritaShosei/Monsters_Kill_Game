@@ -10,8 +10,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] float _attackInterval; //攻撃できるインターバル
     [SerializeField] float _attackComboTime; //攻撃のコンボが途切れるまでの時間
     [SerializeField] float _longRangeAttackInterval;
-    [SerializeField] BoxCollider2D _rightCollider;
-    [SerializeField] BoxCollider2D _leftCollider;
+    [SerializeField] BoxCollider2D _boxCollider;
     [SerializeField] GameObject _longRangeAttackObject;
     Rigidbody2D _rb2d;
     float _hMove;
@@ -127,10 +126,20 @@ public class PlayerManager : MonoBehaviour
 
     private void LateUpdate()
     {
+        var offset = _boxCollider.offset;
         if (_hMove != 0)
         {
             _sprite.flipX = _hMove < 0;
         }
+        if (_hMove < 0)
+        {
+            offset.x = -0.82f;
+        }
+        if (_hMove > 0)
+        {
+            offset.x = 0.82f;
+        }
+        _boxCollider.offset = offset;
         _anim.SetFloat("MoveX", Mathf.Abs(_rb2d.velocity.x));
         _anim.SetBool("IsGround", _isGround);
         _anim.SetFloat("MoveY", _rb2d.velocity.y);
@@ -140,7 +149,17 @@ public class PlayerManager : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Life(0, 0);
+        if (collision.gameObject.tag == "Block")
+        {
+            _isGround = true;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Block")
+        {
+            _isGround = false;
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {

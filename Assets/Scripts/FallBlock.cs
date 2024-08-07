@@ -20,14 +20,19 @@ public class FallBlock : MonoBehaviour
     void Fall()
     {
         _rb2d.velocity = Vector2.down * _fallPower;
-        Debug.Log("Fall()");
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "LongRangeAttack")
         {
-            Debug.Log("OnTrigger");
+            _rb2d.constraints = RigidbodyConstraints2D.FreezePositionX
+           | RigidbodyConstraints2D.FreezeRotation;
             Fall();
+        }
+        else
+        {
+            _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation
+           | RigidbodyConstraints2D.FreezePosition;
         }
     }
 }
