@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FallBlock : MonoBehaviour
 {
-    [SerializeField] float _fallPower = 10;
     Rigidbody2D _rb2d;
     // Start is called before the first frame update
     void Start()
@@ -19,7 +18,7 @@ public class FallBlock : MonoBehaviour
     }
     void Fall()
     {
-        _rb2d.velocity = Vector2.down * _fallPower;
+        _rb2d.gravityScale = 1;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

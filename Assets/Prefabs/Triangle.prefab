@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7229368589122379302}
   - component: {fileID: 5707928857450808699}
   - component: {fileID: -4029715858028922927}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Triangle
   m_TagString: LongRangeAttack
   m_Icon: {fileID: 0}

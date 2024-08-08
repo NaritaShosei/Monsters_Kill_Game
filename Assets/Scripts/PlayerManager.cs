@@ -13,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] BoxCollider2D _boxCollider;
     [SerializeField] GameObject _longRangeAttackObject;
     [SerializeField] GameObject _longRangeAttackMuzzle;
+    Vector3 _longRangeAttackDirection = new Vector3(0, 0, -10);
+    Vector3 _mousePosition;
     Rigidbody2D _rb2d;
     float _hMove;
     Animator _anim;
@@ -38,6 +40,7 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         _rollTimer += Time.deltaTime;
         _longRangeAttackTimer += Time.deltaTime;
         if (_rollTimer > 0.25)
@@ -87,6 +90,7 @@ public class PlayerManager : MonoBehaviour
     }
     void Attack()
     {
+        var muzzlePos = _longRangeAttackMuzzle.transform.position;
         if (Input.GetMouseButtonDown(0) && _attackInterval + _attackTime < Time.time)
         {
             Debug.Log("a");
@@ -108,6 +112,16 @@ public class PlayerManager : MonoBehaviour
         {
             _anim.Play("LongRangeAttack");
             _longRangeAttackTimer = 0;
+            _sprite.flipX = _mousePosition.x < _longRangeAttackDirection.x;
+            if (_mousePosition.x < _longRangeAttackDirection.x)
+            {
+                muzzlePos.x = transform.position.x - 0.69f;
+            }
+            if (_mousePosition.x > _longRangeAttackDirection.x)
+            {
+                muzzlePos.x = transform.position.x + 0.69f;
+            }
+            _longRangeAttackMuzzle.transform.position = muzzlePos;
             Instantiate(_longRangeAttackObject, _longRangeAttackMuzzle.transform.position, Quaternion.identity);
         }
     }

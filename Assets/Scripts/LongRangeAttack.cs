@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class LongRangeAttack : MonoBehaviour
 {
@@ -16,8 +17,8 @@ public class LongRangeAttack : MonoBehaviour
         _player = FindObjectOfType<PlayerManager>();
         _rb2d = GetComponent<Rigidbody2D>();
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        var dir = mousePos - _player.transform.position;
-        _rb2d.velocity = (dir).normalized * _moveSpeed;
+        var dir = (mousePos - _player.transform.position).normalized;
+        _rb2d.AddForce(dir * _moveSpeed, ForceMode2D.Impulse);
         transform.rotation = Quaternion.Euler(dir);
     }
 
@@ -32,7 +33,7 @@ public class LongRangeAttack : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag != "Player" && collision.gameObject.tag != "LongRangeAttack")
+        if (collision.gameObject.tag != "Player")
         {
             Destroy(gameObject);
         }
