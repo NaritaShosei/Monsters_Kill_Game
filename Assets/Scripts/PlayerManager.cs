@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] float _longRangeAttackInterval;
     [SerializeField] BoxCollider2D _boxCollider;
     [SerializeField] GameObject _longRangeAttackObject;
+    [SerializeField] GameObject _longRangeAttackMuzzle;
     Rigidbody2D _rb2d;
     float _hMove;
     Animator _anim;
@@ -23,7 +24,7 @@ public class PlayerManager : MonoBehaviour
     public bool _isRoll;
     float _attackTime;
     float _rollTimer;
-    public float _longRangeAttackTimer;
+    float _longRangeAttackTimer;
     int _attackCount;
     // Start is called before the first frame update
     void Start()
@@ -53,6 +54,14 @@ public class PlayerManager : MonoBehaviour
                 Move();
             }
             Block();
+            if (_isAttack)
+            {
+                _boxCollider.enabled = true;
+            }
+            if (!_isAttack)
+            {
+                _boxCollider.enabled = false;
+            }
         }
     }
     void Move()
@@ -99,7 +108,7 @@ public class PlayerManager : MonoBehaviour
         {
             _anim.Play("LongRangeAttack");
             _longRangeAttackTimer = 0;
-            Instantiate(_longRangeAttackObject, transform.position, Quaternion.identity);
+            Instantiate(_longRangeAttackObject, _longRangeAttackMuzzle.transform.position, Quaternion.identity);
         }
     }
     void Block()
@@ -161,7 +170,7 @@ public class PlayerManager : MonoBehaviour
             _isGround = false;
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
         {
