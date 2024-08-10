@@ -28,7 +28,7 @@ public class FallBlock : MonoBehaviour
            | RigidbodyConstraints2D.FreezeRotation;
             Fall();
         }
-        else
+        else if (collision.gameObject.tag == "Ground")
         {
             _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation
            | RigidbodyConstraints2D.FreezePosition;

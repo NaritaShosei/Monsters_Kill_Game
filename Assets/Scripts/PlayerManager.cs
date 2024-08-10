@@ -5,6 +5,7 @@ public class PlayerManager : MonoBehaviour
 {
     [SerializeField] float _moveSpeed;
     [SerializeField] float _rollSpeed;
+    [SerializeField] float _rollInterval;
     [SerializeField] float _jumpPower;
     [SerializeField] float _life;
     [SerializeField] float _attackInterval; //攻撃できるインターバル
@@ -20,11 +21,12 @@ public class PlayerManager : MonoBehaviour
     Animator _anim;
     SpriteRenderer _sprite;
     bool _isGround;
-    bool _isAttack;
+    public bool _isAttack;
     bool _isBlock;
     bool _isDeath;
-    public bool _isRoll;
+    bool _isRoll;
     float _attackTime;
+    float _rollTime;
     float _rollTimer;
     float _longRangeAttackTimer;
     int _attackCount;
@@ -70,8 +72,9 @@ public class PlayerManager : MonoBehaviour
     void Move()
     {
         _rb2d.AddForce(_hMove * _moveSpeed * Vector2.right, ForceMode2D.Force);
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll && _rollInterval + _rollTime < Time.time)
         {
+            _rollTime = Time.time;
             _isRoll = true;
             var rollSpeed = _rollSpeed * (_sprite.flipX ? -1 : 1);
             _rb2d.AddForce(Vector2.right * rollSpeed, ForceMode2D.Impulse);
@@ -138,12 +141,19 @@ public class PlayerManager : MonoBehaviour
     }
     public void Life(float plusLife, float minusLife)
     {
-        var life = plusLife + -minusLife;
-        _life += life;
-        if (_life <= 0)
+        if (!_isBlock && !_isRoll && !_isAttack)
         {
-            _anim.Play("Death");
-            _isDeath = true;
+            var life = plusLife + -minusLife;
+            _life += life;
+            if (_life <= 0)
+            {
+                _anim.Play("Death");
+                _isDeath = true;
+            }
+            else
+            {
+                _anim.Play("Hit");
+            }
         }
     }
 
