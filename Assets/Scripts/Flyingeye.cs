@@ -40,16 +40,19 @@ public class Flyingeye : MonoBehaviour
                 _rb2d.gravityScale = 1;
                 _boxCollider.enabled = true;
             }
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.tag == "PlayerAttack")
             {
-                _player.Life(0, _attackDamage);
-                if (_player._isAttack)
+                if (_player.IsAttack)
                 {
                     _animator.Play("FlyingeyeHit");
                     _isDead = true;
                     _rb2d.gravityScale = 1;
                     _boxCollider.enabled = true;
                 }
+            }
+            else if (collision.gameObject.tag == "Player" && !_player.IsAttack)
+            {
+                _player.Life(_attackDamage);
             }
         }
     }

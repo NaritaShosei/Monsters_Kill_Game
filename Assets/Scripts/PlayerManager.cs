@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -11,6 +13,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] float _attackInterval; //攻撃できるインターバル
     [SerializeField] float _attackComboTime; //攻撃のコンボが途切れるまでの時間
     [SerializeField] float _longRangeAttackInterval;
+    [SerializeField] float _isAttackTime;
     [SerializeField] BoxCollider2D _boxCollider;
     [SerializeField] GameObject _longRangeAttackObject;
     [SerializeField] GameObject _longRangeAttackMuzzle;
@@ -21,15 +24,17 @@ public class PlayerManager : MonoBehaviour
     Animator _anim;
     SpriteRenderer _sprite;
     bool _isGround;
-    public bool _isAttack;
+    public bool IsAttack;
     bool _isBlock;
     bool _isDeath;
     bool _isRoll;
     float _attackTime;
+    float _isAttackTimer;
     float _rollTime;
     float _rollTimer;
     float _longRangeAttackTimer;
     int _attackCount;
+    Vector2 _muzzlePos;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +42,7 @@ public class PlayerManager : MonoBehaviour
         _anim = GetComponent<Animator>();
         _sprite = GetComponent<SpriteRenderer>();
         _longRangeAttackTimer = _longRangeAttackInterval;
+        _muzzlePos = _longRangeAttackMuzzle.transform.position;
     }
 
     // Update is called once per frame
@@ -45,6 +51,7 @@ public class PlayerManager : MonoBehaviour
         _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         _rollTimer += Time.deltaTime;
         _longRangeAttackTimer += Time.deltaTime;
+        _isAttackTimer += Time.deltaTime;
         if (_rollTimer > 0.25)
         {
             _isRoll = false;
@@ -59,11 +66,11 @@ public class PlayerManager : MonoBehaviour
                 Move();
             }
             Block();
-            if (_isAttack)
+            if (IsAttack)
             {
                 _boxCollider.enabled = true;
             }
-            if (!_isAttack)
+            if (!IsAttack)
             {
                 _boxCollider.enabled = false;
             }
@@ -93,38 +100,40 @@ public class PlayerManager : MonoBehaviour
     }
     void Attack()
     {
-        var muzzlePos = _longRangeAttackMuzzle.transform.position;
         if (Input.GetMouseButtonDown(0) && _attackInterval + _attackTime < Time.time)
         {
-            Debug.Log("a");
-            _isAttack = true;
+            IsAttack = true;
             _attackTime = Time.time;
             _attackCount++;
             _anim.SetTrigger("Attack");
+            _isAttackTimer = 0;
         }
         else if (_attackInterval + _attackTime + _attackComboTime < Time.time)
         {
-            _isAttack = false;
             _attackCount = 0;
+        }
+        if (_isAttackTimer >= _isAttackTime)
+        {
+            IsAttack = false;
         }
         if (_attackCount > 3)
         {
             _attackCount = 1;
         }
-        if (Input.GetMouseButtonDown(2) && !_isRoll && !_isAttack && _longRangeAttackTimer > _longRangeAttackInterval)
+        if (Input.GetMouseButtonDown(2) && !_isRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
         {
             _anim.Play("LongRangeAttack");
             _longRangeAttackTimer = 0;
             _sprite.flipX = _mousePosition.x < _longRangeAttackDirection.x;
             if (_mousePosition.x < _longRangeAttackDirection.x)
             {
-                muzzlePos.x = transform.position.x - 0.69f;
+                _muzzlePos.x = transform.position.x - 0.69f;
             }
             if (_mousePosition.x > _longRangeAttackDirection.x)
             {
-                muzzlePos.x = transform.position.x + 0.69f;
+                _muzzlePos.x = transform.position.x + 0.69f;
             }
-            _longRangeAttackMuzzle.transform.position = muzzlePos;
+            _longRangeAttackMuzzle.transform.position = _muzzlePos;
             Instantiate(_longRangeAttackObject, _longRangeAttackMuzzle.transform.position, Quaternion.identity);
         }
     }
@@ -139,11 +148,10 @@ public class PlayerManager : MonoBehaviour
             _isBlock = false;
         }
     }
-    public void Life(float plusLife, float minusLife)
+    public void Life(float life)
     {
-        if (!_isBlock && !_isRoll && !_isAttack)
+        if (!_isBlock && !_isRoll && !IsAttack)
         {
-            var life = plusLife + -minusLife;
             _life += life;
             if (_life <= 0)
             {
@@ -159,20 +167,23 @@ public class PlayerManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        var offset = _boxCollider.offset;
         if (_hMove != 0)
         {
             _sprite.flipX = _hMove < 0;
         }
-        if (_hMove < 0)
+        if (_rb2d.velocity.x != 0)
         {
-            offset.x = -0.82f;
+            if (_rb2d.velocity.x < 0)
+            {
+                _muzzlePos.x = transform.position.x - 1f;
+            }
+            if (_rb2d.velocity.x > 0)
+            {
+                _muzzlePos.x = transform.position.x + 0.69f;
+            }
         }
-        if (_hMove > 0)
-        {
-            offset.x = 0.82f;
-        }
-        _boxCollider.offset = offset;
+        _muzzlePos.y = transform.position.y + 0.6f;
+        _longRangeAttackMuzzle.transform.position = _muzzlePos;
         _anim.SetFloat("MoveX", Mathf.Abs(_rb2d.velocity.x));
         _anim.SetBool("IsGround", _isGround);
         _anim.SetFloat("MoveY", _rb2d.velocity.y);
