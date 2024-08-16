@@ -14,6 +14,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] float _attackComboTime; //çUåÇÇÃÉRÉìÉ{Ç™ìrêÿÇÍÇÈÇ‹Ç≈ÇÃéûä‘
     [SerializeField] float _longRangeAttackInterval;
     [SerializeField] float _isAttackTime;
+    [SerializeField] float _isHitTime;
     [SerializeField] BoxCollider2D _boxCollider;
     [SerializeField] GameObject _longRangeAttackObject;
     [SerializeField] GameObject _longRangeAttackMuzzle;
@@ -28,6 +29,7 @@ public class PlayerManager : MonoBehaviour
     bool _isBlock;
     bool _isDeath;
     bool _isRoll;
+    bool _isHit;
     float _attackTime;
     float _isAttackTimer;
     float _rollTime;
@@ -100,41 +102,44 @@ public class PlayerManager : MonoBehaviour
     }
     void Attack()
     {
-        if (Input.GetMouseButtonDown(0) && _attackInterval + _attackTime < Time.time)
+        if (!_isHit)
         {
-            IsAttack = true;
-            _attackTime = Time.time;
-            _attackCount++;
-            _anim.SetTrigger("Attack");
-            _isAttackTimer = 0;
-        }
-        else if (_attackInterval + _attackTime + _attackComboTime < Time.time)
-        {
-            _attackCount = 0;
-        }
-        if (_isAttackTimer >= _isAttackTime)
-        {
-            IsAttack = false;
-        }
-        if (_attackCount > 3)
-        {
-            _attackCount = 1;
-        }
-        if (Input.GetMouseButtonDown(2) && !_isRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
-        {
-            _anim.Play("LongRangeAttack");
-            _longRangeAttackTimer = 0;
-            _sprite.flipX = _mousePosition.x < _longRangeAttackDirection.x;
-            if (_mousePosition.x < _longRangeAttackDirection.x)
+            if (Input.GetMouseButtonDown(0) && _attackInterval + _attackTime < Time.time)
             {
-                _muzzlePos.x = transform.position.x - 0.69f;
+                IsAttack = true;
+                _attackTime = Time.time;
+                _attackCount++;
+                _anim.SetTrigger("Attack");
+                _isAttackTimer = 0;
             }
-            if (_mousePosition.x > _longRangeAttackDirection.x)
+            else if (_attackInterval + _attackTime + _attackComboTime < Time.time)
             {
-                _muzzlePos.x = transform.position.x + 0.69f;
+                _attackCount = 0;
             }
-            _longRangeAttackMuzzle.transform.position = _muzzlePos;
-            Instantiate(_longRangeAttackObject, _longRangeAttackMuzzle.transform.position, Quaternion.identity);
+            if (_isAttackTimer >= _isAttackTime)
+            {
+                IsAttack = false;
+            }
+            if (_attackCount > 3)
+            {
+                _attackCount = 1;
+            }
+            if (Input.GetMouseButtonDown(2) && !_isRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
+            {
+                _anim.Play("LongRangeAttack");
+                _longRangeAttackTimer = 0;
+                _sprite.flipX = _mousePosition.x < _longRangeAttackDirection.x;
+                if (_mousePosition.x < _longRangeAttackDirection.x)
+                {
+                    _muzzlePos.x = transform.position.x - 0.69f;
+                }
+                if (_mousePosition.x > _longRangeAttackDirection.x)
+                {
+                    _muzzlePos.x = transform.position.x + 0.69f;
+                }
+                _longRangeAttackMuzzle.transform.position = _muzzlePos;
+                Instantiate(_longRangeAttackObject, _longRangeAttackMuzzle.transform.position, Quaternion.identity);
+            }
         }
     }
     void Block()
@@ -161,8 +166,15 @@ public class PlayerManager : MonoBehaviour
             else
             {
                 _anim.Play("Hit");
+                _isHit = true;
+                StartCoroutine(StartIsHitFalse());
             }
         }
+    }
+    IEnumerator StartIsHitFalse()
+    {
+        yield return new WaitForSeconds(_isHitTime);
+        _isHit = false;
     }
 
     private void LateUpdate()
