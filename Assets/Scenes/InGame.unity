@@ -1015,6 +1015,9 @@ MonoBehaviour:
   _moveSpeed: 2.5
   _attackDamage: 0
   _destroyTime: 0
+  _randomWaitTime:
+  - 3
+  - 5
   _lineForWall: {x: 1, y: 0}
   _wallLayer:
     serializedVersion: 2

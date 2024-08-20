@@ -80,7 +80,9 @@ public class PlayerManager : MonoBehaviour
     }
     void Move()
     {
-        _rb2d.AddForce(_hMove * _moveSpeed * Vector2.right, ForceMode2D.Force);
+        var velo = _rb2d.velocity;
+        velo = (_hMove * _moveSpeed * Vector2.right);
+        velo.y = _rb2d.velocity.y;
         if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll && _rollInterval + _rollTime < Time.time)
         {
             _rollTime = Time.time;
@@ -89,6 +91,7 @@ public class PlayerManager : MonoBehaviour
             _rb2d.AddForce(Vector2.right * rollSpeed, ForceMode2D.Impulse);
             _rollTimer = 0;
         }
+        _rb2d.velocity = velo;
     }
     void Jump()
     {

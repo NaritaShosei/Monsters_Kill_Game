@@ -7,6 +7,7 @@ public class Goblin : MonoBehaviour
     [SerializeField] float _moveSpeed;
     [SerializeField] float _attackDamage;
     [SerializeField] float _destroyTime;
+    [SerializeField] float[] _randomWaitTime;
     [SerializeField] Vector2 _lineForWall;
     [SerializeField] LayerMask _wallLayer;
     [SerializeField] Vector2 _lineForGround;
@@ -15,6 +16,7 @@ public class Goblin : MonoBehaviour
     Animator _animator;
     PlayerManager _player;
     SpriteRenderer _sr;
+    int _randomIndex;
     bool _isDead;
     bool _isGround;
     bool _isMove = true;
@@ -25,6 +27,7 @@ public class Goblin : MonoBehaviour
         _animator = GetComponent<Animator>();
         _player = GameObject.Find("Player").GetComponent<PlayerManager>();
         _sr = GetComponent<SpriteRenderer>();
+        StartCoroutine(StartIsMove());
     }
 
     // Update is called once per frame
@@ -65,7 +68,10 @@ public class Goblin : MonoBehaviour
     {
         if (!_isDead)
         {
-            _sr.flipX = _rb2d.velocity.x < 0; 
+            if (_rb2d.velocity.x != 0)
+            {
+                _sr.flipX = _rb2d.velocity.x < 0;
+            }
             _animator.SetFloat("XMove", Mathf.Abs(_rb2d.velocity.x));
         }
     }
@@ -85,6 +91,12 @@ public class Goblin : MonoBehaviour
     }
     IEnumerator StartIsMove()
     {
-        yield return new WaitForSeconds(1);
+        _randomIndex = Random.Range(0, _randomIndex);
+        yield return new WaitForSeconds(_randomWaitTime[_randomIndex]);
+        _isMove = true;
+        _randomIndex = Random.Range(0, _randomIndex);
+        yield return new WaitForSeconds(_randomWaitTime[_randomIndex]);
+        _isMove = false;
+        StartCoroutine(StartIsMove());
     }
 }
