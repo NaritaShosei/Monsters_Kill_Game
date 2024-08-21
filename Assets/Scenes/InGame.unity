@@ -1014,7 +1014,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 2.5
   _attackDamage: 0
-  _destroyTime: 0
   _randomWaitTime:
   - 3
   - 5
@@ -1026,6 +1025,13 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 1024
+  _lineForPlayer: {x: 1.3, y: 0}
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _attackInterval: 2
+  IsDead: 0
+  IsMove: 1
 --- !u!61 &1178704922
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1316,6 +1322,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2033953863}
   - component: {fileID: 2033953864}
+  - component: {fileID: 2033953865}
   m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
@@ -1383,6 +1390,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.03}
   m_EdgeRadius: 0
+--- !u!114 &2033953865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033953862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c0f92ecdd142c344bd1174b5ed0756c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _destroyTime: 1
 --- !u!1001 &8549484440444413108
 PrefabInstance:
   m_ObjectHideFlags: 0

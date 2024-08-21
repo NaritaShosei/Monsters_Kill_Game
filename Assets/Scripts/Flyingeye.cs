@@ -52,7 +52,7 @@ public class Flyingeye : MonoBehaviour
             }
             else if (collision.gameObject.tag == "Player" && !_player.IsAttack)
             {
-                _player.Life(_attackDamage);
+                _player.Life(-_attackDamage);
             }
         }
     }
