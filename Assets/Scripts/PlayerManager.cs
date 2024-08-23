@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] float _longRangeAttackInterval;
     [SerializeField] float _isAttackTime;
     [SerializeField] float _isHitTime;
-    [SerializeField] BoxCollider2D _boxCollider;
+    [SerializeField] BoxCollider2D _attackCollider;
     [SerializeField] GameObject _longRangeAttackObject;
     [SerializeField] GameObject _longRangeAttackMuzzle;
     Vector3 _longRangeAttackDirection = new Vector3(0, 0, -10);
@@ -65,19 +65,30 @@ public class PlayerManager : MonoBehaviour
             {
                 Jump();
                 Attack();
-                Move();
             }
             Block();
             if (IsAttack)
             {
-                _boxCollider.enabled = true;
+                _attackCollider.enabled = true;
             }
-            if (!IsAttack)
+            if (!IsAttack) 
             {
-                _boxCollider.enabled = false;
+                _attackCollider.enabled = false;
             }
         }
     }
+
+    private void FixedUpdate()
+    {
+        if (!_isDeath)
+        {
+            if (!_isBlock)
+            {
+                Move();
+            }
+        }
+    }
+
     void Move()
     {
         //var velo = _rb2d.velocity;

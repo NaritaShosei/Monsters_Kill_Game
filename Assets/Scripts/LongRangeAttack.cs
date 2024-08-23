@@ -18,7 +18,7 @@ public class LongRangeAttack : MonoBehaviour
         _rb2d = GetComponent<Rigidbody2D>();
         var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var dir = (mousePos - _player.transform.position).normalized;
-        _rb2d.AddForce(dir * _moveSpeed, ForceMode2D.Impulse);
+        _rb2d.velocity = dir * _moveSpeed;
         transform.rotation = Quaternion.Euler(dir);
     }
 

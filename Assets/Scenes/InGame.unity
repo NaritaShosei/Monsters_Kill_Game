@@ -295,6 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b67033b651e3a1741a6d829a4884d50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _destroyTime: 0
 --- !u!61 &508567488
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -904,6 +905,7 @@ GameObject:
   - component: {fileID: 1178704918}
   - component: {fileID: 1178704923}
   - component: {fileID: 1178704922}
+  - component: {fileID: 1178704924}
   m_Layer: 8
   m_Name: Goblin
   m_TagString: Untagged
@@ -972,7 +974,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 9
   m_Sprite: {fileID: 4723107735738678597, guid: c1cdd26cc09ad224884556bc4d8296ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1014,9 +1016,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 2.5
   _attackDamage: 0
-  _randomWaitTime:
-  - 3
-  - 5
   _lineForWall: {x: 1, y: 0}
   _wallLayer:
     serializedVersion: 2
@@ -1025,11 +1024,14 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  _lineForPlayer: {x: 1.3, y: 0}
+  _lineForPlayer: {x: 1, y: 0}
+  _startLineForPlayer: {x: 0.4, y: 0}
   _playerLayer:
     serializedVersion: 2
     m_Bits: 64
   _attackInterval: 2
+  _attackCollider: {fileID: 1178704924}
+  _boxCollider: {fileID: 1178704922}
   IsDead: 0
   IsMove: 1
 --- !u!61 &1178704922
@@ -1104,6 +1106,51 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!61 &1178704924
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178704917}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.25, y: -0.105}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.5, y: 1.5}
+    newSize: {x: 5, y: 5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.2, y: 0.33}
+  m_EdgeRadius: 0
 --- !u!1 &1225675887
 GameObject:
   m_ObjectHideFlags: 0
@@ -1271,8 +1318,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a55f0c10ca522e49b43d4ac84f00996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 3
-  _rollSpeed: 10
+  _moveSpeed: 20
+  _rollSpeed: 15
   _rollInterval: 3
   _jumpPower: 10
   _life: 10
@@ -1281,7 +1328,7 @@ MonoBehaviour:
   _longRangeAttackInterval: 4
   _isAttackTime: 0.3
   _isHitTime: 0.2
-  _boxCollider: {fileID: 1113296770}
+  _attackCollider: {fileID: 1113296770}
   _longRangeAttackObject: {fileID: 4252118982945694973, guid: 9f6ab4381148f1242a0bfeb37114bd38, type: 3}
   _longRangeAttackMuzzle: {fileID: 1113296768}
   IsAttack: 0
@@ -1374,7 +1421,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.05}

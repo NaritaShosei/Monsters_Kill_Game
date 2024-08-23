@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FallBlock : MonoBehaviour
 {
+    [SerializeField] float _destroyTime;
     Rigidbody2D _rb2d;
     // Start is called before the first frame update
     void Start()
@@ -28,7 +29,14 @@ public class FallBlock : MonoBehaviour
            | RigidbodyConstraints2D.FreezeRotation;
             Fall();
         }
-        else if (collision.gameObject.tag == "Ground")
+        //else if (collision.gameObject.tag != "Ground")
+        //{
+        //    Destroy(collision.gameObject,_destroyTime);
+        //}
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
         {
             _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation
            | RigidbodyConstraints2D.FreezePosition;
