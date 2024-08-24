@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour, IPause
 {
     [SerializeField] float _moveSpeed;
     [SerializeField] float _rollSpeed;
@@ -27,19 +27,24 @@ public class PlayerManager : MonoBehaviour
     bool _isGround;
     public bool IsAttack;
     bool _isBlock;
-    bool _isDeath;
+    public bool IsDeath;
     bool _isRoll;
     bool _isHit;
+    bool _isPause;
     float _attackTime;
     float _isAttackTimer;
     float _rollTime;
     float _rollTimer;
     float _longRangeAttackTimer;
+    float _animSpeed;
     int _attackCount;
     Vector2 _muzzlePos;
+    Vector2 _playerVelocity;
+    FallBlock _fallBlock;
     // Start is called before the first frame update
     void Start()
     {
+        _fallBlock = FindObjectOfType<FallBlock>();
         _rb2d = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         _sprite = GetComponent<SpriteRenderer>();
@@ -50,50 +55,57 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        _rollTimer += Time.deltaTime;
-        _longRangeAttackTimer += Time.deltaTime;
-        _isAttackTimer += Time.deltaTime;
-        if (_rollTimer > 0.25)
+        if (!_isPause)
         {
-            _isRoll = false;
-        }
-        if (!_isDeath)
-        {
-            _hMove = Input.GetAxisRaw("Horizontal");
-            if (!_isBlock)
+            _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _rollTimer += Time.deltaTime;
+            _longRangeAttackTimer += Time.deltaTime;
+            _isAttackTimer += Time.deltaTime;
+            if (_rollTimer > 0.25)
             {
-                Jump();
-                Attack();
+                _isRoll = false;
             }
-            Block();
-            if (IsAttack)
+            if (!IsDeath)
             {
-                _attackCollider.enabled = true;
+                _hMove = Input.GetAxisRaw("Horizontal");
+                if (!_isBlock)
+                {
+                    Jump();
+                    Attack();
+                }
+                Block();
+                if (IsAttack)
+                {
+                    _attackCollider.enabled = true;
+                }
+                if (!IsAttack)
+                {
+                    _attackCollider.enabled = false;
+                }
             }
-            if (!IsAttack) 
+            else if (IsDeath)
             {
-                _attackCollider.enabled = false;
+                _anim.Play("Death");
             }
         }
     }
 
     private void FixedUpdate()
     {
-        if (!_isDeath)
+        if (!_isPause)
         {
-            if (!_isBlock)
+            if (!IsDeath)
             {
-                Move();
+                if (!_isBlock)
+                {
+                    Move();
+                }
             }
         }
     }
 
     void Move()
     {
-        //var velo = _rb2d.velocity;
-        //velo = (_hMove * _moveSpeed * Vector2.right);
-        //velo.y = _rb2d.velocity.y;
         _rb2d.AddForce(Vector2.right * _hMove * _moveSpeed, ForceMode2D.Force);
         if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll && _rollInterval + _rollTime < Time.time)
         {
@@ -170,19 +182,21 @@ public class PlayerManager : MonoBehaviour
     }
     public void Life(float life)
     {
-        if (!_isBlock && !_isRoll && !IsAttack)
+        if (!_isPause)
         {
-            _life += life;
-            if (_life <= 0)
+            if (!_isBlock && !_isRoll && !IsAttack)
             {
-                _anim.Play("Death");
-                _isDeath = true;
-            }
-            else
-            {
-                _anim.Play("Hit");
-                _isHit = true;
-                StartCoroutine(StartIsHitFalse());
+                _life += life;
+                if (_life <= 0)
+                {
+                    IsDeath = true;
+                }
+                else
+                {
+                    _anim.Play("Hit");
+                    _isHit = true;
+                    StartCoroutine(StartIsHitFalse());
+                }
             }
         }
     }
@@ -194,29 +208,32 @@ public class PlayerManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (_hMove != 0)
+        if (!_isPause)
         {
-            _sprite.flipX = _hMove < 0;
-        }
-        if (_rb2d.velocity.x != 0)
-        {
-            if (_rb2d.velocity.x < 0)
+            if (_hMove != 0)
             {
-                _muzzlePos.x = transform.position.x - 1f;
+                _sprite.flipX = _hMove < 0;
             }
-            if (_rb2d.velocity.x > 0)
+            if (_rb2d.velocity.x != 0)
             {
-                _muzzlePos.x = transform.position.x + 0.69f;
+                if (_rb2d.velocity.x < 0)
+                {
+                    _muzzlePos.x = transform.position.x - 1f;
+                }
+                if (_rb2d.velocity.x > 0)
+                {
+                    _muzzlePos.x = transform.position.x + 0.69f;
+                }
             }
+            _muzzlePos.y = transform.position.y + 0.6f;
+            _longRangeAttackMuzzle.transform.position = _muzzlePos;
+            _anim.SetFloat("MoveX", Mathf.Abs(_rb2d.velocity.x));
+            _anim.SetBool("IsGround", _isGround);
+            _anim.SetFloat("MoveY", _rb2d.velocity.y);
+            _anim.SetBool("IsBlock", _isBlock);
+            _anim.SetBool("IsRoll", _isRoll);
+            _anim.SetInteger("AttackCount", _attackCount);
         }
-        _muzzlePos.y = transform.position.y + 0.6f;
-        _longRangeAttackMuzzle.transform.position = _muzzlePos;
-        _anim.SetFloat("MoveX", Mathf.Abs(_rb2d.velocity.x));
-        _anim.SetBool("IsGround", _isGround);
-        _anim.SetFloat("MoveY", _rb2d.velocity.y);
-        _anim.SetBool("IsBlock", _isBlock);
-        _anim.SetBool("IsRoll", _isRoll);
-        _anim.SetInteger("AttackCount", _attackCount);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -244,6 +261,29 @@ public class PlayerManager : MonoBehaviour
         if (collision.gameObject.tag == "Ground")
         {
             _isGround = false;
+        }
+    }
+
+    void IPause.Pause()
+    {
+        _isPause = true;
+        _playerVelocity = _rb2d.velocity;
+        _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
+            | RigidbodyConstraints2D.FreezeRotation;
+        _animSpeed = _anim.speed;
+        _anim.speed = 0;
+        Debug.Log("THE WORLD");
+    }
+
+    void IPause.Resume()
+    {
+        _isPause = false;
+        _rb2d.velocity = _playerVelocity;
+        _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+        _anim.speed = _animSpeed;
+        if (_isBlock)
+        {
+            _isBlock = false;
         }
     }
 }

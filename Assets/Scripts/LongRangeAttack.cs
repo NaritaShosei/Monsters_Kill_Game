@@ -4,13 +4,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class LongRangeAttack : MonoBehaviour
+public class LongRangeAttack : MonoBehaviour, IPause
 {
     [SerializeField] float _moveSpeed;
     [SerializeField] float _destroyTime = 5;
     PlayerManager _player;
     Rigidbody2D _rb2d;
     float _timer;
+    bool _isPause;
+    Vector2 _longRangeAttackVelcity;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +27,13 @@ public class LongRangeAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _timer += Time.deltaTime;
-        if (_timer >= _destroyTime)
+        if (!_isPause)
         {
-            Destroy(gameObject);
+            _timer += Time.deltaTime;
+            if (_timer >= _destroyTime)
+            {
+                Destroy(gameObject);
+            }
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -37,5 +42,18 @@ public class LongRangeAttack : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void Pause()
+    {
+        _isPause = true;
+        _longRangeAttackVelcity = _rb2d.velocity;
+        _rb2d.velocity = Vector2.zero;
+    }
+
+    public void Resume()
+    {
+        _isPause = false;
+        _rb2d.velocity = _longRangeAttackVelcity;
     }
 }

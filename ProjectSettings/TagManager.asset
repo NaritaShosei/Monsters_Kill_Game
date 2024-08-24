@@ -8,6 +8,7 @@ TagManager:
   - LongRangeAttack
   - Block
   - PlayerAttack
+  - Goblin
   layers:
   - Default
   - TransparentFX

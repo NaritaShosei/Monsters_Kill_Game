@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Goblin : MonoBehaviour
+public class Goblin : MonoBehaviour, IPause
 {
     [SerializeField] float _moveSpeed;
     [SerializeField] float _attackDamage;
-    [SerializeField] Vector2 _lineForWall;
+    [SerializeField] Vector2 _startLineForWallUpper;
+    [SerializeField] Vector2 _lineForWallUpper;
+    [SerializeField] Vector2 _startLineForWallDowner;
+    [SerializeField] Vector2 _lineForWallDowner;
     [SerializeField] LayerMask _wallLayer;
     [SerializeField] Vector2 _lineForGround;
     [SerializeField] LayerMask _groundLayer;
@@ -20,12 +23,15 @@ public class Goblin : MonoBehaviour
     PlayerManager _player;
     SpriteRenderer _sr;
     float _attackTime;
+    float _animSpeed;
     public bool IsDead;
     bool _isGround;
     public bool IsMove = true;
     bool _isAttack;
+    bool _isPause;
     Vector2 _start;
     Vector2 _deathPos;
+    Vector2 _goblinVelocity;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,25 +44,31 @@ public class Goblin : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!IsDead)
+        Debug.DrawLine(_start, _start + _lineForGround);
+        Debug.DrawLine(_start + _startLineForWallUpper, _start + _lineForWallUpper);
+        Debug.DrawLine(_start + _startLineForWallDowner, _start + _lineForWallDowner);
+        if (!_isPause)
         {
-            _start = transform.position;
-            if (_isGround && IsMove)
+            if (!IsDead)
             {
-                Move();
+                _start = transform.position;
+                if (_isGround && IsMove)
+                {
+                    Move();
+                }
+                Attack();
+                if (_isAttack)
+                {
+                    _attackCollider.enabled = true;
+                }
+                if (!_isAttack)
+                {
+                    _attackCollider.enabled = false;
+                }
+                _deathPos = transform.position;
             }
-            Attack();
-            if (_isAttack)
-            {
-                _attackCollider.enabled = true;
-            }
-            if (!_isAttack)
-            {
-                _attackCollider.enabled = false;
-            }
-            _deathPos = transform.position;
         }
-        else
+        if (IsDead)
         {
             _animator.Play("Goblin_Death");
             _boxCollider.enabled = false;
@@ -83,21 +95,21 @@ public class Goblin : MonoBehaviour
     }
     void Move()
     {
-        Debug.DrawLine(_start, _start + _lineForGround);
-        Debug.DrawLine(_start, _start + _lineForWall);
         RaycastHit2D hitGround = Physics2D.Linecast(_start, _start + _lineForGround, _groundLayer);
-        RaycastHit2D hitWall = Physics2D.Linecast(_start, _start + _lineForWall, _wallLayer);
+        RaycastHit2D hitWallUpper = Physics2D.Linecast(_start + _startLineForWallUpper, _start + _lineForWallUpper, _wallLayer);
+        RaycastHit2D hitWallDowner = Physics2D.Linecast(_start + _startLineForWallDowner, _start + _lineForWallDowner, _wallLayer);
         Vector2 velo = Vector2.zero;
 
-        if (hitGround.collider || !hitWall.collider)
+        if (hitGround.collider || !hitWallUpper.collider || !hitWallDowner)
         {
             velo = Vector2.right * _moveSpeed;
         }
-        if (!hitGround.collider || hitWall.collider)
+        if (!hitGround.collider || hitWallUpper.collider || hitWallDowner)
         {
             _moveSpeed = -_moveSpeed;
             _lineForGround.x = -_lineForGround.x;
-            _lineForWall = -_lineForWall;
+            _startLineForWallUpper.x = -_startLineForWallUpper.x;
+            _startLineForWallDowner.x = -_startLineForWallDowner.x;
             _lineForPlayer = -_lineForPlayer;
             _startLineForPlayer = -_startLineForPlayer;
             Vector2 offset = _attackCollider.offset;
@@ -110,33 +122,55 @@ public class Goblin : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if (_rb2d.velocity.x != 0)
+        if (!_isPause)
         {
-            _sr.flipX = _rb2d.velocity.x < 0;
+            if (_rb2d.velocity.x != 0)
+            {
+                _sr.flipX = _rb2d.velocity.x < 0;
+            }
+            _animator.SetFloat("XMove", Mathf.Abs(_rb2d.velocity.x));
+            _animator.SetBool("IsDead", IsDead);
         }
-        _animator.SetFloat("XMove", Mathf.Abs(_rb2d.velocity.x));
-        _animator.SetBool("IsDead", IsDead);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Block")
+        if (!IsDead && collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Block")
         {
             _isGround = true;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Block")
+        if (!IsDead && collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Block")
         {
             _isGround = false;
         }
     }
-    void IsAttackToTrue()
+    void IsAttackToTrue()// animation‚ÅŽg‚Á‚Ä‚éŠÖ”
     {
         _isAttack = true;
     }
-    void IsAttackToFalse()
+    void IsAttackToFalse() // animation‚ÅŽg‚Á‚Ä‚éŠÖ”
     {
         _isAttack = false;
+    }
+
+    void IPause.Pause()
+    {
+        _isPause = true;
+        _goblinVelocity = _rb2d.velocity;
+        _rb2d.velocity = Vector2.zero;
+        _animSpeed = _animator.speed;
+        _animator.speed = 0;
+        _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
+            | RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    void IPause.Resume()
+    {
+        _isPause = false;
+        _rb2d.velocity = _goblinVelocity;
+        _animator.speed = _animSpeed;
+        _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 }
