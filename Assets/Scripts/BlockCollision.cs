@@ -8,16 +8,30 @@ public class BlockCollision : MonoBehaviour, IPause
     PlayerManager _player;
     FallBlock _fallBlock;
     [SerializeField] float _destroyTime;
+    [SerializeField] ParentType _parentType;
     BoxCollider2D _boxCollider;
     bool _isPause;
     bool _isBlockCollision;
     float _destroyTimer;
+    enum ParentType
+    {
+        player,
+        goblin
+    }
+
     //enumを使ってPlayerかGoblinかそれ以外かを判定したらいいのでは？←天才の発想
     // Start is called before the first frame update
     void Start()
     {
-        _goblin = GetComponentInParent<Goblin>();
-        _player = GetComponentInParent<PlayerManager>();
+        switch (_parentType)
+        {
+            case ParentType.player:
+                _player = GetComponentInParent<PlayerManager>();
+                break;
+            case ParentType.goblin:
+                _goblin = GetComponentInParent<Goblin>();
+                break;
+        }
         _boxCollider = GetComponent<BoxCollider2D>();
         _fallBlock = FindObjectOfType<FallBlock>();
     }
@@ -25,7 +39,7 @@ public class BlockCollision : MonoBehaviour, IPause
     // Update is called once per frame
     void Update()
     {
-        if (gameObject.tag != "Player")
+        if (_parentType == ParentType.goblin)
         {
             if (!_isPause && _isBlockCollision)
             {
@@ -42,16 +56,16 @@ public class BlockCollision : MonoBehaviour, IPause
         if (collision.gameObject.tag == "Block" && _fallBlock.IsFall)
         {
             Destroy(_boxCollider);
-            if (gameObject.tag == "Goblin")
+            switch (_parentType)
             {
-                _goblin.IsMove = false;
-                _goblin.IsDead = true;
-                _isBlockCollision = true;
-                Debug.LogError("いってえなあこらあああ");
-            }
-            if (gameObject.tag == "Player")
-            {
-                _player.IsDeath = true;
+                case ParentType.player:
+                    _player.IsDeath = true;
+                    break;
+                case ParentType.goblin:
+                    _goblin.IsMove = false;
+                    _goblin.IsDead = true;
+                    _isBlockCollision = true;
+                    break;
             }
         }
     }
