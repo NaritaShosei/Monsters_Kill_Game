@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,9 +20,11 @@ public class Goblin : MonoBehaviour, IPause
     [SerializeField] LayerMask _playerLayer;
     [SerializeField] float _attackInterval;
     [SerializeField] BoxCollider2D _attackCollider;
-    [SerializeField] BoxCollider2D _boxCollider;
+    [SerializeField] BoxCollider2D _aliveCollider;
+    [SerializeField] BoxCollider2D _deadCollider;
     Rigidbody2D _rb2d;
     Animator _animator;
+    [NonSerialized] public Animator _anim = default;
     PlayerManager _player;
     SpriteRenderer _sr;
     float _attackTime;
@@ -40,8 +43,9 @@ public class Goblin : MonoBehaviour, IPause
     {
         _rb2d = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        _player = GameObject.Find("Player").GetComponent<PlayerManager>();
+        _player = FindObjectOfType<PlayerManager>();
         _sr = GetComponent<SpriteRenderer>();
+        _anim = _animator;
     }
 
     // Update is called once per frame
@@ -50,7 +54,14 @@ public class Goblin : MonoBehaviour, IPause
         Debug.DrawLine(_start, _start + _lineForGround);
         Debug.DrawLine(_start + _startLineForWallUpper, _start + _lineForWallUpper);
         Debug.DrawLine(_start + _startLineForWallDowner, _start + _lineForWallDowner);
-        if (!_isPause)
+        if (_player.IsDeath)
+        {
+            _rb2d.velocity = Vector2.zero;
+            _animator.speed = 0;
+            _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
+                | RigidbodyConstraints2D.FreezeRotation;
+        }
+        if (!_isPause && !_player.IsDeath)
         {
             if (!IsDead)
             {
@@ -80,6 +91,8 @@ public class Goblin : MonoBehaviour, IPause
                 {
                     Destroy(gameObject);
                 }
+                _aliveCollider.enabled = false;
+                _deadCollider.enabled = true;
             }
         }
     }
@@ -130,7 +143,7 @@ public class Goblin : MonoBehaviour, IPause
     }
     private void LateUpdate()
     {
-        if (!_isPause)
+        if (!_isPause && !_player.IsDeath)
         {
             if (_rb2d.velocity.x != 0)
             {

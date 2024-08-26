@@ -11,6 +11,7 @@ public class Flyingeye : MonoBehaviour, IPause
     Rigidbody2D _rb2d;
     Animator _animator;
     PlayerManager _player;
+    FallBlock _fallBlock;
     float _animSpeed;
     float _destroyTimer;
     bool _isDead;
@@ -22,13 +23,21 @@ public class Flyingeye : MonoBehaviour, IPause
     {
         _rb2d = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        _player = GameObject.Find("Player").GetComponent<PlayerManager>();
+        _player = FindObjectOfType<PlayerManager>();
+        _fallBlock = FindObjectOfType<FallBlock>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!_isPause)
+        if (_player.IsDeath)
+        {
+            _rb2d.velocity = Vector2.zero;
+            _animator.speed = 0;
+            _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
+                | RigidbodyConstraints2D.FreezeRotation;
+        }
+        if (!_isPause && !_player.IsDeath)
         {
             if (!_isDead)
             {
@@ -49,7 +58,7 @@ public class Flyingeye : MonoBehaviour, IPause
     {
         if (!_isDead)
         {
-            if (collision.gameObject.tag == "Block")
+            if (collision.gameObject.tag == "Block" && _fallBlock.IsFall)
             {
                 _animator.Play("FlyingeyeHit");
                 _isDead = true;

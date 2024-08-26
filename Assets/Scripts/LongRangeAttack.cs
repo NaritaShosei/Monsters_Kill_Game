@@ -27,7 +27,11 @@ public class LongRangeAttack : MonoBehaviour, IPause
     // Update is called once per frame
     void Update()
     {
-        if (!_isPause)
+        if (_player.IsDeath)
+        {
+            _rb2d.velocity = Vector2.zero;
+        }
+        if (!_isPause && !_player.IsDeath)
         {
             _timer += Time.deltaTime;
             if (_timer >= _destroyTime)

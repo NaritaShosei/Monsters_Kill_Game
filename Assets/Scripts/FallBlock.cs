@@ -1,23 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class FallBlock : MonoBehaviour, IPause
 {
     [SerializeField] float _destroyTime;
     Rigidbody2D _rb2d;
+    PlayerManager _player;
     public bool IsFall;
     Vector2 _fallBlockVelocity;
     // Start is called before the first frame update
     void Start()
     {
         _rb2d = GetComponent<Rigidbody2D>();
+        _player = FindObjectOfType<PlayerManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (_player.IsDeath)
+        {
+            _rb2d.velocity = Vector2.zero;
+            _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
+                | RigidbodyConstraints2D.FreezeRotation;
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
