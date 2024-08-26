@@ -5,6 +5,8 @@ public class Goblin : MonoBehaviour, IPause
 {
     [SerializeField] float _moveSpeed;
     [SerializeField] float _attackDamage;
+    [SerializeField] float _life;
+    [SerializeField] float _destroyTime;
     [SerializeField] Vector2 _startLineForWallUpper;
     [SerializeField] Vector2 _lineForWallUpper;
     [SerializeField] Vector2 _startLineForWallDowner;
@@ -24,13 +26,14 @@ public class Goblin : MonoBehaviour, IPause
     SpriteRenderer _sr;
     float _attackTime;
     float _animSpeed;
+    float _destroyTimer;
     public bool IsDead;
     bool _isGround;
     public bool IsMove = true;
     bool _isAttack;
     bool _isPause;
+    bool _isHit;
     Vector2 _start;
-    Vector2 _deathPos;
     Vector2 _goblinVelocity;
     // Start is called before the first frame update
     void Start()
@@ -52,7 +55,7 @@ public class Goblin : MonoBehaviour, IPause
             if (!IsDead)
             {
                 _start = transform.position;
-                if (_isGround && IsMove)
+                if (_isGround && IsMove && !_isHit)
                 {
                     Move();
                 }
@@ -65,14 +68,19 @@ public class Goblin : MonoBehaviour, IPause
                 {
                     _attackCollider.enabled = false;
                 }
-                _deathPos = transform.position;
+                if (_life <= 0)
+                {
+                    IsDead = true;
+                }
             }
-        }
-        if (IsDead)
-        {
-            _animator.Play("Goblin_Death");
-            _boxCollider.enabled = false;
-            transform.position = _deathPos;
+            if (IsDead)
+            {
+                _destroyTimer += Time.deltaTime;
+                if (_destroyTimer >= _destroyTime)
+                {
+                    Destroy(gameObject);
+                }
+            }
         }
     }
     void Attack()
@@ -130,6 +138,7 @@ public class Goblin : MonoBehaviour, IPause
             }
             _animator.SetFloat("XMove", Mathf.Abs(_rb2d.velocity.x));
             _animator.SetBool("IsDead", IsDead);
+            _animator.SetBool("IsHit", _isHit);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -145,6 +154,29 @@ public class Goblin : MonoBehaviour, IPause
         {
             _isGround = false;
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!IsDead)
+        {
+            if (collision.gameObject.tag == "Player")
+            {
+                _player.Life(-_attackDamage);
+            }
+            if (collision.gameObject.tag == "PlayerAttack")
+            {
+                if (!_isAttack)
+                {
+                    _life -= 1f;
+                    _isHit = true;
+                    _animator.Play("Hit");
+                }
+            }
+        }
+    }
+    void IsHitFalse()
+    {
+        _isHit = false;
     }
     void IsAttackToTrue()// animationÇ≈égÇ¡ÇƒÇÈä÷êî
     {

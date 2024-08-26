@@ -12,8 +12,10 @@ public class Flyingeye : MonoBehaviour, IPause
     Animator _animator;
     PlayerManager _player;
     float _animSpeed;
+    float _destroyTimer;
     bool _isDead;
     bool _isPause;
+    bool _isStartDestroy;
     Vector2 _flyingeyeVelocity;
     // Start is called before the first frame update
     void Start()
@@ -32,6 +34,14 @@ public class Flyingeye : MonoBehaviour, IPause
             {
                 var sin = Mathf.Sin(Time.time);
                 transform.position += new Vector3(_moveSpeed * Time.deltaTime, sin * Time.deltaTime);
+            }
+            if (_isStartDestroy && _isDead)
+            {
+                _destroyTimer += Time.deltaTime;
+                if (_destroyTime <= _destroyTimer)
+                {
+                    Destroy(gameObject);
+                }
             }
         }
     }
@@ -56,7 +66,7 @@ public class Flyingeye : MonoBehaviour, IPause
                     _boxCollider.enabled = true;
                 }
             }
-            else if (collision.gameObject.tag == "Player" && !_player.IsAttack)
+            else if (collision.gameObject.tag == "Player")
             {
                 _player.Life(-_attackDamage);
             }
@@ -66,7 +76,7 @@ public class Flyingeye : MonoBehaviour, IPause
     {
         if (collision.gameObject.tag == "Ground")
         {
-            Destroy(gameObject, _destroyTime);
+            _isStartDestroy = true;
         }
     }
 
