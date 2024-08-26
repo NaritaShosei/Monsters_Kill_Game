@@ -40,11 +40,9 @@ public class PlayerManager : MonoBehaviour, IPause
     int _attackCount;
     Vector2 _muzzlePos;
     Vector2 _playerVelocity;
-    FallBlock _fallBlock;
     // Start is called before the first frame update
     void Start()
     {
-        _fallBlock = FindObjectOfType<FallBlock>();
         _rb2d = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
         _sprite = GetComponent<SpriteRenderer>();
@@ -61,6 +59,10 @@ public class PlayerManager : MonoBehaviour, IPause
             _rollTimer += Time.deltaTime;
             _longRangeAttackTimer += Time.deltaTime;
             _isAttackTimer += Time.deltaTime;
+            if (_isAttackTimer >= _isAttackTime)
+            {
+                IsAttack = false;
+            }
             if (_rollTimer > 0.25)
             {
                 _isRoll = false;
@@ -142,10 +144,6 @@ public class PlayerManager : MonoBehaviour, IPause
             else if (_attackInterval + _attackTime + _attackComboTime < Time.time)
             {
                 _attackCount = 0;
-            }
-            if (_isAttackTimer >= _isAttackTime)
-            {
-                IsAttack = false;
             }
             if (_attackCount > 3)
             {
