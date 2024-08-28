@@ -122,6 +122,83 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &346100914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 346100916}
+  - component: {fileID: 346100915}
+  m_Layer: 12
+  m_Name: BringerOfDeathAttackCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!61 &346100915
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346100914}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -2.46, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.89, y: 1.79}
+  m_EdgeRadius: 0
+--- !u!4 &346100916
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346100914}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1110261657}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &508567482
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,7 +506,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.109999895, y: -0.47000027, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -534,7 +611,7 @@ Transform:
   m_GameObject: {fileID: 527564693}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.109999895, y: -0.47000027, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -552,6 +629,7 @@ GameObject:
   - component: {fileID: 787219041}
   - component: {fileID: 787219040}
   - component: {fileID: 787219039}
+  - component: {fileID: 787219042}
   m_Layer: 0
   m_Name: BringerOfDeathSprite
   m_TagString: Untagged
@@ -621,7 +699,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -750047184722822154, guid: 1914d95466e3d4341a618c35a56d5f82, type: 3}
+  m_Sprite: {fileID: 751812126289047221, guid: 1914d95466e3d4341a618c35a56d5f82, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -647,6 +725,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1110261657}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &787219042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 787219038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f20b58b6be986c04ebf21ef330240d78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &908794361
 GameObject:
   m_ObjectHideFlags: 3
@@ -800,6 +890,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1110261657}
+  - component: {fileID: 1110261660}
   - component: {fileID: 1110261659}
   - component: {fileID: 1110261658}
   m_Layer: 13
@@ -818,11 +909,12 @@ Transform:
   m_GameObject: {fileID: 1110261656}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.34, y: -2.64, z: 0}
+  m_LocalPosition: {x: -0.93, y: 3.13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 787219041}
+  - {fileID: 346100916}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1110261658
@@ -896,7 +988,39 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
+--- !u!114 &1110261660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110261656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed8309bbdc7361e4a85a52d1351611ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 2
+  _attackDamage: 1
+  _life: 10
+  _lineForWall: {x: -1, y: 0}
+  _wallLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  _lineForGround: {x: -2, y: -2}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  _lineForPlayer: {x: -1.6, y: 0}
+  _startLineForPlayer: {x: -1, y: 0}
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _anim: {fileID: 787219039}
+  _attackCollider: {fileID: 346100915}
+  IsAttack: 0
+  IsHit: 0
 --- !u!1 &1113296768
 GameObject:
   m_ObjectHideFlags: 0
@@ -1231,7 +1355,7 @@ Transform:
   m_GameObject: {fileID: 1225675887}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.109999895, y: -0.47000027, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1517,11 +1641,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1586295360814940105, guid: 76c2cfa17061d8d40883111de7cef318, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.61
+      value: 6.89
       objectReference: {fileID: 0}
     - target: {fileID: 1586295360814940105, guid: 76c2cfa17061d8d40883111de7cef318, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.16
+      value: 2.8
       objectReference: {fileID: 0}
     - target: {fileID: 1586295360814940105, guid: 76c2cfa17061d8d40883111de7cef318, type: 3}
       propertyPath: m_LocalPosition.z

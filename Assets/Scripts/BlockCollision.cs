@@ -63,7 +63,7 @@ public class BlockCollision : MonoBehaviour, IPause
                     break;
                 case ParentType.goblin:
                     _goblin.IsMove = false;
-                    _goblin.IsDead = true;
+                    _goblin.IsDeath = true;
                     _isBlockCollision = true;
                     _goblin._anim.Play("Death");
                     break;

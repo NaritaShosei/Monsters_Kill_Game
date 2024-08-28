@@ -32,7 +32,6 @@ public class PlayerManager : MonoBehaviour, IPause
     bool _isHit;
     bool _isPause;
     float _attackTime;
-    float _isAttackTimer;
     float _rollTime;
     float _rollTimer;
     float _longRangeAttackTimer;
@@ -58,11 +57,6 @@ public class PlayerManager : MonoBehaviour, IPause
             _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             _rollTimer += Time.deltaTime;
             _longRangeAttackTimer += Time.deltaTime;
-            _isAttackTimer += Time.deltaTime;
-            if (_isAttackTimer >= _isAttackTime)
-            {
-                IsAttack = false;
-            }
             if (_rollTimer > 0.25)
             {
                 _isRoll = false;
@@ -117,7 +111,6 @@ public class PlayerManager : MonoBehaviour, IPause
             _rb2d.AddForce(Vector2.right * rollSpeed, ForceMode2D.Impulse);
             _rollTimer = 0;
         }
-        //_rb2d.velocity = velo;
     }
     void Jump()
     {
@@ -135,11 +128,9 @@ public class PlayerManager : MonoBehaviour, IPause
         {
             if (Input.GetMouseButtonDown(0) && _attackInterval + _attackTime < Time.time)
             {
-                IsAttack = true;
                 _attackTime = Time.time;
                 _attackCount++;
                 _anim.SetTrigger("Attack");
-                _isAttackTimer = 0;
             }
             else if (_attackInterval + _attackTime + _attackComboTime < Time.time)
             {
@@ -212,16 +203,13 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 _sprite.flipX = _hMove < 0;
             }
-            if (_rb2d.velocity.x != 0)
+            if (!_sprite.flipX)
             {
-                if (_rb2d.velocity.x < 0)
-                {
-                    _muzzlePos.x = transform.position.x - 1f;
-                }
-                if (_rb2d.velocity.x > 0)
-                {
-                    _muzzlePos.x = transform.position.x + 0.69f;
-                }
+                _muzzlePos.x = transform.position.x + 0.69f;
+            }
+            if (_sprite.flipX)
+            {
+                _muzzlePos.x = transform.position.x - 1f;
             }
             _muzzlePos.y = transform.position.y + 0.6f;
             _longRangeAttackMuzzle.transform.position = _muzzlePos;
@@ -283,5 +271,13 @@ public class PlayerManager : MonoBehaviour, IPause
         {
             _isBlock = false;
         }
+    }
+    void IsAttackTrue()
+    {
+        IsAttack = true;
+    }
+    void IsAttackFalse()
+    {
+        IsAttack = false;
     }
 }

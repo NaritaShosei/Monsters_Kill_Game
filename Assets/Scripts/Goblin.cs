@@ -30,7 +30,7 @@ public class Goblin : MonoBehaviour, IPause
     float _attackTime;
     float _animSpeed;
     float _destroyTimer;
-    public bool IsDead;
+    public bool IsDeath;
     bool _isGround;
     public bool IsMove = true;
     bool _isAttack;
@@ -63,7 +63,7 @@ public class Goblin : MonoBehaviour, IPause
         }
         if (!_isPause && !_player.IsDeath)
         {
-            if (!IsDead)
+            if (!IsDeath)
             {
                 _start = transform.position;
                 if (_isGround && IsMove && !_isHit)
@@ -81,10 +81,10 @@ public class Goblin : MonoBehaviour, IPause
                 }
                 if (_life <= 0)
                 {
-                    IsDead = true;
+                    IsDeath = true;
                 }
             }
-            if (IsDead)
+            if (IsDeath)
             {
                 _destroyTimer += Time.deltaTime;
                 if (_destroyTimer >= _destroyTime)
@@ -121,11 +121,11 @@ public class Goblin : MonoBehaviour, IPause
         RaycastHit2D hitWallDowner = Physics2D.Linecast(_start + _startLineForWallDowner, _start + _lineForWallDowner, _wallLayer);
         Vector2 velo = Vector2.zero;
 
-        if (hitGround.collider || !hitWallUpper.collider || !hitWallDowner)
+        if (hitGround.collider || !hitWallUpper.collider || !hitWallDowner.collider)
         {
             velo = Vector2.right * _moveSpeed;
         }
-        if (!hitGround.collider || hitWallUpper.collider || hitWallDowner)
+        if (!hitGround.collider || hitWallUpper.collider || hitWallDowner.collider)
         {
             _moveSpeed = -_moveSpeed;
             _lineForGround.x = -_lineForGround.x;
@@ -150,33 +150,33 @@ public class Goblin : MonoBehaviour, IPause
                 _sr.flipX = _rb2d.velocity.x < 0;
             }
             _animator.SetFloat("XMove", Mathf.Abs(_rb2d.velocity.x));
-            _animator.SetBool("IsDead", IsDead);
+            _animator.SetBool("IsDead", IsDeath);
             _animator.SetBool("IsHit", _isHit);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!IsDead && collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Block")
+        if (!IsDeath && collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Block")
         {
             _isGround = true;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (!IsDead && collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Block")
+        if (!IsDeath && collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Block")
         {
             _isGround = false;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!IsDead)
+        if (!IsDeath)
         {
             if (collision.gameObject.tag == "Player")
             {
                 _player.Life(-_attackDamage);
             }
-            if (collision.gameObject.tag == "PlayerAttack")
+            if (collision.gameObject.tag == "PlayerAttack" && _player.IsAttack)
             {
                 if (!_isAttack)
                 {
