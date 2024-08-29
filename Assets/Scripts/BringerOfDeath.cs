@@ -7,6 +7,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
     [SerializeField] float _moveSpeed;
     [SerializeField] float _attackDamage;
     [SerializeField] float _life;
+    [SerializeField] float _attackInterval;
     [SerializeField] Vector2 _lineForWall;
     [SerializeField] LayerMask _wallLayer;
     [SerializeField] Vector2 _lineForGround;
@@ -22,6 +23,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
     public bool IsAttack;
     bool _isDeath;
     public bool IsHit;
+    float _attackTime;
     PlayerManager _player;
     Rigidbody2D _rb2d;
     Vector2 _start;
@@ -44,22 +46,33 @@ public class BringerOfDeath : MonoBehaviour, IPause
             _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
                 | RigidbodyConstraints2D.FreezeRotation;
         }
-        if (!_isPause && !_player.IsDeath && !_isDeath)
+        if (!_isPause && !_player.IsDeath)
         {
-            _anim.SetBool("IsHIt", IsHit);
-            _start = transform.position;
-            Attack();
-            if (_isGround && _isMove && !IsHit)
+            if (!_isDeath)
             {
-                Move();
+                _anim.SetBool("IsHIt", IsHit);
+                _start = transform.position;
+                Attack();
+                if (_isGround && _isMove && !IsHit)
+                {
+                    Move();
+                }
+                if (IsAttack)
+                {
+                    _attackCollider.enabled = true;
+                }
+                if (!IsAttack)
+                {
+                    _attackCollider.enabled = false;
+                }
+               if (_life <= 0)
+                {
+                    _isDeath = true;
+                }
             }
-            if (IsAttack)
+            if (_isDeath)
             {
-                _attackCollider.enabled = true;
-            }
-            if (!IsAttack)
-            {
-                _attackCollider.enabled = false;
+                _anim.Play("Death");
             }
         }
     }
@@ -78,7 +91,11 @@ public class BringerOfDeath : MonoBehaviour, IPause
         if (hitPlayer.collider)
         {
             _isMove = false;
-            _anim.SetTrigger("Attack");
+            if (_attackTime + _attackInterval < Time.time)
+            {
+                _anim.SetTrigger("Attack");
+                _attackTime = Time.time;
+            }
         }
         else
         {
@@ -136,7 +153,6 @@ public class BringerOfDeath : MonoBehaviour, IPause
                 {
                     _life -= 1;
                     IsHit = true;
-                    _anim.Play("Hurt");
                 }
             }
         }

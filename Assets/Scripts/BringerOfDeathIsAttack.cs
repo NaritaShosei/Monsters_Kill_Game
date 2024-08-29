@@ -22,6 +22,10 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     {
         _bringerOfDeath.IsHit = false;
     }
+    void Death()
+    {
+        Destroy(_bringerOfDeath.gameObject);
+    }
     // Update is called once per frame
     void Update()
     {
