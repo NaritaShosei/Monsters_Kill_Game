@@ -7,7 +7,9 @@ public class BlockCollision : MonoBehaviour, IPause
     Goblin _goblin;
     PlayerManager _player;
     FallBlock _fallBlock;
+    BringerOfDeath _bringerOfDeath;
     [SerializeField] float _destroyTime;
+    [SerializeField] float _damage;
     [SerializeField] ParentType _parentType;
     BoxCollider2D _boxCollider;
     bool _isPause;
@@ -16,7 +18,8 @@ public class BlockCollision : MonoBehaviour, IPause
     enum ParentType
     {
         player,
-        goblin
+        goblin,
+        bringer
     }
 
     //enumを使ってPlayerかGoblinかそれ以外かを判定したらいいのでは？←天才の発想
@@ -31,9 +34,11 @@ public class BlockCollision : MonoBehaviour, IPause
             case ParentType.goblin:
                 _goblin = GetComponentInParent<Goblin>();
                 break;
+            case ParentType.bringer:
+                _bringerOfDeath = GetComponentInParent<BringerOfDeath>();
+                break;
         }
         _boxCollider = GetComponent<BoxCollider2D>();
-        _fallBlock = FindObjectOfType<FallBlock>();
     }
 
     // Update is called once per frame
@@ -53,20 +58,29 @@ public class BlockCollision : MonoBehaviour, IPause
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Block" && _fallBlock.IsFall)
+        if (collision.gameObject.tag == "Block")
         {
-            Destroy(_boxCollider);
-            switch (_parentType)
+            _fallBlock = collision.gameObject.GetComponent<FallBlock>();
+            if (_fallBlock.IsFall)
             {
-                case ParentType.player:
-                    _player.IsDeath = true;
-                    break;
-                case ParentType.goblin:
-                    _goblin.IsMove = false;
-                    _goblin.IsDeath = true;
-                    _isBlockCollision = true;
-                    _goblin._anim.Play("Death");
-                    break;
+                Destroy(_boxCollider);
+                switch (_parentType)
+                {
+                    case ParentType.player:
+                        _player.IsDeath = true;
+                        break;
+                    case ParentType.goblin:
+                        _goblin.IsMove = false;
+                        _goblin.IsDeath = true;
+                        _isBlockCollision = true;
+                        _goblin._anim.Play("Death");
+                        break;
+                    case ParentType.bringer:
+                        _bringerOfDeath._life -= _damage;
+                        _bringerOfDeath.IsHit = true;
+                        Destroy(collision.gameObject);
+                        break;
+                }
             }
         }
     }

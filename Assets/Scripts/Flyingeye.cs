@@ -24,7 +24,6 @@ public class Flyingeye : MonoBehaviour, IPause
         _rb2d = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _player = FindObjectOfType<PlayerManager>();
-        _fallBlock = FindObjectOfType<FallBlock>();
     }
 
     // Update is called once per frame
@@ -58,14 +57,18 @@ public class Flyingeye : MonoBehaviour, IPause
     {
         if (!_isDead)
         {
-            if (collision.gameObject.tag == "Block" && _fallBlock.IsFall)
+            if (collision.gameObject.tag == "Block")
             {
-                _animator.Play("FlyingeyeHit");
-                _isDead = true;
-                _rb2d.gravityScale = 1;
-                _boxCollider.enabled = true;
-            }
-            if (collision.gameObject.tag == "PlayerAttack")
+                _fallBlock = collision.gameObject.GetComponent<FallBlock>();
+                if (_fallBlock.IsFall)
+                {
+                    _animator.Play("FlyingeyeHit");
+                    _isDead = true;
+                    _rb2d.gravityScale = 1;
+                    _boxCollider.enabled = true;
+                }
+                }
+                if (collision.gameObject.tag == "PlayerAttack")
             {
                 if (_player.IsAttack)
                 {

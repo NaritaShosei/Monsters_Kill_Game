@@ -9,6 +9,7 @@ TagManager:
   - Block
   - PlayerAttack
   - Goblin
+  - Rift
   layers:
   - Default
   - TransparentFX

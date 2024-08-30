@@ -223,14 +223,14 @@ public class PlayerManager : MonoBehaviour, IPause
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Block")
+        if (collision.gameObject.tag == "Block" || collision.gameObject.tag == "Rift")
         {
             _isGround = true;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Block")
+        if (collision.gameObject.tag == "Block" || collision.gameObject.tag == "Rift")
         {
             _isGround = false;
         }

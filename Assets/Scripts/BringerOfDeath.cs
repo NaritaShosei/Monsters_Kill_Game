@@ -6,7 +6,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
 {
     [SerializeField] float _moveSpeed;
     [SerializeField] float _attackDamage;
-    [SerializeField] float _life;
+    public float _life;
     [SerializeField] float _attackInterval;
     [SerializeField] Vector2 _lineForWall;
     [SerializeField] LayerMask _wallLayer;
@@ -24,9 +24,11 @@ public class BringerOfDeath : MonoBehaviour, IPause
     bool _isDeath;
     public bool IsHit;
     float _attackTime;
+    float _animSpeed;
     PlayerManager _player;
     Rigidbody2D _rb2d;
     Vector2 _start;
+    Vector2 _bringerVelocity;
 
 
     void Start()
@@ -65,7 +67,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
                 {
                     _attackCollider.enabled = false;
                 }
-               if (_life <= 0)
+                if (_life <= 0)
                 {
                     _isDeath = true;
                 }
@@ -160,11 +162,19 @@ public class BringerOfDeath : MonoBehaviour, IPause
     public void Pause()
     {
         _isPause = true;
+        _animSpeed = _anim.speed;
         _anim.speed = 0;
+        _bringerVelocity = _rb2d.velocity;
+        _rb2d.velocity = Vector2.zero;
+        _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
+            | RigidbodyConstraints2D.FreezeRotation;
     }
 
     public void Resume()
     {
         _isPause = false;
+        _anim.speed = _animSpeed;
+        _rb2d.velocity = _bringerVelocity;
+        _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 }

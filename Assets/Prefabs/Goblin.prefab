@@ -91,6 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _destroyTime: 1
+  _damage: 0
   _parentType: 1
 --- !u!1 &7339964228250527841
 GameObject:
@@ -231,7 +232,7 @@ MonoBehaviour:
   _wallLayer:
     serializedVersion: 2
     m_Bits: 512
-  _lineForGround: {x: 1, y: -1}
+  _lineForGround: {x: 1, y: -2}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -244,8 +245,8 @@ MonoBehaviour:
   _attackCollider: {fileID: 2925907139556814104}
   _aliveCollider: {fileID: 7981705402703246909}
   _deadCollider: {fileID: 2039127541315023744}
-  _anim: {fileID: 0}
-  IsDead: 0
+  IsDeath: 0
+  IsGround: 0
   IsMove: 1
 --- !u!212 &8626135040564323768
 SpriteRenderer:
