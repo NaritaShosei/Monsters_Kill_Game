@@ -114,13 +114,11 @@ public class PlayerManager : MonoBehaviour, IPause
     }
     void Jump()
     {
-        Vector2 velocity = _rb2d.velocity;
         if (Input.GetKeyDown(KeyCode.Space) && _isGround)
         {
             _isGround = false;
-            velocity.y = _jumpPower;
+            _rb2d.AddForce(_jumpPower * Vector2.up, ForceMode2D.Impulse);
         }
-        _rb2d.velocity = velocity;
     }
     void Attack()
     {

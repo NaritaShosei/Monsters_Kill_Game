@@ -5,7 +5,6 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class FallBlock : MonoBehaviour, IPause
 {
-    [SerializeField] float _destroyTime;
     Rigidbody2D _rb2d;
     PlayerManager _player;
     public bool IsFall;
@@ -15,6 +14,8 @@ public class FallBlock : MonoBehaviour, IPause
     {
         _rb2d = GetComponent<Rigidbody2D>();
         _player = FindObjectOfType<PlayerManager>();
+        _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
+                | RigidbodyConstraints2D.FreezeRotation;
     }
 
     // Update is called once per frame

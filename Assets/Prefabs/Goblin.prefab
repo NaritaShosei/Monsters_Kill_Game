@@ -157,7 +157,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.25, y: -0.105}
+  m_Offset: {x: -0.25, y: -0.105}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -221,23 +221,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5966332eedf3b0749b5e8c126781fadf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 2.5
+  _moveSpeed: -2.5
   _attackDamage: 1
   _life: 3
   _destroyTime: 1
-  _startLineForWallUpper: {x: 1, y: 0.19}
+  _startLineForWallUpper: {x: -1, y: 0.19}
   _lineForWallUpper: {x: 0, y: 0.19}
-  _startLineForWallDowner: {x: 1, y: -0.55}
+  _startLineForWallDowner: {x: -1, y: -0.55}
   _lineForWallDowner: {x: 0, y: -0.55}
   _wallLayer:
     serializedVersion: 2
     m_Bits: 512
-  _lineForGround: {x: 1, y: -2}
+  _lineForGround: {x: -1, y: -2}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  _lineForPlayer: {x: 1, y: 0}
-  _startLineForPlayer: {x: 0.4, y: 0}
+  _lineForPlayer: {x: -1, y: 0}
+  _startLineForPlayer: {x: -0.4, y: 0}
   _playerLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -246,7 +246,6 @@ MonoBehaviour:
   _aliveCollider: {fileID: 7981705402703246909}
   _deadCollider: {fileID: 2039127541315023744}
   IsDeath: 0
-  IsGround: 0
   IsMove: 1
 --- !u!212 &8626135040564323768
 SpriteRenderer:
@@ -291,7 +290,7 @@ SpriteRenderer:
   m_SortingOrder: 9
   m_Sprite: {fileID: 4723107735738678597, guid: c1cdd26cc09ad224884556bc4d8296ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 5, y: 5}
