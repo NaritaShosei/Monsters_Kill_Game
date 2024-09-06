@@ -67,8 +67,13 @@ public class Flyingeye : MonoBehaviour, IPause
                     _rb2d.gravityScale = 1;
                     _boxCollider.enabled = true;
                 }
+                else if (!_fallBlock.IsFall)
+                {
+
                 }
-                if (collision.gameObject.tag == "PlayerAttack")
+
+            }
+            if (collision.gameObject.tag == "PlayerAttack")
             {
                 if (_player.IsAttack)
                 {

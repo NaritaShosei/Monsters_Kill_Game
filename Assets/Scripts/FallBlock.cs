@@ -10,10 +10,13 @@ public class FallBlock : MonoBehaviour, IPause
     public bool IsFall;
     Vector2 _fallBlockVelocity;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _rb2d = GetComponent<Rigidbody2D>();
         _player = FindObjectOfType<PlayerManager>();
+    }
+    void Start()
+    {
         _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
                 | RigidbodyConstraints2D.FreezeRotation;
     }

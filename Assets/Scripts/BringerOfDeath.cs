@@ -19,12 +19,14 @@ public class BringerOfDeath : MonoBehaviour, IPause
     [SerializeField] BoxCollider2D _attackCollider;
     bool _isPause;
     bool _isGround;
-    bool _isMove;
+    public bool IsStopping = true;
+    bool IsMove;
     public bool IsAttack;
     bool _isDeath;
     public bool IsHit;
     float _attackTime;
     float _animSpeed;
+    public Animator _animator;
     PlayerManager _player;
     Rigidbody2D _rb2d;
     Vector2 _start;
@@ -35,6 +37,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
     {
         _player = FindObjectOfType<PlayerManager>();
         _rb2d = GetComponent<Rigidbody2D>();
+        _animator = _anim;
     }
 
     void Update()
@@ -55,7 +58,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
                 _anim.SetBool("IsHIt", IsHit);
                 _start = transform.position;
                 Attack();
-                if (_isGround && _isMove && !IsHit)
+                if (_isGround && IsMove && !IsHit && !IsStopping)
                 {
                     Move();
                 }
@@ -92,7 +95,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
         RaycastHit2D hitPlayer = Physics2D.Linecast(_start + _startLineForPlayer, _start + _lineForPlayer, _playerLayer);
         if (hitPlayer.collider)
         {
-            _isMove = false;
+            IsMove = false;
             if (_attackTime + _attackInterval < Time.time)
             {
                 _anim.SetTrigger("Attack");
@@ -101,7 +104,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
         }
         else
         {
-            _isMove = true;
+            IsMove = true;
         }
     }
     void Move()

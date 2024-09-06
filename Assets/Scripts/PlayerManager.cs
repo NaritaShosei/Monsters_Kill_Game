@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerManager : MonoBehaviour, IPause
@@ -18,9 +19,8 @@ public class PlayerManager : MonoBehaviour, IPause
     [SerializeField] BoxCollider2D _attackCollider;
     [SerializeField] GameObject _longRangeAttackObject;
     [SerializeField] GameObject _longRangeAttackMuzzle;
-    Vector3 _longRangeAttackDirection = new Vector3(0, 0, -10);
     Vector3 _mousePosition;
-    Rigidbody2D _rb2d;
+    [NonSerialized] public Rigidbody2D _rb2d;
     float _hMove;
     Animator _anim;
     SpriteRenderer _sprite;
@@ -31,6 +31,7 @@ public class PlayerManager : MonoBehaviour, IPause
     bool _isRoll;
     bool _isHit;
     bool _isPause;
+    public bool IsStopping;
     float _attackTime;
     float _rollTime;
     float _rollTimer;
@@ -61,7 +62,7 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 _isRoll = false;
             }
-            if (!IsDeath)
+            if (!IsDeath && !IsStopping)
             {
                 _hMove = Input.GetAxisRaw("Horizontal");
                 if (!_isBlock)
@@ -92,7 +93,7 @@ public class PlayerManager : MonoBehaviour, IPause
         {
             if (!IsDeath)
             {
-                if (!_isBlock)
+                if (!_isBlock && !IsStopping)
                 {
                     Move();
                 }
@@ -138,16 +139,17 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 _attackCount = 1;
             }
-            if (Input.GetMouseButtonDown(2) && !_isRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
+            if ((Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.Return))  && !_isRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
             {
                 _anim.Play("LongRangeAttack");
                 _longRangeAttackTimer = 0;
-                _sprite.flipX = _mousePosition.x < _longRangeAttackDirection.x;
-                if (_mousePosition.x < _longRangeAttackDirection.x)
+                var longRangeAttackDirection = transform.position.x;
+                _sprite.flipX = _mousePosition.x < longRangeAttackDirection;
+                if (_mousePosition.x < longRangeAttackDirection)
                 {
                     _muzzlePos.x = transform.position.x - 0.69f;
                 }
-                if (_mousePosition.x > _longRangeAttackDirection.x)
+                if (_mousePosition.x > longRangeAttackDirection)
                 {
                     _muzzlePos.x = transform.position.x + 0.69f;
                 }
