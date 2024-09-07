@@ -7,7 +7,7 @@ public class BringerOfDeathIsAttack : MonoBehaviour
 {
     [SerializeField] CinemachineVirtualCamera _camera;
     [SerializeField] float _waitTime = 2;
-    [SerializeField] GameObject[] _spark; 
+    [SerializeField] GameObject[] _spark;
     BringerOfDeath _bringerOfDeath;
     PlayerManager _player;
     // Start is called before the first frame update
@@ -35,7 +35,6 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     void StartMove()
     {
         _camera.Priority = 0;
-        _player.IsStopping = false;
         StartCoroutine(StartIsMove());
         var cameraShake = GetComponent<CinemachineImpulseSource>();
         cameraShake.GenerateImpulse();
@@ -48,6 +47,8 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(_waitTime);
         _bringerOfDeath.IsStopping = false;
+        _player.IsStopping = false;
+        GameManager.IsMovie = false;    
         foreach (var spark in _spark)
         {
             Destroy(spark.gameObject);

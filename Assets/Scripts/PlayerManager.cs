@@ -31,6 +31,7 @@ public class PlayerManager : MonoBehaviour, IPause
     bool _isRoll;
     bool _isHit;
     bool _isPause;
+    bool _isWall;
     public bool IsStopping;
     float _attackTime;
     float _rollTime;
@@ -40,6 +41,7 @@ public class PlayerManager : MonoBehaviour, IPause
     int _attackCount;
     Vector2 _muzzlePos;
     Vector2 _playerVelocity;
+    Vector2 _deadPosition;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +66,7 @@ public class PlayerManager : MonoBehaviour, IPause
             }
             if (!IsDeath && !IsStopping)
             {
+                _deadPosition = transform.position;
                 _hMove = Input.GetAxisRaw("Horizontal");
                 if (!_isBlock)
                 {
@@ -83,6 +86,9 @@ public class PlayerManager : MonoBehaviour, IPause
             else if (IsDeath)
             {
                 _anim.Play("Death");
+                Vector2 pos = transform.position;
+                pos.x = _deadPosition.x;
+                transform.position = pos;
             }
         }
     }
@@ -139,7 +145,7 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 _attackCount = 1;
             }
-            if ((Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.Return))  && !_isRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
+            if ((Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.Return)) && !_isRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
             {
                 _anim.Play("LongRangeAttack");
                 _longRangeAttackTimer = 0;
@@ -218,6 +224,7 @@ public class PlayerManager : MonoBehaviour, IPause
             _anim.SetFloat("MoveY", _rb2d.velocity.y);
             _anim.SetBool("IsBlock", _isBlock);
             _anim.SetBool("IsRoll", _isRoll);
+            _anim.SetBool("IsWall", _isWall);
             _anim.SetInteger("AttackCount", _attackCount);
         }
     }
@@ -240,6 +247,11 @@ public class PlayerManager : MonoBehaviour, IPause
         if (collision.gameObject.tag == "Ground")
         {
             _isGround = true;
+            _isWall = false;
+        }
+        if (collision.gameObject.tag != "Ground" && collision.gameObject.tag == "Wall")
+        {
+            _isWall = true;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -247,6 +259,10 @@ public class PlayerManager : MonoBehaviour, IPause
         if (collision.gameObject.tag == "Ground")
         {
             _isGround = false;
+        }
+        if (collision.gameObject.tag == "Wall")
+        {
+            _isWall = false;
         }
     }
 
@@ -258,7 +274,6 @@ public class PlayerManager : MonoBehaviour, IPause
             | RigidbodyConstraints2D.FreezeRotation;
         _animSpeed = _anim.speed;
         _anim.speed = 0;
-        Debug.Log("THE WORLD");
     }
 
     void IPause.Resume()

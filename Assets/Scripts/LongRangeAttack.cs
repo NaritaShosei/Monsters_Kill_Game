@@ -12,14 +12,14 @@ public class LongRangeAttack : MonoBehaviour, IPause
     Rigidbody2D _rb2d;
     float _timer;
     bool _isPause;
-    Vector2 _longRangeAttackVelcity;
+    Vector2 _longRangeAttackVelocity;
     // Start is called before the first frame update
     void Start()
     {
         _player = FindObjectOfType<PlayerManager>();
         _rb2d = GetComponent<Rigidbody2D>();
-        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        var dir = (mousePos - _player.transform.position).normalized;
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 dir = (mousePos - (Vector2)_player.transform.position).normalized;
         _rb2d.velocity = dir * _moveSpeed;
         transform.rotation = Quaternion.Euler(dir);
     }
@@ -51,13 +51,13 @@ public class LongRangeAttack : MonoBehaviour, IPause
     public void Pause()
     {
         _isPause = true;
-        _longRangeAttackVelcity = _rb2d.velocity;
+        _longRangeAttackVelocity = _rb2d.velocity;
         _rb2d.velocity = Vector2.zero;
     }
 
     public void Resume()
     {
         _isPause = false;
-        _rb2d.velocity = _longRangeAttackVelcity;
+        _rb2d.velocity = _longRangeAttackVelocity;
     }
 }

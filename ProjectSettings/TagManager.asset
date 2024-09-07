@@ -10,6 +10,8 @@ TagManager:
   - PlayerAttack
   - Goblin
   - Rift
+  - Wall
+  - AnimationObject
   layers:
   - Default
   - TransparentFX
@@ -25,7 +27,7 @@ TagManager:
   - BlockCollision
   - AttackCollider
   - BringerOfDeath
-  - 
+  - Camera
   - 
   - 
   - 

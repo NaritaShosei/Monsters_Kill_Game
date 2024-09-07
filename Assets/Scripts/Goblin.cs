@@ -145,10 +145,6 @@ public class Goblin : MonoBehaviour, IPause
     {
         if (!_isPause && !_player.IsDeath)
         {
-            //if (_rb2d.velocity.x != 0 && !IsDeath)
-            //{
-            //    _sr.flipX = _rb2d.velocity.x < 0;
-            //}
             _animator.SetFloat("XMove", Mathf.Abs(_rb2d.velocity.x));
             _animator.SetBool("IsDead", IsDeath);
             _animator.SetBool("IsHit", _isHit);
