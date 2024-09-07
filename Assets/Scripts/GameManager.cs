@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera _camera;
     bool _isPause;
     bool _isStart;
-    public static bool IsMovie;
+    public bool IsMovie;
+    public bool IsClearConditions;
     float _animSpeed;
     PlayerManager _player;
     BringerOfDeath _bringer;

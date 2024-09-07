@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +19,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
     [SerializeField] LayerMask _playerLayer;
     [SerializeField] Animator _anim;
     [SerializeField] BoxCollider2D _attackCollider;
+    [SerializeField] GameObject _object;
     bool _isPause;
     bool _isGround;
     public bool IsStopping = true;
@@ -24,9 +27,10 @@ public class BringerOfDeath : MonoBehaviour, IPause
     public bool IsAttack;
     bool _isDeath;
     public bool IsHit;
+    bool _isInstantiate = true;
     float _attackTime;
     float _animSpeed;
-    public Animator _animator;
+    [NonSerialized] public Animator _animator;
     PlayerManager _player;
     Rigidbody2D _rb2d;
     Vector2 _start;
@@ -77,6 +81,11 @@ public class BringerOfDeath : MonoBehaviour, IPause
             }
             if (_isDeath)
             {
+                if (_isInstantiate)
+                {
+                    Instantiate(_object, transform.position, Quaternion.identity);
+                    _isInstantiate = false;
+                }
                 _anim.Play("Death");
             }
         }
