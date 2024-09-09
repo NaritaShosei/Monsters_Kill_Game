@@ -3,13 +3,28 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Orb : MonoBehaviour
+public class Orb : MonoBehaviour, IPause
 {
     [SerializeField] float _speed;
     [SerializeField] float _magnetDistance = 3;
     PlayerManager _player;
     GameManager _gm;
     Rigidbody2D _rb2d;
+    Vector2 _orbVelocity;
+    bool _isPause;
+
+    public void Pause()
+    {
+        _orbVelocity = _rb2d.velocity;
+        _rb2d.velocity = Vector2.zero;
+        _isPause = true;
+    }
+
+    public void Resume()
+    {
+        _rb2d.velocity = _orbVelocity;
+        _isPause = false;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -23,18 +38,21 @@ public class Orb : MonoBehaviour
     void Update()
     {
         var dis = Vector2.Distance(transform.position, _player.transform.position + new Vector3(0, 0.5f));
-        if (dis < _magnetDistance)
+        if (!_isPause)
         {
-            _rb2d.velocity = ((_player.transform.position + new Vector3(0, 0.5f) - transform.position).normalized * _speed);
-        }
-        if (dis < 0.2f)
-        {
-            _rb2d.velocity = Vector3.zero;
-            var child = gameObject.transform.GetChild(0);
-            child.gameObject.SetActive(false);
-            _gm.IsClearConditions = true;
-          
-            Debug.Log(dis);
+            if (dis < _magnetDistance)
+            {
+                _rb2d.velocity = ((_player.transform.position + new Vector3(0, 0.5f) - transform.position).normalized * _speed);
+            }
+            if (dis < 0.2f)
+            {
+                _rb2d.velocity = Vector3.zero;
+                var child = gameObject.transform.GetChild(0);
+                child.gameObject.SetActive(false);
+                _gm.IsClearConditions = true;
+
+                Debug.Log(dis);
+            }
         }
     }
 }

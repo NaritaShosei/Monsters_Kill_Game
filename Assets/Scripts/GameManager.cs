@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        IsMovie = false;
         _player = FindObjectOfType<PlayerManager>();
         _bringer = FindObjectOfType<BringerOfDeath>();
     }
