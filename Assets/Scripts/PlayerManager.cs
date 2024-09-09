@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using System;
+using Cinemachine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerManager : MonoBehaviour, IPause
@@ -19,6 +20,7 @@ public class PlayerManager : MonoBehaviour, IPause
     [SerializeField] BoxCollider2D _attackCollider;
     [SerializeField] GameObject _longRangeAttackObject;
     [SerializeField] GameObject _longRangeAttackMuzzle;
+    [SerializeField] CinemachineVirtualCamera _camera;
     Vector3 _mousePosition;
     [NonSerialized] public Rigidbody2D _rb2d;
     float _hMove;
@@ -89,6 +91,7 @@ public class PlayerManager : MonoBehaviour, IPause
                 Vector2 pos = transform.position;
                 pos.x = _deadPosition.x;
                 transform.position = pos;
+                _camera.Priority = 1000;
             }
         }
     }

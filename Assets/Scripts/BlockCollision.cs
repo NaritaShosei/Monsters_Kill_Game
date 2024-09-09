@@ -22,7 +22,6 @@ public class BlockCollision : MonoBehaviour, IPause
         bringer
     }
 
-    //enumを使ってPlayerかGoblinかそれ以外かを判定したらいいのでは？←天才の発想
     // Start is called before the first frame update
     void Start()
     {
