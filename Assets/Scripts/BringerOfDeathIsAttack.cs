@@ -16,6 +16,14 @@ public class BringerOfDeathIsAttack : MonoBehaviour
         _bringerOfDeath = FindObjectOfType<BringerOfDeath>();
         _player = FindObjectOfType<PlayerManager>();
     }
+    void IsLongRangeAttacking()
+    {
+        _bringerOfDeath.IsLongRangeAttacking = false;
+    }
+    void IsAttackingTrue()
+    {
+        _bringerOfDeath.IsAttacking = true;
+    }
     void IsAttackTrue()
     {
         _bringerOfDeath.IsAttack = true;
@@ -23,6 +31,7 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     void IsAttackFalse()
     {
         _bringerOfDeath.IsAttack = false;
+        _bringerOfDeath.IsAttacking = false;
     }
     void IsHitFalse()
     {

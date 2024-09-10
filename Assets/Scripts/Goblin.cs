@@ -1,7 +1,10 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 public class Goblin : MonoBehaviour, IPause
 {
     [SerializeField] float _moveSpeed;
@@ -22,11 +25,13 @@ public class Goblin : MonoBehaviour, IPause
     [SerializeField] BoxCollider2D _attackCollider;
     [SerializeField] BoxCollider2D _aliveCollider;
     [SerializeField] BoxCollider2D _deadCollider;
+    [SerializeField] Image _hp;
+    [SerializeField] Canvas _canvas;
     Rigidbody2D _rb2d;
     Animator _animator;
     [NonSerialized] public Animator _anim = default;
     PlayerManager _player;
-    SpriteRenderer _sr;
+    float _maxLife;
     float _attackTime;
     float _animSpeed;
     float _destroyTimer;
@@ -44,7 +49,7 @@ public class Goblin : MonoBehaviour, IPause
         _rb2d = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _player = FindObjectOfType<PlayerManager>();
-        _sr = GetComponent<SpriteRenderer>();
+        _maxLife = _life;
         _anim = _animator;
     }
 
@@ -135,7 +140,10 @@ public class Goblin : MonoBehaviour, IPause
             _startLineForPlayer = -_startLineForPlayer;
             Vector3 scale = transform.localScale;
             scale.x = -scale.x;
-            transform.localScale = scale;   
+            transform.localScale = scale;
+            Vector2 canvasScale = _canvas.transform.localScale;
+            canvasScale.x = -canvasScale.x;
+            _canvas.transform.localScale = canvasScale;
         }
 
         velo.y = _rb2d.velocity.y;
@@ -177,6 +185,7 @@ public class Goblin : MonoBehaviour, IPause
                 if (!_isAttack)
                 {
                     _life -= 1f;
+                    DOTween.To(() => _life / _maxLife, x => _hp.fillAmount = x, _life / _maxLife, 0.5f);
                     _isHit = true;
                     _animator.Play("Hit");
                 }

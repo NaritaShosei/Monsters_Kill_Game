@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine;
 using System;
 using Cinemachine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerManager : MonoBehaviour, IPause
@@ -21,6 +23,7 @@ public class PlayerManager : MonoBehaviour, IPause
     [SerializeField] GameObject _longRangeAttackObject;
     [SerializeField] GameObject _longRangeAttackMuzzle;
     [SerializeField] CinemachineVirtualCamera _camera;
+    [SerializeField] Image _hp;
     Vector3 _mousePosition;
     [NonSerialized] public Rigidbody2D _rb2d;
     float _hMove;
@@ -40,6 +43,7 @@ public class PlayerManager : MonoBehaviour, IPause
     float _rollTimer;
     float _longRangeAttackTimer;
     float _animSpeed;
+    float _maxLife;
     int _attackCount;
     Vector2 _muzzlePos;
     Vector2 _playerVelocity;
@@ -52,6 +56,7 @@ public class PlayerManager : MonoBehaviour, IPause
         _sprite = GetComponent<SpriteRenderer>();
         _longRangeAttackTimer = _longRangeAttackInterval;
         _muzzlePos = _longRangeAttackMuzzle.transform.position;
+        _maxLife = _life;
     }
 
     // Update is called once per frame
@@ -84,6 +89,7 @@ public class PlayerManager : MonoBehaviour, IPause
                 {
                     _attackCollider.enabled = false;
                 }
+
             }
             else if (IsDeath)
             {
@@ -184,6 +190,8 @@ public class PlayerManager : MonoBehaviour, IPause
         {
             if (!_isBlock && !_isRoll && !IsAttack)
             {
+                float currentLife = _life;
+                DOTween.To(() => currentLife / _maxLife, x => _hp.fillAmount = x, (currentLife + life) / _maxLife, 0.3f);
                 _life += life;
                 if (_life <= 0)
                 {

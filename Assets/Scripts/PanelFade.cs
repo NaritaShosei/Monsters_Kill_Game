@@ -24,7 +24,7 @@ public class PanelFade : MonoBehaviour
         if (_player.IsDeath && _active)
         {
             //_image.DOFade(100, _fadeTime).OnComplete(() => SceneChangeManager.SceneChange(_sceneName));
-            _image.DOFade(1, _fadeTime).OnComplete(() => Debug.Log("YOU DIED"));
+            _image.DOFade(1, _fadeTime).OnComplete(() => SceneChangeManager.SceneChange(_sceneName));
             //_image.DOFade(0, _fadeTime).OnComplete(() => _image.DOFade(1, _fadeTime).OnComplete(()=>Debug.Log("\\;")));
         }
     }

@@ -56,7 +56,10 @@ public class GoalBlock : MonoBehaviour, IPause
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("GameClear");
+        if (_gm.IsClearConditions)
+        {
+            Debug.Log("GameClear");
+        }
     }
     public void Pause()
     {

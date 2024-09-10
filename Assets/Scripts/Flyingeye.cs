@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Flyingeye : MonoBehaviour, IPause
 {
@@ -8,6 +10,7 @@ public class Flyingeye : MonoBehaviour, IPause
     [SerializeField] float _attackDamage;
     [SerializeField] float _destroyTime;
     [SerializeField] BoxCollider2D _boxCollider;
+    [SerializeField] Image _hp;
     Rigidbody2D _rb2d;
     Animator _animator;
     PlayerManager _player;
@@ -81,6 +84,7 @@ public class Flyingeye : MonoBehaviour, IPause
                     _isDead = true;
                     _rb2d.gravityScale = 1;
                     _boxCollider.enabled = true;
+                    DOTween.To(() => 1, x => _hp.fillAmount = x, 0, 0.3f);
                 }
             }
             else if (collision.gameObject.tag == "Player")
