@@ -8,6 +8,8 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera _camera;
     [SerializeField] float _waitTime = 2;
     [SerializeField] GameObject[] _spark;
+    [SerializeField] GameObject _longRangeAttack;
+    [SerializeField] Vector3 _instantiatePosition;
     BringerOfDeath _bringerOfDeath;
     PlayerManager _player;
     // Start is called before the first frame update
@@ -15,6 +17,10 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     {
         _bringerOfDeath = FindObjectOfType<BringerOfDeath>();
         _player = FindObjectOfType<PlayerManager>();
+    }
+    void LongRangeAttack()
+    {
+        Instantiate(_longRangeAttack, _player.transform.position + _instantiatePosition, Quaternion.identity);
     }
     void IsLongRangeAttacking()
     {
@@ -58,7 +64,7 @@ public class BringerOfDeathIsAttack : MonoBehaviour
         _bringerOfDeath.IsStopping = false;
         _player.IsStopping = false;
         var gm = FindObjectOfType<GameManager>();
-        gm.IsMovie = false;    
+        gm.IsMovie = false;
         foreach (var spark in _spark)
         {
             Destroy(spark.gameObject);

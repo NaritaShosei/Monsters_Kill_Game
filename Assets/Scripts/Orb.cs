@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -12,6 +13,7 @@ public class Orb : MonoBehaviour, IPause
     Rigidbody2D _rb2d;
     Vector2 _orbVelocity;
     bool _isPause;
+    //bool _active = true;
 
     public void Pause()
     {
@@ -51,7 +53,17 @@ public class Orb : MonoBehaviour, IPause
                 child.gameObject.SetActive(false);
                 _gm.IsClearConditions = true;
 
-                Debug.Log(dis);
+                //var child = gameObject.transform.GetComponentsInChildren<Transform>();
+                //foreach (var children in child)
+                //{
+                //    // children.DOFade(0, 0.5f);
+                //    var material = children.GetComponent<Material>();
+                //    if (material && _active)
+                //    {
+                //        _active = false;    
+                //        material.DOFade(0, 0.5f).OnComplete(() => _gm.IsClearConditions = true);
+                //    }
+                //}
             }
         }
     }

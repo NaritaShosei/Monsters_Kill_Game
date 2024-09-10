@@ -99,7 +99,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
                 if (_longRangeAttackTimer >= _attackInterval)
                 {
                     IsLongRangeAttacking = true;
-                    _active = true;
+                    //_active = true;
                     _longRangeAttackTimer = 0;
                 }
             }
@@ -140,7 +140,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
         {
             IsMove = true;
         }
-        if (_distance > _longRangeAttackDistance && IsLongRangeAttacking && _active)
+        if (_distance > _longRangeAttackDistance && IsLongRangeAttacking /*&& _active*/)
         {
             _active = false;
             IsMove = false;
@@ -201,7 +201,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
     {
         if (!_isDeath)
         {
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.tag == "Player" && !_player.IsBlock)
             {
                 _player.Life(-_attackDamage);
             }

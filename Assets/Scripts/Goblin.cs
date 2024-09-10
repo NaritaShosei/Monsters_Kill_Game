@@ -176,7 +176,7 @@ public class Goblin : MonoBehaviour, IPause
     {
         if (!IsDeath)
         {
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.tag == "Player" && !_player.IsBlock)
             {
                 _player.Life(-_attackDamage);
             }

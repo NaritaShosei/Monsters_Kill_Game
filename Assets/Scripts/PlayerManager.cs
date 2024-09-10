@@ -31,7 +31,7 @@ public class PlayerManager : MonoBehaviour, IPause
     SpriteRenderer _sprite;
     bool _isGround;
     public bool IsAttack;
-    bool _isBlock;
+    public bool IsBlock;
     public bool IsDeath;
     bool _isRoll;
     bool _isHit;
@@ -75,7 +75,7 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 _deadPosition = transform.position;
                 _hMove = Input.GetAxisRaw("Horizontal");
-                if (!_isBlock)
+                if (!IsBlock)
                 {
                     Jump();
                     Attack();
@@ -108,7 +108,7 @@ public class PlayerManager : MonoBehaviour, IPause
         {
             if (!IsDeath)
             {
-                if (!_isBlock && !IsStopping)
+                if (!IsBlock && !IsStopping)
                 {
                     Move();
                 }
@@ -177,18 +177,18 @@ public class PlayerManager : MonoBehaviour, IPause
     {
         if (Input.GetMouseButton(1))
         {
-            _isBlock = true;
+            IsBlock = true;
         }
         if (Input.GetMouseButtonUp(1))
         {
-            _isBlock = false;
+            IsBlock = false;
         }
     }
     public void Life(float life)
     {
         if (!_isPause)
         {
-            if (!_isBlock && !_isRoll && !IsAttack)
+            if (!_isRoll && !IsAttack)
             {
                 float currentLife = _life;
                 DOTween.To(() => currentLife / _maxLife, x => _hp.fillAmount = x, (currentLife + life) / _maxLife, 0.3f);
@@ -201,15 +201,9 @@ public class PlayerManager : MonoBehaviour, IPause
                 {
                     _anim.Play("Hit");
                     _isHit = true;
-                    StartCoroutine(StartIsHitFalse());
                 }
             }
         }
-    }
-    IEnumerator StartIsHitFalse()
-    {
-        yield return new WaitForSeconds(_isHitTime);
-        _isHit = false;
     }
 
     private void LateUpdate()
@@ -233,7 +227,7 @@ public class PlayerManager : MonoBehaviour, IPause
             _anim.SetFloat("MoveX", Mathf.Abs(_rb2d.velocity.x));
             _anim.SetBool("IsGround", _isGround);
             _anim.SetFloat("MoveY", _rb2d.velocity.y);
-            _anim.SetBool("IsBlock", _isBlock);
+            _anim.SetBool("IsBlock", IsBlock);
             _anim.SetBool("IsRoll", _isRoll);
             _anim.SetBool("IsWall", _isWall);
             _anim.SetInteger("AttackCount", _attackCount);
@@ -293,9 +287,9 @@ public class PlayerManager : MonoBehaviour, IPause
         _rb2d.velocity = _playerVelocity;
         _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         _anim.speed = _animSpeed;
-        if (_isBlock)
+        if (IsBlock)
         {
-            _isBlock = false;
+            IsBlock = false;
         }
     }
     void IsAttackTrue()
