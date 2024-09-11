@@ -38,6 +38,7 @@ public class PlayerManager : MonoBehaviour, IPause
     bool _isPause;
     bool _isWall;
     public bool IsStopping;
+    bool _fallDead;
     float _attackTime;
     float _rollTime;
     float _rollTimer;
@@ -97,7 +98,10 @@ public class PlayerManager : MonoBehaviour, IPause
                 Vector2 pos = transform.position;
                 pos.x = _deadPosition.x;
                 transform.position = pos;
-                _camera.Priority = 1000;
+                if (!_fallDead)
+                {
+                    _camera.Priority = 1000;
+                }
             }
         }
     }
@@ -119,7 +123,7 @@ public class PlayerManager : MonoBehaviour, IPause
     void Move()
     {
         _rb2d.AddForce(Vector2.right * _hMove * _moveSpeed, ForceMode2D.Force);
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll && _rollInterval + _rollTime < Time.time)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll && (_rollInterval + _rollTime < Time.time))
         {
             _rollTime = Time.time;
             _isRoll = true;
@@ -201,9 +205,15 @@ public class PlayerManager : MonoBehaviour, IPause
                 {
                     _anim.Play("Hit");
                     _isHit = true;
+                    StartCoroutine(StartIsHitFalse());
                 }
             }
         }
+    }
+    IEnumerator StartIsHitFalse()
+    {
+        yield return new WaitForSeconds(_isHitTime);
+        _isHit = false;
     }
 
     private void LateUpdate()
@@ -299,5 +309,14 @@ public class PlayerManager : MonoBehaviour, IPause
     void IsAttackFalse()
     {
         IsAttack = false;
+    }
+    private void OnBecameInvisible()
+    {
+        //var gm = FindObjectOfType<GameManager>();
+        //if (!gm.IsClearConditions)
+        //{
+            Life(-100);
+            _fallDead = true;
+        //}
     }
 }

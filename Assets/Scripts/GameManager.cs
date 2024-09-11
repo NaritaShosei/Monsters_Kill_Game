@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && !_player.IsDeath && !IsMovie)
         {
             PauseResume();
-            Debug.Log(_isPause);
         }
         if (pos.x <= _player.transform.position.x && !_isStart)
         {

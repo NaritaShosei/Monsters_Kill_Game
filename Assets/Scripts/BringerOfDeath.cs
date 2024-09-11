@@ -60,7 +60,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
     {
         if (Input.GetKeyUp(KeyCode.L))
         {
-            Debug.LogError(_active + "+" + IsLongRangeAttacking);
+            Debug.LogError(_longRangeAttackTimer);
         }
         Debug.DrawLine(_start, _start + _lineForGround);
         Debug.DrawLine(_start, _start + _lineForWall);
@@ -100,7 +100,6 @@ public class BringerOfDeath : MonoBehaviour, IPause
                 {
                     IsLongRangeAttacking = true;
                     //_active = true;
-                    _longRangeAttackTimer = 0;
                 }
             }
             if (_isDeath)
@@ -140,11 +139,12 @@ public class BringerOfDeath : MonoBehaviour, IPause
         {
             IsMove = true;
         }
-        if (_distance > _longRangeAttackDistance && IsLongRangeAttacking /*&& _active*/)
+        if ((_distance > _longRangeAttackDistance && IsLongRangeAttacking))
         {
             _active = false;
             IsMove = false;
             _anim.SetTrigger("LongRangeAttack");
+            _longRangeAttackTimer = 0;
             //if (_player.transform.position.x - transform.position.x < 0)
             //{
             //    transform.localRotation = Quaternion.Euler(0, 0, 0);
@@ -154,6 +154,13 @@ public class BringerOfDeath : MonoBehaviour, IPause
             //    transform.localRotation = Quaternion.Euler(0, 180, 0);
             //}
         }
+        //if (_longRangeAttackTimer > 6)
+        //{
+        //    _active = false;
+        //    IsMove = false;
+        //    _anim.SetTrigger("LongRangeAttack");
+        //    _longRangeAttackTimer = 0;
+        //}
     }
     void Move()
     {
