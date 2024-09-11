@@ -20,6 +20,7 @@ public class Flyingeye : MonoBehaviour, IPause
     bool _isDead;
     bool _isPause;
     bool _isStartDestroy;
+    bool _isMove;
     Vector2 _flyingeyeVelocity;
     // Start is called before the first frame update
     void Start()
@@ -41,7 +42,7 @@ public class Flyingeye : MonoBehaviour, IPause
         }
         if (!_isPause && !_player.IsDeath)
         {
-            if (!_isDead)
+            if (!_isDead && _isMove)
             {
                 var sin = Mathf.Sin(Time.time);
                 transform.position += new Vector3(_moveSpeed * Time.deltaTime, sin * Time.deltaTime);
@@ -118,5 +119,13 @@ public class Flyingeye : MonoBehaviour, IPause
         _rb2d.velocity = _flyingeyeVelocity;
         _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         _animator.speed = _animSpeed;
+    }
+    private void OnBecameInvisible()
+    {
+        _isMove = false;
+    }
+    private void OnBecameVisible()
+    {
+        _isMove = true;
     }
 }

@@ -41,6 +41,7 @@ public class Goblin : MonoBehaviour, IPause
     bool _isAttack;
     bool _isPause;
     bool _isHit;
+    bool _isInvisible;
     Vector2 _start;
     Vector2 _goblinVelocity;
     // Start is called before the first frame update
@@ -114,7 +115,7 @@ public class Goblin : MonoBehaviour, IPause
                 _attackTime = Time.time;
             }
         }
-        else
+        else if (!hitPlayer.collider && !_isInvisible)
         {
             IsMove = true;
         }
@@ -222,5 +223,14 @@ public class Goblin : MonoBehaviour, IPause
         _rb2d.velocity = _goblinVelocity;
         _animator.speed = _animSpeed;
         _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+    private void OnBecameInvisible()
+    {
+        IsMove = false;
+        _isInvisible = true;    
+    }
+    private void OnBecameVisible()
+    {
+        _isInvisible = false;   
     }
 }

@@ -249,6 +249,11 @@ public class PlayerManager : MonoBehaviour, IPause
         {
             _isGround = true;
         }
+        if (collision.gameObject.tag == "Hole")
+        {
+            Life(-100);
+            _fallDead = true;
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -309,14 +314,5 @@ public class PlayerManager : MonoBehaviour, IPause
     void IsAttackFalse()
     {
         IsAttack = false;
-    }
-    private void OnBecameInvisible()
-    {
-        //var gm = FindObjectOfType<GameManager>();
-        //if (!gm.IsClearConditions)
-        //{
-            Life(-100);
-            _fallDead = true;
-        //}
     }
 }

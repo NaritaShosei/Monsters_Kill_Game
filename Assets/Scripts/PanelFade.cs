@@ -8,6 +8,7 @@ public class PanelFade : MonoBehaviour
 {
     [SerializeField] float _fadeTime;
     [SerializeField] string _sceneName;
+    Text _text;
     Image _image;
     PlayerManager _player;
     bool _active = true;
@@ -16,6 +17,7 @@ public class PanelFade : MonoBehaviour
     {
         _player = FindObjectOfType<PlayerManager>();
         _image = GetComponent<Image>();
+        _text = GameObject.Find("YOU DIED").GetComponent<Text>();
     }
 
     // Update is called once per frame
@@ -23,9 +25,7 @@ public class PanelFade : MonoBehaviour
     {
         if (_player.IsDeath && _active)
         {
-            //_image.DOFade(100, _fadeTime).OnComplete(() => SceneChangeManager.SceneChange(_sceneName));
-            _image.DOFade(1, _fadeTime).OnComplete(() => SceneChangeManager.SceneChange(_sceneName));
-            //_image.DOFade(0, _fadeTime).OnComplete(() => _image.DOFade(1, _fadeTime).OnComplete(()=>Debug.Log("\\;")));
+            _image.DOFade(1, _fadeTime).OnComplete(() => _text.DOFade(1, _fadeTime).OnComplete(() => SceneChangeManager.SceneChange(_sceneName)));
         }
     }
 }

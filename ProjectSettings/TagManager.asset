@@ -12,6 +12,7 @@ TagManager:
   - Rift
   - Wall
   - AnimationObject
+  - Hole
   layers:
   - Default
   - TransparentFX
