@@ -21,15 +21,15 @@ TagManager:
   - Water
   - UI
   - Player
-  - Flyingeye
-  - Goblin
+  - 
+  - 
   - Wall
   - Ground
   - BlockCollision
   - AttackCollider
-  - BringerOfDeath
-  - Camera
   - 
+  - Camera
+  - Enemy
   - 
   - 
   - 

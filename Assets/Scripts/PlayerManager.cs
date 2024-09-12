@@ -25,6 +25,7 @@ public class PlayerManager : MonoBehaviour, IPause
     [SerializeField] GameObject _longRangeAttackMuzzle;
     [SerializeField] CinemachineVirtualCamera _camera;
     [SerializeField] Image _hp;
+    [SerializeField] Image _blockGauge;
     Vector3 _mousePosition;
     [NonSerialized] public Rigidbody2D _rb2d;
     float _hMove;
@@ -32,7 +33,7 @@ public class PlayerManager : MonoBehaviour, IPause
     SpriteRenderer _sprite;
     bool _isGround;
     public bool IsAttack;
-    public bool IsBlock;
+    public bool IsBlocking;
     public bool IsDeath;
     bool _isRoll;
     bool _isHit;
@@ -40,12 +41,14 @@ public class PlayerManager : MonoBehaviour, IPause
     bool _isWall;
     public bool IsStopping;
     bool _fallDead;
+    bool _isBlockCondition = true;
     float _attackTime;
     float _rollTime;
     float _rollTimer;
     float _longRangeAttackTimer;
     float _animSpeed;
     float _maxLife;
+    float _maxCount;
     int _attackCount;
     Vector2 _muzzlePos;
     Vector2 _playerVelocity;
@@ -59,6 +62,7 @@ public class PlayerManager : MonoBehaviour, IPause
         _longRangeAttackTimer = _longRangeAttackInterval;
         _muzzlePos = _longRangeAttackMuzzle.transform.position;
         _maxLife = _life;
+        _maxCount = _blockCount;
     }
 
     // Update is called once per frame
@@ -69,6 +73,11 @@ public class PlayerManager : MonoBehaviour, IPause
             _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             _rollTimer += Time.deltaTime;
             _longRangeAttackTimer += Time.deltaTime;
+            if (_blockCount <= 0)
+            {
+                _isBlockCondition = false;
+                IsBlocking = false;
+            }
             if (_rollTimer > 0.25)
             {
                 _isRoll = false;
@@ -77,7 +86,7 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 _deadPosition = transform.position;
                 _hMove = Input.GetAxisRaw("Horizontal");
-                if (!IsBlock)
+                if (!IsBlocking)
                 {
                     Jump();
                     Attack();
@@ -122,7 +131,7 @@ public class PlayerManager : MonoBehaviour, IPause
         {
             if (!IsDeath)
             {
-                if (!IsBlock && !IsStopping)
+                if (!IsBlocking && !IsStopping)
                 {
                     _rb2d.AddForce(Vector2.right * _hMove * _moveSpeed, ForceMode2D.Force);
                 }
@@ -176,13 +185,13 @@ public class PlayerManager : MonoBehaviour, IPause
     }
     void Block()
     {
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && _isBlockCondition)
         {
-            IsBlock = true;
+            IsBlocking = true;
         }
         if (Input.GetMouseButtonUp(1))
         {
-            IsBlock = false;
+            IsBlocking = false;
         }
     }
     public void Life(float life)
@@ -206,6 +215,10 @@ public class PlayerManager : MonoBehaviour, IPause
                 }
             }
         }
+    }
+    public void BlockGauge()
+    {
+        DOTween.To(() => _blockCount / _maxCount, x => _blockGauge.fillAmount = x, _blockCount / _maxCount, 0.3f);
     }
     IEnumerator StartIsHitFalse()
     {
@@ -234,7 +247,7 @@ public class PlayerManager : MonoBehaviour, IPause
             _anim.SetFloat("MoveX", Mathf.Abs(_rb2d.velocity.x));
             _anim.SetBool("IsGround", _isGround);
             _anim.SetFloat("MoveY", _rb2d.velocity.y);
-            _anim.SetBool("IsBlock", IsBlock);
+            _anim.SetBool("IsBlock", IsBlocking);
             _anim.SetBool("IsRoll", _isRoll);
             _anim.SetBool("IsWall", _isWall);
             _anim.SetInteger("AttackCount", _attackCount);
@@ -299,9 +312,9 @@ public class PlayerManager : MonoBehaviour, IPause
         _rb2d.velocity = _playerVelocity;
         _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         _anim.speed = _animSpeed;
-        if (IsBlock)
+        if (IsBlocking)
         {
-            IsBlock = false;
+            IsBlocking = false;
         }
     }
     void IsAttackTrue()

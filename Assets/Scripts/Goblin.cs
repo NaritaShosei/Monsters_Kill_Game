@@ -179,9 +179,17 @@ public class Goblin : MonoBehaviour, IPause
     {
         if (!IsDeath)
         {
-            if (collision.gameObject.tag == "Player" && !_player.IsBlock)
+            if (collision.gameObject.tag == "Player")
             {
-                _player.Life(-_attackDamage);
+                if (!_player.IsBlocking)
+                {
+                    _player.Life(-_attackDamage);
+                }
+
+                if (_player.IsBlocking)
+                {
+                    _player._blockCount--;
+                }
             }
             if (collision.gameObject.tag == "PlayerAttack" && _player.IsAttack)
             {
@@ -229,10 +237,10 @@ public class Goblin : MonoBehaviour, IPause
     private void OnBecameInvisible()
     {
         IsMove = false;
-        _isInvisible = true;    
+        _isInvisible = true;
     }
     private void OnBecameVisible()
     {
-        _isInvisible = false;   
+        _isInvisible = false;
     }
 }
