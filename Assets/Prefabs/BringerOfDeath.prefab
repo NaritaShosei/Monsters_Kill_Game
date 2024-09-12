@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 4178915588788194750}
   - component: {fileID: 1488842098810623104}
   - component: {fileID: 6924793035778966227}
-  m_Layer: 13
+  m_Layer: 15
   m_Name: BringerOfDeath
   m_TagString: Untagged
   m_Icon: {fileID: 0}

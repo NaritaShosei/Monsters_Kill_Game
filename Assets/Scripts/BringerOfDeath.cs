@@ -208,9 +208,16 @@ public class BringerOfDeath : MonoBehaviour, IPause
     {
         if (!_isDeath)
         {
-            if (collision.gameObject.tag == "Player" && !_player.IsBlock)
+            if (collision.gameObject.tag == "Player")
             {
-                _player.Life(-_attackDamage);
+                if (!_player.IsBlocking)
+                {
+                    _player.Life(-_attackDamage);
+                }
+                if (_player.IsBlocking)
+                {
+                    _player._blockCount--;
+                }
             }
             if (collision.gameObject.tag == "PlayerAttack" && _player.IsAttack)
             {

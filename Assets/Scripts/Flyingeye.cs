@@ -90,9 +90,17 @@ public class Flyingeye : MonoBehaviour, IPause
                     DOTween.To(() => 1, x => _hp.fillAmount = x, 0, 0.3f);
                 }
             }
-            else if (collision.gameObject.tag == "Player" && !_player.IsBlock)
+            if (collision.gameObject.tag == "Player")
             {
-                _player.Life(-_attackDamage);
+                if (!_player.IsBlocking)
+                {
+                    _player.Life(-_attackDamage);
+                }
+
+                if (_player.IsBlocking)
+                {
+                    _player._blockCount--;
+                }
             }
         }
     }
