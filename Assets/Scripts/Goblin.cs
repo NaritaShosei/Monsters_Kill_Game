@@ -31,6 +31,7 @@ public class Goblin : MonoBehaviour, IPause
     Animator _animator;
     [NonSerialized] public Animator _anim = default;
     PlayerManager _player;
+    GameManager _gm;
     float _maxLife;
     float _attackTime;
     float _animSpeed;
@@ -50,6 +51,7 @@ public class Goblin : MonoBehaviour, IPause
         _rb2d = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _player = FindObjectOfType<PlayerManager>();
+        _gm = FindObjectOfType<GameManager>();
         _maxLife = _life;
         _anim = _animator;
     }
@@ -69,7 +71,7 @@ public class Goblin : MonoBehaviour, IPause
         }
         if (!_isPause && !_player.IsDeath)
         {
-            if (!IsDeath)
+            if (!IsDeath && !_gm.IsMovie)
             {
                 _start = transform.position;
                 if (_isGround && IsMove && !_isHit)

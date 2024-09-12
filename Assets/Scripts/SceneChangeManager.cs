@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class SceneChangeManager : MonoBehaviour
 {
+    [SerializeField] string _sceneName;
+    [SerializeField] float _fadeTime;
+    [SerializeField] Image _image;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,9 +26,11 @@ public class SceneChangeManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
-    public void GetSceneChange(string sceneName, float waitTime)
+    public void GetSceneChange()
     {
-        StartCoroutine(StartSceneChange(sceneName, waitTime));
+        //StartCoroutine(StartSceneChange(_sceneName, _waitTime));
+        _image.gameObject.SetActive(true);
+        _image.DOFade(1, _fadeTime).OnComplete(() => SceneChange(_sceneName));
     }
     static IEnumerator StartSceneChange(string sceneName, float waitTime)
     {

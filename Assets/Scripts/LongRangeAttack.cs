@@ -21,7 +21,7 @@ public class LongRangeAttack : MonoBehaviour, IPause
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 dir = (mousePos - (Vector2)_player.transform.position).normalized;
         _rb2d.velocity = dir * _moveSpeed;
-        transform.rotation = Quaternion.Euler(dir);
+        transform.localRotation = Quaternion.LookRotation(Vector3.forward, dir);
     }
 
     // Update is called once per frame
@@ -42,10 +42,8 @@ public class LongRangeAttack : MonoBehaviour, IPause
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag != "Player")
-        {
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
+        Debug.Log(collision.gameObject.name);
     }
 
     public void Pause()

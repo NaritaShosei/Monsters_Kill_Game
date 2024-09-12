@@ -37,7 +37,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
     public bool IsHit;
     bool _isInstantiate = true;
     public bool IsLongRangeAttacking = true;
-    bool _active = true;
+    //bool _active = true;
     float _attackTime;
     float _animSpeed;
     float _distance;
@@ -141,7 +141,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
         }
         if ((_distance > _longRangeAttackDistance && IsLongRangeAttacking))
         {
-            _active = false;
+            //_active = false;
             IsMove = false;
             _anim.SetTrigger("LongRangeAttack");
             _longRangeAttackTimer = 0;

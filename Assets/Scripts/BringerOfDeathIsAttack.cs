@@ -62,7 +62,6 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(_waitTime);
         _bringerOfDeath.IsStopping = false;
-        _player.IsStopping = false;
         var gm = FindObjectOfType<GameManager>();
         gm.IsMovie = false;
         foreach (var spark in _spark)

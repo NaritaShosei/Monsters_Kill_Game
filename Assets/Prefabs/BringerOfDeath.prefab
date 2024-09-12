@@ -131,7 +131,7 @@ MonoBehaviour:
   _attackDamage: 1
   _life: 10
   _attackInterval: 3
-  _longRangeAttackDistance: 2.48
+  _longRangeAttackDistance: 0
   _longRangeAttackInterval: 5
   _lineForWall: {x: -1, y: 0}
   _wallLayer:

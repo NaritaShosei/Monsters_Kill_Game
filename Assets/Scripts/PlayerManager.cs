@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour, IPause
     [SerializeField] float _longRangeAttackInterval;
     [SerializeField] float _isAttackTime;
     [SerializeField] float _isHitTime;
+    [SerializeField] float _blockCount;
     [SerializeField] BoxCollider2D _attackCollider;
     [SerializeField] GameObject _longRangeAttackObject;
     [SerializeField] GameObject _longRangeAttackMuzzle;
@@ -80,6 +81,15 @@ public class PlayerManager : MonoBehaviour, IPause
                 {
                     Jump();
                     Attack();
+                    //RollÅ´
+                    if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll && (_rollInterval + _rollTime < Time.time))
+                    {
+                        _rollTime = Time.time;
+                        _isRoll = true;
+                        var rollSpeed = _rollSpeed * (_sprite.flipX ? -1 : 1);
+                        _rb2d.AddForce(Vector2.right * rollSpeed, ForceMode2D.Impulse);
+                        _rollTimer = 0;
+                    }
                 }
                 Block();
                 if (IsAttack)
@@ -114,22 +124,9 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 if (!IsBlock && !IsStopping)
                 {
-                    Move();
+                    _rb2d.AddForce(Vector2.right * _hMove * _moveSpeed, ForceMode2D.Force);
                 }
             }
-        }
-    }
-
-    void Move()
-    {
-        _rb2d.AddForce(Vector2.right * _hMove * _moveSpeed, ForceMode2D.Force);
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll && (_rollInterval + _rollTime < Time.time))
-        {
-            _rollTime = Time.time;
-            _isRoll = true;
-            var rollSpeed = _rollSpeed * (_sprite.flipX ? -1 : 1);
-            _rb2d.AddForce(Vector2.right * rollSpeed, ForceMode2D.Impulse);
-            _rollTimer = 0;
         }
     }
     void Jump()

@@ -14,6 +14,7 @@ public class Flyingeye : MonoBehaviour, IPause
     Rigidbody2D _rb2d;
     Animator _animator;
     PlayerManager _player;
+    GameManager _gm;
     FallBlock _fallBlock;
     float _animSpeed;
     float _destroyTimer;
@@ -28,6 +29,7 @@ public class Flyingeye : MonoBehaviour, IPause
         _rb2d = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _player = FindObjectOfType<PlayerManager>();
+        _gm = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -42,7 +44,7 @@ public class Flyingeye : MonoBehaviour, IPause
         }
         if (!_isPause && !_player.IsDeath)
         {
-            if (!_isDead && _isMove)
+            if (!_isDead && _isMove && !_gm.IsMovie)
             {
                 var sin = Mathf.Sin(Time.time);
                 transform.position += new Vector3(_moveSpeed * Time.deltaTime, sin * Time.deltaTime);

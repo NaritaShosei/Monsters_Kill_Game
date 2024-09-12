@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     {
         _player = FindObjectOfType<PlayerManager>();
         _bringer = FindObjectOfType<BringerOfDeath>();
+        IsMovie = true;
     }
 
     // Update is called once per frame
@@ -40,9 +41,16 @@ public class GameManager : MonoBehaviour
             var velo = _player._rb2d.velocity;
             velo.x = 0;
             _player._rb2d.velocity = velo;
-            _player.IsStopping = true;
             _bringer._animator.Play("Cast-NoEffect");
             IsMovie = true;
+        }
+        if (IsMovie)
+        {
+            _player.IsStopping = true;
+        }
+        else
+        {
+            _player.IsStopping = false;
         }
     }
     void PauseResume()
