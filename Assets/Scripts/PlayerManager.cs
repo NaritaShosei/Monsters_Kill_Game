@@ -73,11 +73,6 @@ public class PlayerManager : MonoBehaviour, IPause
             _mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             _rollTimer += Time.deltaTime;
             _longRangeAttackTimer += Time.deltaTime;
-            if (_blockCount <= 0)
-            {
-                _isBlockCondition = false;
-                IsBlocking = false;
-            }
             if (_rollTimer > 0.25)
             {
                 _isRoll = false;
@@ -216,16 +211,30 @@ public class PlayerManager : MonoBehaviour, IPause
             }
         }
     }
-    public void BlockGauge()
-    {
-        DOTween.To(() => _blockCount / _maxCount, x => _blockGauge.fillAmount = x, _blockCount / _maxCount, 0.3f);
-    }
     IEnumerator StartIsHitFalse()
     {
         yield return new WaitForSeconds(_isHitTime);
         _isHit = false;
     }
-
+    public void BlockGauge(float value)
+    {
+        float currentGauge = _blockCount;
+        DOTween.To(() => currentGauge / _maxCount, x => _blockGauge.fillAmount = x, (currentGauge + value) / _maxCount, 0.3f);
+        _blockCount += value;
+        if (_blockCount <= 0)
+        {
+            _blockCount = 0;
+            _isBlockCondition = false;
+            IsBlocking = false;
+            StartCoroutine(StartBlockConditionTrue());
+        }
+    }
+    IEnumerator StartBlockConditionTrue()
+    {
+        yield return new WaitForSeconds(2);
+        _isBlockCondition = true;
+        BlockGauge(_maxLife);
+    }
     private void LateUpdate()
     {
         if (!_isPause)

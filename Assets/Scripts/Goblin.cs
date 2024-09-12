@@ -188,7 +188,7 @@ public class Goblin : MonoBehaviour, IPause
 
                 if (_player.IsBlocking)
                 {
-                    _player._blockCount--;
+                    _player.BlockGauge(-1);
                 }
             }
             if (collision.gameObject.tag == "PlayerAttack" && _player.IsAttack)

@@ -99,7 +99,7 @@ public class Flyingeye : MonoBehaviour, IPause
 
                 if (_player.IsBlocking)
                 {
-                    _player._blockCount--;
+                    _player.BlockGauge(-1);
                 }
             }
         }
