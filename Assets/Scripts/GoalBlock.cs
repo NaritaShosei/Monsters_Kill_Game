@@ -14,6 +14,7 @@ public class GoalBlock : MonoBehaviour, IPause
     [SerializeField] float _targetPosition;
     [SerializeField] float _completeTime;
     [SerializeField] BoxCollider2D _collider;
+    [SerializeField] Image _image;
     [SerializeField] Text _text;
     [SerializeField] string _sceneName;
     PlayerManager _player;
@@ -28,6 +29,7 @@ public class GoalBlock : MonoBehaviour, IPause
         _player = FindObjectOfType<PlayerManager>();
         _gm = FindObjectOfType<GameManager>();
         _renderer = GetComponent<TilemapRenderer>();
+        _text.text = "";
     }
 
     // Update is called once per frame
@@ -62,7 +64,7 @@ public class GoalBlock : MonoBehaviour, IPause
         if (_gm.IsClearConditions)
         {
             //_text.DOText
-            _text.DOFade(1, 2).OnComplete(() => SceneChangeManager.SceneChange(_sceneName));
+            _image.DOFade(1, 2).OnComplete(() => _text.DOText("GAME CLEAR", 2).OnComplete(() => SceneChangeManager.SceneChange(_sceneName)));
             Debug.Log("GameClear");
         }
     }

@@ -33,14 +33,14 @@ public class PlayerManager : MonoBehaviour, IPause
     Animator _anim;
     SpriteRenderer _sprite;
     bool _isGround;
-    public bool IsAttack;
-    public bool IsBlocking;
-    public bool IsDeath;
-    public bool IsRoll;
+    [NonSerialized] public bool IsAttack;
+    bool _isBlocking;
+    [NonSerialized] public bool IsDeath;
+    bool _isRoll;
     bool _isHit;
     bool _isPause;
     bool _isWall;
-    public bool IsStopping;
+    [NonSerialized] public bool IsStopping;
     bool _fallDead;
     bool _isBlockCondition = true;
     float _attackTime;
@@ -54,7 +54,7 @@ public class PlayerManager : MonoBehaviour, IPause
     Vector2 _muzzlePos;
     Vector2 _playerVelocity;
     Vector2 _deadPosition;
-    public LifeReduceType _lifeReduceType;
+    [NonSerialized] public LifeReduceType _lifeReduceType;
     public enum LifeReduceType
     {
         enemy,
@@ -83,21 +83,21 @@ public class PlayerManager : MonoBehaviour, IPause
             _longRangeAttackTimer += Time.deltaTime;
             if (_rollTimer > 0.25)
             {
-                IsRoll = false;
+                _isRoll = false;
             }
             if (!IsDeath && !IsStopping)
             {
                 _deadPosition = transform.position;
                 _hMove = Input.GetAxisRaw("Horizontal");
-                if (!IsBlocking)
+                if (!_isBlocking)
                 {
                     Jump();
                     Attack();
                     //RollÅ´
-                    if (Input.GetKeyDown(KeyCode.LeftShift) && !IsRoll && (_rollInterval + _rollTime < Time.time))
+                    if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll && (_rollInterval + _rollTime < Time.time))
                     {
                         _rollTime = Time.time;
-                        IsRoll = true;
+                        _isRoll = true;
                         var rollSpeed = _rollSpeed * (_sprite.flipX ? -1 : 1);
                         _rb2d.AddForce(Vector2.right * rollSpeed, ForceMode2D.Impulse);
                         _rollTimer = 0;
@@ -134,7 +134,7 @@ public class PlayerManager : MonoBehaviour, IPause
         {
             if (!IsDeath)
             {
-                if (!IsBlocking && !IsStopping)
+                if (!_isBlocking && !IsStopping)
                 {
                     _rb2d.AddForce(Vector2.right * _hMove * _moveSpeed, ForceMode2D.Force);
                 }
@@ -167,7 +167,7 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 _attackCount = 1;
             }
-            if ((Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.Return)) && !IsRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
+            if ((Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.Return)) && !_isRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
             {
                 _anim.Play("LongRangeAttack");
                 _longRangeAttackTimer = 0;
@@ -190,11 +190,11 @@ public class PlayerManager : MonoBehaviour, IPause
     {
         if (Input.GetMouseButton(1) && _isBlockCondition)
         {
-            IsBlocking = true;
+            _isBlocking = true;
         }
         if (Input.GetMouseButtonUp(1))
         {
-            IsBlocking = false;
+            _isBlocking = false;
         }
     }
     public void Life(float life, LifeReduceType type)
@@ -205,7 +205,7 @@ public class PlayerManager : MonoBehaviour, IPause
             switch (_lifeReduceType)
             {
                 case LifeReduceType.enemy:
-                    if (!IsRoll && !IsAttack && !IsBlocking)
+                    if (!_isRoll && !IsAttack && !_isBlocking)
                     {
                         LifeSystem(life);
                     }
@@ -240,7 +240,7 @@ public class PlayerManager : MonoBehaviour, IPause
     }
     public void BlockGauge(float value)
     {
-        if (IsBlocking)
+        if (_isBlocking)
         {
             float currentGauge = _blockCount;
             DOTween.To(() => currentGauge / _maxCount, x => _blockGauge.fillAmount = x, (currentGauge + value) / _maxCount, 0.3f);
@@ -249,7 +249,7 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 _blockCount = 0;
                 _isBlockCondition = false;
-                IsBlocking = false;
+                _isBlocking = false;
                 StartCoroutine(StartBlockConditionTrue());
             }
         }
@@ -281,8 +281,8 @@ public class PlayerManager : MonoBehaviour, IPause
             _anim.SetFloat("MoveX", Mathf.Abs(_rb2d.velocity.x));
             _anim.SetBool("IsGround", _isGround);
             _anim.SetFloat("MoveY", _rb2d.velocity.y);
-            _anim.SetBool("IsBlock", IsBlocking);
-            _anim.SetBool("IsRoll", IsRoll);
+            _anim.SetBool("IsBlock", _isBlocking);
+            _anim.SetBool("IsRoll", _isRoll);
             _anim.SetBool("IsWall", _isWall);
             _anim.SetInteger("AttackCount", _attackCount);
         }
@@ -346,9 +346,9 @@ public class PlayerManager : MonoBehaviour, IPause
         _rb2d.velocity = _playerVelocity;
         _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         _anim.speed = _animSpeed;
-        if (IsBlocking)
+        if (_isBlocking)
         {
-            IsBlocking = false;
+            _isBlocking = false;
         }
     }
     void IsAttackTrue()
