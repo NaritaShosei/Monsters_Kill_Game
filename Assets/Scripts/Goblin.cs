@@ -181,15 +181,9 @@ public class Goblin : MonoBehaviour, IPause
         {
             if (collision.gameObject.tag == "Player")
             {
-                if (!_player.IsBlocking)
-                {
-                    _player.Life(-_attackDamage);
-                }
-
-                if (_player.IsBlocking)
-                {
+                    _player.Life(-_attackDamage,_player._lifeReduceType = PlayerManager.LifeReduceType.enemy);
                     _player.BlockGauge(-1);
-                }
+                
             }
             if (collision.gameObject.tag == "PlayerAttack" && _player.IsAttack)
             {

@@ -39,7 +39,7 @@ public class Spell : MonoBehaviour,IPause
     {
         if (collision.gameObject.tag == "Player" && _isDamage)
         {
-            _player.Life(-_attackDamage);
+            _player.Life(-_attackDamage,_player._lifeReduceType = PlayerManager.LifeReduceType.system);
             _isDamage = false;
         }
     }

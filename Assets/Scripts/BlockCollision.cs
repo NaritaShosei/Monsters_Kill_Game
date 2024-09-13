@@ -66,7 +66,7 @@ public class BlockCollision : MonoBehaviour, IPause
                 switch (_parentType)
                 {
                     case ParentType.player:
-                        _player.Life(-100);
+                        _player.Life(-100,_player._lifeReduceType = PlayerManager.LifeReduceType.system);
                         break;
                     case ParentType.goblin:
                         _goblin.IsMove = false;

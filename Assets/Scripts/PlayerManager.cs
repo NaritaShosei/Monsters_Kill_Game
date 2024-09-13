@@ -5,6 +5,7 @@ using System;
 using Cinemachine;
 using UnityEngine.UI;
 using DG.Tweening;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerManager : MonoBehaviour, IPause
@@ -35,7 +36,7 @@ public class PlayerManager : MonoBehaviour, IPause
     public bool IsAttack;
     public bool IsBlocking;
     public bool IsDeath;
-    bool _isRoll;
+    public bool IsRoll;
     bool _isHit;
     bool _isPause;
     bool _isWall;
@@ -53,6 +54,13 @@ public class PlayerManager : MonoBehaviour, IPause
     Vector2 _muzzlePos;
     Vector2 _playerVelocity;
     Vector2 _deadPosition;
+    public LifeReduceType _lifeReduceType;
+    public enum LifeReduceType
+    {
+        enemy,
+        system
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -75,7 +83,7 @@ public class PlayerManager : MonoBehaviour, IPause
             _longRangeAttackTimer += Time.deltaTime;
             if (_rollTimer > 0.25)
             {
-                _isRoll = false;
+                IsRoll = false;
             }
             if (!IsDeath && !IsStopping)
             {
@@ -86,10 +94,10 @@ public class PlayerManager : MonoBehaviour, IPause
                     Jump();
                     Attack();
                     //RollÅ´
-                    if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll && (_rollInterval + _rollTime < Time.time))
+                    if (Input.GetKeyDown(KeyCode.LeftShift) && !IsRoll && (_rollInterval + _rollTime < Time.time))
                     {
                         _rollTime = Time.time;
-                        _isRoll = true;
+                        IsRoll = true;
                         var rollSpeed = _rollSpeed * (_sprite.flipX ? -1 : 1);
                         _rb2d.AddForce(Vector2.right * rollSpeed, ForceMode2D.Impulse);
                         _rollTimer = 0;
@@ -159,7 +167,7 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 _attackCount = 1;
             }
-            if ((Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.Return)) && !_isRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
+            if ((Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.Return)) && !IsRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
             {
                 _anim.Play("LongRangeAttack");
                 _longRangeAttackTimer = 0;
@@ -189,26 +197,40 @@ public class PlayerManager : MonoBehaviour, IPause
             IsBlocking = false;
         }
     }
-    public void Life(float life)
+    public void Life(float life, LifeReduceType type)
     {
         if (!_isPause)
         {
-            if (!_isRoll && !IsAttack)
+            float currentLife = _life;
+            switch (_lifeReduceType)
             {
-                float currentLife = _life;
-                DOTween.To(() => currentLife / _maxLife, x => _hp.fillAmount = x, (currentLife + life) / _maxLife, 0.3f);
-                _life += life;
-                if (_life <= 0)
-                {
-                    IsDeath = true;
-                }
-                else
-                {
-                    _anim.Play("Hit");
-                    _isHit = true;
-                    StartCoroutine(StartIsHitFalse());
-                }
+                case LifeReduceType.enemy:
+                    if (!IsRoll && !IsAttack && !IsBlocking)
+                    {
+                        LifeSystem(life);
+                    }
+                    break;
+                case LifeReduceType.system:
+                    LifeSystem(life);
+                    break;
             }
+
+        }
+    }
+    void LifeSystem(float life)
+    {
+        float currentLife = _life;
+        DOTween.To(() => currentLife / _maxLife, x => _hp.fillAmount = x, (currentLife + life) / _maxLife, 0.3f);
+        _life += life;
+        if (_life <= 0)
+        {
+            IsDeath = true;
+        }
+        else
+        {
+            _anim.Play("Hit");
+            _isHit = true;
+            StartCoroutine(StartIsHitFalse());
         }
     }
     IEnumerator StartIsHitFalse()
@@ -218,15 +240,18 @@ public class PlayerManager : MonoBehaviour, IPause
     }
     public void BlockGauge(float value)
     {
-        float currentGauge = _blockCount;
-        DOTween.To(() => currentGauge / _maxCount, x => _blockGauge.fillAmount = x, (currentGauge + value) / _maxCount, 0.3f);
-        _blockCount += value;
-        if (_blockCount <= 0)
+        if (IsBlocking)
         {
-            _blockCount = 0;
-            _isBlockCondition = false;
-            IsBlocking = false;
-            StartCoroutine(StartBlockConditionTrue());
+            float currentGauge = _blockCount;
+            DOTween.To(() => currentGauge / _maxCount, x => _blockGauge.fillAmount = x, (currentGauge + value) / _maxCount, 0.3f);
+            _blockCount += value;
+            if (_blockCount <= 0)
+            {
+                _blockCount = 0;
+                _isBlockCondition = false;
+                IsBlocking = false;
+                StartCoroutine(StartBlockConditionTrue());
+            }
         }
     }
     IEnumerator StartBlockConditionTrue()
@@ -257,7 +282,7 @@ public class PlayerManager : MonoBehaviour, IPause
             _anim.SetBool("IsGround", _isGround);
             _anim.SetFloat("MoveY", _rb2d.velocity.y);
             _anim.SetBool("IsBlock", IsBlocking);
-            _anim.SetBool("IsRoll", _isRoll);
+            _anim.SetBool("IsRoll", IsRoll);
             _anim.SetBool("IsWall", _isWall);
             _anim.SetInteger("AttackCount", _attackCount);
         }
@@ -270,7 +295,7 @@ public class PlayerManager : MonoBehaviour, IPause
         }
         if (collision.gameObject.tag == "Hole")
         {
-            Life(-100);
+            Life(-100, _lifeReduceType = LifeReduceType.system);
             _fallDead = true;
         }
     }
