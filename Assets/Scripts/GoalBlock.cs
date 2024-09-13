@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class GoalBlock : MonoBehaviour, IPause
 {
@@ -13,6 +14,8 @@ public class GoalBlock : MonoBehaviour, IPause
     [SerializeField] float _targetPosition;
     [SerializeField] float _completeTime;
     [SerializeField] BoxCollider2D _collider;
+    [SerializeField] Text _text;
+    [SerializeField] string _sceneName;
     PlayerManager _player;
     TilemapRenderer _renderer;
     bool _active = true;
@@ -58,6 +61,8 @@ public class GoalBlock : MonoBehaviour, IPause
     {
         if (_gm.IsClearConditions)
         {
+            //_text.DOText
+            _text.DOFade(1, 2).OnComplete(() => SceneChangeManager.SceneChange(_sceneName));
             Debug.Log("GameClear");
         }
     }
