@@ -42,12 +42,12 @@ public class GoalBlock : MonoBehaviour, IPause
             var velo = _player._rb2d.velocity;
             velo.x = 0;
             _player._rb2d.velocity = velo;
-            _player.IsStopping = true;
+           _gm.IsMovie = true;
             _camera.Priority = 100;
         }
         if (_movie)
         {
-            _player.IsStopping = false;
+            _gm.IsMovie = false;
             _camera.Priority = 0;
             Destroy(_renderer);
             Destroy(_collider);
