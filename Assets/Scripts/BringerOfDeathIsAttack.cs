@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BringerOfDeathIsAttack : MonoBehaviour
 {
-    [SerializeField] CinemachineVirtualCamera _camera;
+    CinemachineVirtualCamera _camera;
     [SerializeField] float _waitTime = 2;
     [SerializeField] GameObject[] _spark;
     [SerializeField] GameObject _longRangeAttack;
@@ -17,6 +17,7 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     {
         _bringerOfDeath = FindObjectOfType<BringerOfDeath>();
         _player = FindObjectOfType<PlayerManager>();
+        _camera = GameObject.Find("Boss Camera").GetComponent<CinemachineVirtualCamera>();
     }
     void LongRangeAttack()
     {

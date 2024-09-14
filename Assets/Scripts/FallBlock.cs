@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class FallBlock : MonoBehaviour, IPause
 {
     Rigidbody2D _rb2d;
@@ -11,6 +12,7 @@ public class FallBlock : MonoBehaviour, IPause
     Vector2 _fallBlockVelocity;
     [SerializeField] BlockType _blockType;
     [SerializeField] GameObject _startPosition;
+    bool _isActive = true;
     // Start is called before the first frame update
     enum BlockType
     {
@@ -27,6 +29,7 @@ public class FallBlock : MonoBehaviour, IPause
     {
         _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
                 | RigidbodyConstraints2D.FreezeRotation;
+        _rb2d.gravityScale = 0;
     }
 
     // Update is called once per frame
@@ -43,9 +46,10 @@ public class FallBlock : MonoBehaviour, IPause
             switch (_blockType)
             {
                 case BlockType.automatic:
-                    if (_startPosition.transform.position.x <= _player.transform.position.x)
+                    if (_startPosition.transform.position.x <= _player.transform.position.x && _isActive)
                     {
                         IsFall = true;
+                        _isActive = false;
                     }
                     break;
             }
@@ -68,6 +72,7 @@ public class FallBlock : MonoBehaviour, IPause
     {
         if (collision.gameObject.tag == "Ground")
         {
+            Debug.Log("Ground");
             _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation
            | RigidbodyConstraints2D.FreezePosition;
             IsFall = false;

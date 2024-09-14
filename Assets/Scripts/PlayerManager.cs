@@ -289,26 +289,15 @@ public class PlayerManager : MonoBehaviour, IPause
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Block" || collision.gameObject.tag == "Rift")
-        {
-            _isGround = true;
-        }
         if (collision.gameObject.tag == "Hole")
         {
             Life(-100, _lifeReduceType = LifeReduceType.system);
             _fallDead = true;
         }
     }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Block" || collision.gameObject.tag == "Rift")
-        {
-            _isGround = false;
-        }
-    }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.layer == 10)
         {
             _isGround = true;
             _isWall = false;
@@ -320,7 +309,7 @@ public class PlayerManager : MonoBehaviour, IPause
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.layer == 10)
         {
             _isGround = false;
         }

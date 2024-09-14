@@ -163,14 +163,14 @@ public class Goblin : MonoBehaviour, IPause
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!IsDeath && collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Block" || collision.gameObject.tag == "Rift")
+        if (!IsDeath && collision.gameObject.layer == 10)
         {
             _isGround = true;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (!IsDeath && collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Block" || collision.gameObject.tag == "Rift")
+        if (!IsDeath && collision.gameObject.layer == 10)
         {
             _isGround = false;
         }

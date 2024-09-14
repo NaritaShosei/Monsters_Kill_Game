@@ -7,8 +7,7 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] Transform _bossStartPosition;
-    [SerializeField] float _waitTime;
-    [SerializeField] CinemachineVirtualCamera _camera;
+    CinemachineVirtualCamera _camera;
     bool _isPause;
     bool _isStart;
     public bool IsMovie;
@@ -23,6 +22,7 @@ public class GameManager : MonoBehaviour
     {
         _player = FindObjectOfType<PlayerManager>();
         _bringer = FindObjectOfType<BringerOfDeath>();
+        _camera = GameObject.Find("Boss Camera").GetComponent<CinemachineVirtualCamera>();
         IsMovie = true;
     }
 

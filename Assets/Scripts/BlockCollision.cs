@@ -8,7 +8,6 @@ public class BlockCollision : MonoBehaviour, IPause
     PlayerManager _player;
     FallBlock _fallBlock;
     BringerOfDeath _bringerOfDeath;
-    [SerializeField] float _destroyTime;
     [SerializeField] float _damage;
     [SerializeField] ParentType _parentType;
     BoxCollider2D _boxCollider;
@@ -40,21 +39,6 @@ public class BlockCollision : MonoBehaviour, IPause
         _boxCollider = GetComponent<BoxCollider2D>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (_parentType == ParentType.goblin)
-        {
-            if (!_isPause && _isBlockCollision)
-            {
-                _destroyTimer += Time.deltaTime;
-            }
-            if (_destroyTimer >= _destroyTime)
-            {
-                Destroy(transform.parent.gameObject);
-            }
-        }
-    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Block")
