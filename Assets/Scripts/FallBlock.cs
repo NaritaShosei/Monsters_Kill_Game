@@ -9,7 +9,15 @@ public class FallBlock : MonoBehaviour, IPause
     PlayerManager _player;
     public bool IsFall;
     Vector2 _fallBlockVelocity;
+    [SerializeField] BlockType _blockType;
+    [SerializeField] GameObject _startPosition;
     // Start is called before the first frame update
+    enum BlockType
+    {
+        manual,
+        automatic
+    }
+
     void Awake()
     {
         _rb2d = GetComponent<Rigidbody2D>();
@@ -30,14 +38,29 @@ public class FallBlock : MonoBehaviour, IPause
             _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
                 | RigidbodyConstraints2D.FreezeRotation;
         }
+        if (!_player.IsDeath)
+        {
+            switch (_blockType)
+            {
+                case BlockType.automatic:
+                    if (_startPosition.transform.position.x <= _player.transform.position.x)
+                    {
+                        IsFall = true;
+                    }
+                    break;
+            }
+            if (IsFall)
+            {
+                _rb2d.constraints = RigidbodyConstraints2D.FreezePositionX
+                    | RigidbodyConstraints2D.FreezeRotation;
+                _rb2d.gravityScale = 1;
+            }
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "LongRangeAttack")
+        if (collision.gameObject.tag == "LongRangeAttack" && _blockType == BlockType.manual)
         {
-            _rb2d.constraints = RigidbodyConstraints2D.FreezePositionX
-           | RigidbodyConstraints2D.FreezeRotation;
-            _rb2d.gravityScale = 1;
             IsFall = true;
         }
     }
