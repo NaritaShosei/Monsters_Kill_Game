@@ -58,10 +58,6 @@ public class BringerOfDeath : MonoBehaviour, IPause
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.L))
-        {
-            Debug.LogError(_longRangeAttackTimer);
-        }
         Debug.DrawLine(_start, _start + _lineForGround);
         Debug.DrawLine(_start, _start + _lineForWall);
         if (_player.IsDeath)

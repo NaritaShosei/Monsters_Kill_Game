@@ -153,7 +153,7 @@ public class PlayerManager : MonoBehaviour, IPause
     {
         if (!_isHit)
         {
-            if (Input.GetMouseButtonDown(0) && _attackInterval + _attackTime < Time.time)
+            if (Input.GetButtonDown("Fire1") && _attackInterval + _attackTime < Time.time)
             {
                 _attackTime = Time.time;
                 _attackCount++;
@@ -167,7 +167,7 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 _attackCount = 1;
             }
-            if ((Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.Return)) && !_isRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
+            if (Input.GetButtonDown("Fire3") && !_isRoll && !IsAttack && _longRangeAttackTimer > _longRangeAttackInterval)
             {
                 _anim.Play("LongRangeAttack");
                 _longRangeAttackTimer = 0;
@@ -188,11 +188,11 @@ public class PlayerManager : MonoBehaviour, IPause
     }
     void Block()
     {
-        if (Input.GetMouseButton(1) && _isBlockCondition)
+        if (Input.GetButton("Fire2") && _isBlockCondition)
         {
             _isBlocking = true;
         }
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetButtonUp("Fire2"))
         {
             _isBlocking = false;
         }

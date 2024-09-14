@@ -23,7 +23,8 @@ public class EnemyGenerator : MonoBehaviour
         if (_player.transform.position.x >= _generateStartPosition[_spawnCount].transform.position.x)
         {
             Instantiate(_enemy[_spawnCount], _spawnPosition[_spawnCount].transform.position, Quaternion.identity);
-            if (_spawnCount >=  _enemy.Length - 1)
+            _spawnCount += 1;
+            if (_spawnCount >=  _enemy.Length)
             {
                 Destroy(_enemyGenerator);
             }
