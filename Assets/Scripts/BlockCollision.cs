@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockCollision : MonoBehaviour, IPause
+public class BlockCollision : MonoBehaviour
 {
     Goblin _goblin;
     PlayerManager _player;
@@ -11,9 +11,6 @@ public class BlockCollision : MonoBehaviour, IPause
     [SerializeField] float _damage;
     [SerializeField] ParentType _parentType;
     BoxCollider2D _boxCollider;
-    bool _isPause;
-    bool _isBlockCollision;
-    float _destroyTimer;
     enum ParentType
     {
         player,
@@ -55,7 +52,6 @@ public class BlockCollision : MonoBehaviour, IPause
                     case ParentType.goblin:
                         _goblin.IsMove = false;
                         _goblin.IsDeath = true;
-                        _isBlockCollision = true;
                         _goblin._anim.Play("Death");
                         break;
                     case ParentType.bringer:
@@ -66,15 +62,5 @@ public class BlockCollision : MonoBehaviour, IPause
                 }
             }
         }
-    }
-
-    void IPause.Pause()
-    {
-        _isPause = true;
-    }
-
-    void IPause.Resume()
-    {
-        _isPause = false;
     }
 }

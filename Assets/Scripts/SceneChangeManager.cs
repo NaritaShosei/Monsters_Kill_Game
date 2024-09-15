@@ -28,14 +28,14 @@ public class SceneChangeManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
-    public void GetSceneChangeToTutorial()
+    public void GetSceneChangeToTutorial(string sceneName)
     {
         //SceneChange("Stage" + int);
         // int += 1;
         if (_isActive)
         {
             _image.gameObject.SetActive(true);
-            _image.DOFade(1, _fadeTime).OnComplete(() => SceneChange(_sceneName));
+            _image.DOFade(1, _fadeTime).OnComplete(() => SceneChange(sceneName));
             _isActive = false;
         }
     }
