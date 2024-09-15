@@ -860,10 +860,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _generateStartPosition:
   - {fileID: 1474356325}
+  - {fileID: 1749016967}
   _enemy:
   - {fileID: 8022856968459850165, guid: e4b89204d1c17c24aa620e6302c6780c, type: 3}
+  - {fileID: 7195589216002036895, guid: c6d70f800b58f4a44b8b082a27eebaa4, type: 3}
   _spawnPosition:
   - {fileID: 842154912}
+  - {fileID: 1684934912}
 --- !u!114 &524521207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4730,7 +4733,7 @@ MonoBehaviour:
   _collider: {fileID: 1630756544}
   _image: {fileID: 1607023355}
   _text: {fileID: 842104269}
-  _sceneName: Tutorial
+  _sceneName: Stage1
 --- !u!61 &1630756544
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4821,6 +4824,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0016289, y: 3.0946484}
   m_EdgeRadius: 0
+--- !u!1 &1684934912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1684934913}
+  m_Layer: 0
+  m_Name: SpawnPosition (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1684934913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684934912}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.78, y: 6.68, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1692819563
 GameObject:
   m_ObjectHideFlags: 0
@@ -6262,3 +6296,4 @@ SceneRoots:
   - {fileID: 2092318217}
   - {fileID: 1474356326}
   - {fileID: 842154913}
+  - {fileID: 1684934913}

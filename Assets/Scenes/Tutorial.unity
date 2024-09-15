@@ -7519,7 +7519,7 @@ MonoBehaviour:
   _completeTime: 2
   _collider: {fileID: 1752920635}
   _image: {fileID: 1240199908}
-  _text: {fileID: 0}
+  _text: {fileID: 2041281609}
   _sceneName: Tutorial
 --- !u!61 &1752920637
 BoxCollider2D:
@@ -8654,7 +8654,7 @@ PrefabInstance:
       objectReference: {fileID: 616919726}
     - target: {fileID: 5454320670798071523, guid: 2e99f708bbbcfd54cb725b2b7eec9af9, type: 3}
       propertyPath: _blockCount
-      value: 10
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5454320670798071523, guid: 2e99f708bbbcfd54cb725b2b7eec9af9, type: 3}
       propertyPath: _longRangeAttackInterval

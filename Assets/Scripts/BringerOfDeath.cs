@@ -100,7 +100,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
             }
             if (_isDeath)
             {
-                if (_isInstantiate)
+                if (_isInstantiate && _object)
                 {
                     Instantiate(_object, transform.position, Quaternion.identity);
                     _isInstantiate = false;
