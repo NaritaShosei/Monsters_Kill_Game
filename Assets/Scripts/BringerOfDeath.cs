@@ -92,7 +92,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
                 {
                     _isDeath = true;
                 }
-                if (_longRangeAttackTimer >= _attackInterval)
+                if (_longRangeAttackTimer >= _longRangeAttackInterval)
                 {
                     IsLongRangeAttacking = true;
                     //_active = true;

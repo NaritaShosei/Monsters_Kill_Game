@@ -247,7 +247,8 @@ public class PlayerManager : MonoBehaviour, IPause
             _blockCount += value;
             if (_blockCount <= 0)
             {
-                _blockCount = 0;
+                Debug.Log("_blockCount <= 0");
+                _blockCount = Math.Max(currentGauge, 0);
                 _isBlockCondition = false;
                 _isBlocking = false;
                 StartCoroutine(StartBlockConditionTrue());
@@ -256,9 +257,10 @@ public class PlayerManager : MonoBehaviour, IPause
     }
     IEnumerator StartBlockConditionTrue()
     {
+        Debug.Log("StartBlockConditionTrue");
         yield return new WaitForSeconds(2);
+        BlockGauge(_maxCount);
         _isBlockCondition = true;
-        BlockGauge(_maxLife);
     }
     private void LateUpdate()
     {

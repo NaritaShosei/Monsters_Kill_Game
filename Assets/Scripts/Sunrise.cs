@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
-
 public class Sunrise : MonoBehaviour
 {
     [SerializeField] float _completeTime;
@@ -21,7 +20,18 @@ public class Sunrise : MonoBehaviour
         _sr = GetComponent<SpriteRenderer>();
         transform.DOMoveY(1, _completeTime);
         //_sr.DOFade(1, _completeTime).OnComplete(() => _titleText.DOText(_string, _completeTime));
-        _sr.DOFade(1, _completeTime).OnComplete(() => StartCoroutine(StartTitle()));
+        _sr.DOFade(1, _completeTime).OnComplete(() =>
+        {
+            StartCoroutine(StartTitle());
+            var button = FindObjectsOfType<Button>();
+            foreach (var buttons in button)
+            {
+                var image = buttons.GetComponent<Image>();
+                var text = buttons.GetComponentInChildren<Text>();
+                image.DOFade(1, _completeTime);
+                text.DOFade(1, _completeTime);
+            }
+        });
     }
     IEnumerator StartTitle()
     {

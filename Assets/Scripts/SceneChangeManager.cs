@@ -28,19 +28,15 @@ public class SceneChangeManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
-    public void GetSceneChange()
+    public void GetSceneChangeToTutorial()
     {
-        //StartCoroutine(StartSceneChange(_sceneName, _waitTime));
+        //SceneChange("Stage" + int);
+        // int += 1;
         if (_isActive)
         {
             _image.gameObject.SetActive(true);
             _image.DOFade(1, _fadeTime).OnComplete(() => SceneChange(_sceneName));
             _isActive = false;
         }
-    }
-    static IEnumerator StartSceneChange(string sceneName, float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        SceneChange(sceneName);
     }
 }
