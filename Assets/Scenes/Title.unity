@@ -783,6 +783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _completeTime: 3
+  _waitTime: 1
   _titleText: {fileID: 445889711}
 --- !u!1 &1982164165
 GameObject:

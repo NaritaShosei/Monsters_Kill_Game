@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Sunrise : MonoBehaviour
 {
     [SerializeField] float _completeTime;
+    [SerializeField] float _waitTime;
     [SerializeField] Text _titleText;
     string _string;
     SpriteRenderer _sr;
@@ -17,12 +18,15 @@ public class Sunrise : MonoBehaviour
         _titleText.text = "";
         _sr = GetComponent<SpriteRenderer>();
         transform.DOMoveY(1, _completeTime);
-        _sr.DOFade(1, _completeTime).OnComplete(() => _titleText.DOText(_string, _completeTime));
+        //_sr.DOFade(1, _completeTime).OnComplete(() => _titleText.DOText(_string, _completeTime));
+        _sr.DOFade(1, _completeTime).OnComplete(() => StartCoroutine(StartTitle()));
     }
-
-    // Update is called once per frame
-    void Update()
+    IEnumerator StartTitle()
     {
-
+        for (var i = 0; i < _string.Length; i++)
+        {
+            yield return new WaitForSeconds(_waitTime / _string.Length);
+            _titleText.text += _string[i].ToString();
+        }
     }
 }
