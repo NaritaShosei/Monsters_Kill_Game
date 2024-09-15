@@ -9,11 +9,13 @@ public class Sunrise : MonoBehaviour
     [SerializeField] float _completeTime;
     [SerializeField] float _waitTime;
     [SerializeField] Text _titleText;
+    SceneChangeManager _sceneChangeManager;
     string _string;
     SpriteRenderer _sr;
     // Start is called before the first frame update
     void Start()
     {
+        _sceneChangeManager = FindObjectOfType<SceneChangeManager>();
         _string = _titleText.text;
         _titleText.text = "";
         _sr = GetComponent<SpriteRenderer>();
@@ -28,5 +30,6 @@ public class Sunrise : MonoBehaviour
             yield return new WaitForSeconds(_waitTime / _string.Length);
             _titleText.text += _string[i].ToString();
         }
+        _sceneChangeManager._isActive = true;
     }
 }
