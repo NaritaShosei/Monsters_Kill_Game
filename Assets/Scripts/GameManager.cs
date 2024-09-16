@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,12 +30,11 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var pos = _bossStartPosition.transform.position;
         if (Input.GetKeyDown(KeyCode.Escape) && !_player.IsDeath && !IsMovie)
         {
             PauseResume();
         }
-        if (pos.x <= _player.transform.position.x && !_isStart)
+        if (_bossStartPosition.transform.position.x <= _player.transform.position.x && !_isStart)
         {
             _isStart = true;
             _camera.Priority = 100;

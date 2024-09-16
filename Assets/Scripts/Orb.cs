@@ -46,7 +46,7 @@ public class Orb : MonoBehaviour, IPause
             {
                 _rb2d.velocity = ((_player.transform.position + new Vector3(0, 0.5f) - transform.position).normalized * _speed);
             }
-            if (dis < 0.2f)
+            if (dis < 0.5f)
             {
                 _rb2d.velocity = Vector3.zero;
                 var child = gameObject.transform.GetChild(0);

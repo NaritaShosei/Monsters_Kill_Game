@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using System;
 
 public class GoalBlock : MonoBehaviour, IPause
 {
@@ -17,6 +18,7 @@ public class GoalBlock : MonoBehaviour, IPause
     [SerializeField] Image _image;
     [SerializeField] Text _text;
     [SerializeField] string _sceneName;
+    public static int _sceneIndex;
     PlayerManager _player;
     TilemapRenderer _renderer;
     bool _active = true;
@@ -42,7 +44,7 @@ public class GoalBlock : MonoBehaviour, IPause
             var velo = _player._rb2d.velocity;
             velo.x = 0;
             _player._rb2d.velocity = velo;
-           _gm.IsMovie = true;
+            _gm.IsMovie = true;
             _camera.Priority = 100;
         }
         if (_movie)
@@ -64,7 +66,12 @@ public class GoalBlock : MonoBehaviour, IPause
         if (_gm.IsClearConditions)
         {
             //_text.DOText
-            _image.DOFade(1, 2).OnComplete(() => _text.DOText("GAME CLEAR", 2).OnComplete(() => SceneChangeManager.SceneChange(_sceneName)));
+            _image.DOFade(1, 2).OnComplete(() => _text.DOText("GAME CLEAR", 2).OnComplete(() =>
+            {
+                _sceneIndex++;
+                SceneChangeManager.SceneChange(_sceneName);
+            }));
+
             Debug.Log("GameClear");
         }
     }

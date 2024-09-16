@@ -72,6 +72,7 @@ public class Flyingeye : MonoBehaviour, IPause
                     _isDead = true;
                     _rb2d.gravityScale = 1;
                     _boxCollider.enabled = true;
+                    DOTween.To(() => 1, x => _hp.fillAmount = x, 0, 0.3f);
                 }
                 else if (!_fallBlock.IsFall)
                 {

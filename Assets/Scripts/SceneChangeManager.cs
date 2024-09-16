@@ -9,7 +9,7 @@ using System;
 
 public class SceneChangeManager : MonoBehaviour
 {
-    [SerializeField] string _sceneName;
+    [SerializeField] string[] _sceneName;
     [SerializeField] float _fadeTime;
     [SerializeField] Image _image;
     [NonSerialized] public bool _isActive;
@@ -27,6 +27,22 @@ public class SceneChangeManager : MonoBehaviour
     public static void SceneChange(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+    }
+    public void GetNextStageSceneChange()
+    {
+        if (_isActive)
+        {
+            _image.gameObject.SetActive(true);
+            _image.DOFade(1, _fadeTime).OnComplete(() =>
+            {
+                SceneChange(_sceneName[GoalBlock._sceneIndex]);
+                GoalBlock._sceneIndex = (GoalBlock._sceneIndex + 1 )% _sceneName.Length;
+            });
+
+
+
+            _isActive = false;
+        }
     }
     public void GetSceneChangeToTutorial(string sceneName)
     {

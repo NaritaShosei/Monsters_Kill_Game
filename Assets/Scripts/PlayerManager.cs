@@ -89,6 +89,7 @@ public class PlayerManager : MonoBehaviour, IPause
             {
                 _deadPosition = transform.position;
                 _hMove = Input.GetAxisRaw("Horizontal");
+                Block();
                 if (!_isBlocking)
                 {
                     Jump();
@@ -103,7 +104,6 @@ public class PlayerManager : MonoBehaviour, IPause
                         _rollTimer = 0;
                     }
                 }
-                Block();
                 if (IsAttack)
                 {
                     _attackCollider.enabled = true;
@@ -111,6 +111,10 @@ public class PlayerManager : MonoBehaviour, IPause
                 if (!IsAttack)
                 {
                     _attackCollider.enabled = false;
+                }
+                if (_isGround)
+                {
+                    _isWall = false;
                 }
 
             }
@@ -302,9 +306,8 @@ public class PlayerManager : MonoBehaviour, IPause
         if (collision.gameObject.layer == 10)
         {
             _isGround = true;
-            _isWall = false;
         }
-        if (collision.gameObject.tag != "Ground" && collision.gameObject.tag == "Wall")
+        if (collision.gameObject.layer == 9)
         {
             _isWall = true;
         }

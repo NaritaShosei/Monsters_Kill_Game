@@ -189,13 +189,17 @@ public class Goblin : MonoBehaviour, IPause
             {
                 if (!_isAttack)
                 {
-                    _life -= 1f;
-                    DOTween.To(() => _life / _maxLife, x => _hp.fillAmount = x, _life / _maxLife, 0.5f);
+                    Life(-1);
                     _isHit = true;
                     _animator.Play("Hit");
                 }
             }
         }
+    }
+    public void Life(float life)
+    {
+        DOTween.To(() => _life / _maxLife, x => _hp.fillAmount = x, (_life + life) / _maxLife, 0.5f);
+        _life += life;
     }
     void IsHitFalse()
     {

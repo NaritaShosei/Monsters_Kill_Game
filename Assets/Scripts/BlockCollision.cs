@@ -51,11 +51,11 @@ public class BlockCollision : MonoBehaviour
                         break;
                     case ParentType.goblin:
                         _goblin.IsMove = false;
-                        _goblin.IsDeath = true;
+                        _goblin.Life(-1000);
                         _goblin._anim.Play("Death");
                         break;
                     case ParentType.bringer:
-                        _bringerOfDeath._life -= _damage;
+                        _bringerOfDeath.Life(-_damage);
                         _bringerOfDeath.IsHit = true;
                         Destroy(collision.gameObject);
                         break;

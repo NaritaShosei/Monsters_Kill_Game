@@ -42,7 +42,6 @@ public class LongRangeAttack : MonoBehaviour, IPause
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.LogWarning(collision.gameObject.name);
         Destroy(gameObject);
     }
 

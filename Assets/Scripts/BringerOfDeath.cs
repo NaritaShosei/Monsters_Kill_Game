@@ -9,7 +9,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
 {
     [SerializeField] float _moveSpeed;
     [SerializeField] float _attackDamage;
-    public float _life;
+    [SerializeField] float _life;
     [SerializeField] float _attackInterval;
     [SerializeField] float _longRangeAttackDistance;
     [SerializeField] float _longRangeAttackInterval = 5f;
@@ -213,12 +213,16 @@ public class BringerOfDeath : MonoBehaviour, IPause
             {
                 if (!IsAttack && !IsAttacking)
                 {
-                    _life -= 1;
-                    DOTween.To(() => _life / _maxLife, x => _hp.fillAmount = x, _life / _maxLife, 0.3f);
+                    Life(-1);
                     IsHit = true;
                 }
             }
         }
+    }
+    public void Life(float life)
+    {
+        DOTween.To(() => _life / _maxLife, x => _hp.fillAmount = x, (_life + life) / _maxLife, 0.3f);
+        _life += life;
     }
     public void Pause()
     {

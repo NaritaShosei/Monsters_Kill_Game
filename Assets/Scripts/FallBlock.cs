@@ -13,6 +13,7 @@ public class FallBlock : MonoBehaviour, IPause
     [SerializeField] BlockType _blockType;
     [SerializeField] GameObject _startPosition;
     bool _isActive = true;
+    bool _isPause;
     // Start is called before the first frame update
     enum BlockType
     {
@@ -41,7 +42,7 @@ public class FallBlock : MonoBehaviour, IPause
             _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
                 | RigidbodyConstraints2D.FreezeRotation;
         }
-        if (!_player.IsDeath)
+        if (!_player.IsDeath && !_isPause)
         {
             switch (_blockType)
             {
@@ -70,9 +71,8 @@ public class FallBlock : MonoBehaviour, IPause
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (collision.gameObject.layer == 10)
         {
-            Debug.Log("Ground");
             _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation
            | RigidbodyConstraints2D.FreezePosition;
             IsFall = false;
@@ -85,11 +85,14 @@ public class FallBlock : MonoBehaviour, IPause
         _rb2d.velocity = Vector2.zero;
         _rb2d.constraints = RigidbodyConstraints2D.FreezePosition
             | RigidbodyConstraints2D.FreezeRotation;
+        _isPause = true;
     }
 
     public void Resume()
     {
         _rb2d.velocity = _fallBlockVelocity;
-        _rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+        _rb2d.constraints = RigidbodyConstraints2D.FreezePositionX
+           | RigidbodyConstraints2D.FreezeRotation;
+        _isPause = false;
     }
 }
