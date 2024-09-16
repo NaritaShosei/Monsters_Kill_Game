@@ -5,8 +5,8 @@ using UnityEngine;
 public class CloudGenerator : MonoBehaviour
 {
     [SerializeField] GameObject[] _cloud;
-    [SerializeField] float _moveSpeed;
-    [SerializeField] float _waitTime;
+    [SerializeField] float _moveSpeed = 1;
+    [SerializeField] float _waitTime = 5;
     Rigidbody2D _rb2d;
     int _randomIndex;
     // Start is called before the first frame update

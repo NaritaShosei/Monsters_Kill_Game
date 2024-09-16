@@ -13,7 +13,6 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     BringerOfDeath _bringerOfDeath;
     PlayerManager _player;
     [SerializeField] AudioSource _deathAudio;
-    [SerializeField] AudioSource _bossArearAudio;
     [SerializeField] AudioSource _attackAudio;
     // Start is called before the first frame update
     void Start()

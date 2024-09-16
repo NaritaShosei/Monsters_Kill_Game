@@ -9464,6 +9464,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 616919726}
     - target: {fileID: 5454320670798071523, guid: 2e99f708bbbcfd54cb725b2b7eec9af9, type: 3}
+      propertyPath: _wallAudio
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5454320670798071523, guid: 2e99f708bbbcfd54cb725b2b7eec9af9, type: 3}
       propertyPath: _blockCount
       value: 2
       objectReference: {fileID: 0}
@@ -9511,7 +9515,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1374324671534640391, guid: 2e99f708bbbcfd54cb725b2b7eec9af9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
