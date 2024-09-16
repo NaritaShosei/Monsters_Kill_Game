@@ -46,6 +46,8 @@ public class BringerOfDeath : MonoBehaviour, IPause
     Rigidbody2D _rb2d;
     Vector2 _start;
     Vector2 _bringerVelocity;
+    [SerializeField] AudioSource _deathAudio;
+    [SerializeField] AudioSource _hitAudio;
 
 
     void Start()
@@ -215,6 +217,7 @@ public class BringerOfDeath : MonoBehaviour, IPause
                 {
                     Life(-1);
                     IsHit = true;
+                    _hitAudio.Play();
                 }
             }
         }

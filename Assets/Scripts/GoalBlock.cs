@@ -23,13 +23,16 @@ public class GoalBlock : MonoBehaviour, IPause
     bool _active = true;
     bool _movie;
     GameManager _gm;
-
+    string _textString;
+    [SerializeField] AudioSource _bossArearAudio;
+    [SerializeField] AudioSource _goalBlockAudio;
     // Start is called before the first frame update
     void Start()
     {
         _player = FindObjectOfType<PlayerManager>();
         _gm = FindObjectOfType<GameManager>();
         _renderer = GetComponent<TilemapRenderer>();
+        _textString = _text.text;
         _text.text = "";
     }
 
@@ -57,6 +60,7 @@ public class GoalBlock : MonoBehaviour, IPause
     IEnumerator StartDOMove()
     {
         yield return new WaitForSeconds(0.5f);
+        _goalBlockAudio.DOFade(0, 2).OnStart(() => _goalBlockAudio.Play());
         transform.DOPunchPosition(new Vector3(0, _shakePower, 0), _shakeTime);
         transform.DOLocalMoveX(_targetPosition, _completeTime).OnComplete(() => _movie = true);
     }
@@ -65,8 +69,8 @@ public class GoalBlock : MonoBehaviour, IPause
         if (_gm.IsClearConditions)
         {
             //_text.DOText
-            _image.DOFade(1, 2).OnComplete(() => _text.DOText("GAME CLEAR", 2).OnComplete(() => SceneChangeManager.SceneChange(_sceneName)));
-
+            _image.DOFade(1, 2).OnComplete(() => _text.DOText(_textString, 2).OnComplete(() => SceneChangeManager.SceneChange(_sceneName)));
+            DOTween.To(() => 1f, x => _bossArearAudio.volume = x, 0f, 3);
             Debug.Log("GameClear");
         }
     }

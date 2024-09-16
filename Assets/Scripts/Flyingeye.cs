@@ -23,7 +23,9 @@ public class Flyingeye : MonoBehaviour, IPause
     bool _isStartDestroy;
     bool _isMove;
     Vector2 _flyingeyeVelocity;
-    // Start is called before the first frame update
+    [SerializeField] AudioSource _blockCollisionAudio;
+    [SerializeField] AudioSource _hitAudio;
+     // Start is called before the first frame update
     void Start()
     {
         _rb2d = GetComponent<Rigidbody2D>();
@@ -68,6 +70,7 @@ public class Flyingeye : MonoBehaviour, IPause
                 _fallBlock = collision.gameObject.GetComponent<FallBlock>();
                 if (_fallBlock.IsFall)
                 {
+                    _blockCollisionAudio.Play();
                     _animator.Play("FlyingeyeHit");
                     _isDead = true;
                     _rb2d.gravityScale = 1;
@@ -84,6 +87,7 @@ public class Flyingeye : MonoBehaviour, IPause
             {
                 if (_player.IsAttack)
                 {
+                    _hitAudio.Play();
                     _animator.Play("FlyingeyeHit");
                     _isDead = true;
                     _rb2d.gravityScale = 1;

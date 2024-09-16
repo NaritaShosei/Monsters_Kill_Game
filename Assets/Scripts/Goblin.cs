@@ -45,6 +45,8 @@ public class Goblin : MonoBehaviour, IPause
     bool _isInvisible;
     Vector2 _start;
     Vector2 _goblinVelocity;
+    [SerializeField] AudioSource _attackAudio;
+    [SerializeField] AudioSource _hitAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -192,6 +194,7 @@ public class Goblin : MonoBehaviour, IPause
                     Life(-1);
                     _isHit = true;
                     _animator.Play("Hit");
+                    _hitAudio.Play();
                 }
             }
         }
@@ -207,6 +210,7 @@ public class Goblin : MonoBehaviour, IPause
     }
     void IsAttackToTrue()// animation‚Åg‚Á‚Ä‚éŠÖ”
     {
+        _attackAudio.Play();    
         _isAttack = true;
     }
     void IsAttackToFalse() // animation‚Åg‚Á‚Ä‚éŠÖ”

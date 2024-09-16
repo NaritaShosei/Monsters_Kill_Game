@@ -12,6 +12,9 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     [SerializeField] Vector3 _instantiatePosition;
     BringerOfDeath _bringerOfDeath;
     PlayerManager _player;
+    [SerializeField] AudioSource _deathAudio;
+    [SerializeField] AudioSource _bossArearAudio;
+    [SerializeField] AudioSource _attackAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +38,10 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     {
         _bringerOfDeath.IsAttack = true;
     }
+    void AttackAudio()
+    {
+        _attackAudio.Play();
+    }
     void IsAttackFalse()
     {
         _bringerOfDeath.IsAttack = false;
@@ -46,7 +53,13 @@ public class BringerOfDeathIsAttack : MonoBehaviour
     }
     void Death()
     {
-        Destroy(_bringerOfDeath.gameObject);
+        var sr = GetComponent<SpriteRenderer>();
+        sr.enabled = false;
+    }
+    void DeathAudio()
+    {
+        _deathAudio.Play();
+        Destroy(_bringerOfDeath.gameObject, 2.3f);
     }
     void StartMove()
     {
@@ -69,7 +82,7 @@ public class BringerOfDeathIsAttack : MonoBehaviour
         {
             var s = spark.GetComponent<MeshRenderer>();
             s.enabled = false;
-            Destroy(spark.gameObject,2);
+            Destroy(spark.gameObject, 2);
         }
     }
 }

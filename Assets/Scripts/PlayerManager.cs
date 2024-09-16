@@ -59,6 +59,10 @@ public class PlayerManager : MonoBehaviour, IPause
     [SerializeField] AudioSource _blockBrakeAudio;
     [SerializeField] AudioSource _healGaugeAudio;
     [SerializeField] AudioSource _deadAudio;
+    [SerializeField] AudioSource _hitAudio;
+    [SerializeField] AudioSource _rollAudio;
+    [SerializeField] AudioSource _jumpAudio;
+    [SerializeField] AudioSource _blockStartAudio;
     [NonSerialized] public LifeReduceType _lifeReduceType;
     public enum LifeReduceType
     {
@@ -102,6 +106,7 @@ public class PlayerManager : MonoBehaviour, IPause
                     //RollÅ´
                     if (Input.GetKeyDown(KeyCode.LeftShift) && !_isRoll && (_rollInterval + _rollTime < Time.time))
                     {
+                        _rollAudio.Play();
                         _rollTime = Time.time;
                         _isRoll = true;
                         var rollSpeed = _rollSpeed * (_sprite.flipX ? -1 : 1);
@@ -154,6 +159,7 @@ public class PlayerManager : MonoBehaviour, IPause
     {
         if (Input.GetKeyDown(KeyCode.Space) && _isGround)
         {
+            _jumpAudio.Play();
             _isGround = false;
             _rb2d.AddForce(_jumpPower * Vector2.up, ForceMode2D.Impulse);
         }
@@ -197,6 +203,10 @@ public class PlayerManager : MonoBehaviour, IPause
     }
     void Block()
     {
+        if (Input.GetButtonDown("Fire2") && _isBlockCondition)
+        {
+            _blockStartAudio.Play();
+        }
         if (Input.GetButton("Fire2") && _isBlockCondition)
         {
             _isBlocking = true;
@@ -217,6 +227,7 @@ public class PlayerManager : MonoBehaviour, IPause
                     if (!_isRoll && !IsAttack && !_isBlocking)
                     {
                         LifeSystem(life);
+                        _hitAudio.Play();
                     }
                     break;
                 case LifeReduceType.system:
@@ -271,7 +282,7 @@ public class PlayerManager : MonoBehaviour, IPause
     IEnumerator StartBlockConditionTrue()
     {
         yield return new WaitForSeconds(2);
-        _healGaugeAudio.Play(); 
+        _healGaugeAudio.Play();
         float currentGauge = _blockCount;
         DOTween.To(() => currentGauge / _maxCount, x => _blockGauge.fillAmount = x, (currentGauge + _maxCount) / _maxCount, 0.3f);
         _blockCount = _maxCount;
@@ -367,6 +378,9 @@ public class PlayerManager : MonoBehaviour, IPause
     }
     void Dead()
     {
-        _deadAudio.Play();
+        if (!_fallDead)
+        {
+            _deadAudio.Play();
+        }
     }
 }

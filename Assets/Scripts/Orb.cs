@@ -13,7 +13,8 @@ public class Orb : MonoBehaviour, IPause
     Rigidbody2D _rb2d;
     Vector2 _orbVelocity;
     bool _isPause;
-    //bool _active = true;
+    [SerializeField] AudioSource _audio;
+    bool _active = true;
 
     public void Pause()
     {
@@ -46,13 +47,14 @@ public class Orb : MonoBehaviour, IPause
             {
                 _rb2d.velocity = ((_player.transform.position + new Vector3(0, 0.5f) - transform.position).normalized * _speed);
             }
-            if (dis < 0.5f)
+            if (dis < 0.5f && _active)
             {
                 _rb2d.velocity = Vector3.zero;
                 var child = gameObject.transform.GetChild(0);
                 child.gameObject.SetActive(false);
                 _gm.IsClearConditions = true;
-
+                _audio.Play();
+                _active = false;
                 //var child = gameObject.transform.GetComponentsInChildren<Transform>();
                 //foreach (var children in child)
                 //{
