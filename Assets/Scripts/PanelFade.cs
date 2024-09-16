@@ -14,6 +14,9 @@ public class PanelFade : MonoBehaviour
     Image _image;
     PlayerManager _player;
     bool _active = true;
+    [SerializeField] AudioSource _bgm;
+    [SerializeField] AudioSource _bossArearbgm;
+    [SerializeField] AudioSource _gameOverAudio;
     [SerializeField] GameType _gameType;
     enum GameType
     {
@@ -49,7 +52,14 @@ public class PanelFade : MonoBehaviour
             case GameType.ingame:
                 if (_player.IsDeath && _active)
                 {
-                    _image.DOFade(1, _fadeTime).OnComplete(() => _text.DOFade(1, _fadeTime).OnComplete(() => SceneChangeManager.SceneChange(_sceneName)));
+                    DOTween.To(() => 1f, x => _bgm.volume = x, 0f, _fadeTime);
+                    DOTween.To(() => 1f, x => _bossArearbgm.volume = x, 0f, _fadeTime);
+                    _image.DOFade(1, _fadeTime).OnComplete(() =>
+                    {
+                        DOTween.To(() => 0f, x => _gameOverAudio.volume = x, 1f, 4).OnComplete(() => SceneChangeManager.SceneChange(_sceneName));
+                        _text.DOFade(1, _fadeTime).OnStart(() => _gameOverAudio.Play());
+                    });
+                    _active = false;
                 }
                 break;
         }

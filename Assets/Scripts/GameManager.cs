@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 using System;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class GameManager : MonoBehaviour
     float _animSpeed;
     PlayerManager _player;
     BringerOfDeath _bringer;
+    [SerializeField] AudioSource _bgm;
+    [SerializeField] float _fadeTime;
+    [SerializeField] AudioSource _bossArearbgm;
 
 
     // Start is called before the first frame update
@@ -43,6 +47,7 @@ public class GameManager : MonoBehaviour
             _player._rb2d.velocity = velo;
             _bringer._animator.Play("Cast-NoEffect");
             IsMovie = true;
+            DOTween.To(() => 1f, x => _bgm.volume = x, 0f, _fadeTime).OnComplete(() => DOTween.To(() => 0f, x => _bossArearbgm.volume = x, 1f, _fadeTime).OnStart(() => _bossArearbgm.Play()));
         }
         if (IsMovie)
         {

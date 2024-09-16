@@ -54,6 +54,11 @@ public class PlayerManager : MonoBehaviour, IPause
     Vector2 _muzzlePos;
     Vector2 _playerVelocity;
     Vector2 _deadPosition;
+    [SerializeField] AudioSource _attackAudio;
+    [SerializeField] AudioSource _blockAudio;
+    [SerializeField] AudioSource _blockBrakeAudio;
+    [SerializeField] AudioSource _healGaugeAudio;
+    [SerializeField] AudioSource _deadAudio;
     [NonSerialized] public LifeReduceType _lifeReduceType;
     public enum LifeReduceType
     {
@@ -255,12 +260,18 @@ public class PlayerManager : MonoBehaviour, IPause
                 _isBlockCondition = false;
                 _isBlocking = false;
                 StartCoroutine(StartBlockConditionTrue());
+                _blockBrakeAudio.Play();
+            }
+            else
+            {
+                _blockAudio.Play();
             }
         }
     }
     IEnumerator StartBlockConditionTrue()
     {
         yield return new WaitForSeconds(2);
+        _healGaugeAudio.Play(); 
         float currentGauge = _blockCount;
         DOTween.To(() => currentGauge / _maxCount, x => _blockGauge.fillAmount = x, (currentGauge + _maxCount) / _maxCount, 0.3f);
         _blockCount = _maxCount;
@@ -348,9 +359,14 @@ public class PlayerManager : MonoBehaviour, IPause
     void IsAttackTrue()
     {
         IsAttack = true;
+        _attackAudio.Play();
     }
     void IsAttackFalse()
     {
         IsAttack = false;
+    }
+    void Dead()
+    {
+        _deadAudio.Play();
     }
 }

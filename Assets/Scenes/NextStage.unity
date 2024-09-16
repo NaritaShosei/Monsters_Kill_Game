@@ -757,6 +757,7 @@ MonoBehaviour:
   - BossStage
   _fadeTime: 3
   _image: {fileID: 1822223697}
+  _gameType: 1
 --- !u!1001 &1800216691
 PrefabInstance:
   m_ObjectHideFlags: 0

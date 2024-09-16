@@ -15,15 +15,32 @@ public class SceneChangeManager : MonoBehaviour
     [NonSerialized] public bool _isActive = true;
     public static int _sceneIndexLength;
     static int _sceneIndexCount = -1;
+    [SerializeField] AudioSource _audio;
+    [SerializeField] AudioSource _bgm;
+    [SerializeField] GameType _gameType;
+    enum GameType
+    {
+        title,
+        nextstage
+    }
 
     void Start()
     {
         _sceneIndexLength = _sceneName.Length;
-        _sceneIndexCount += 1;
-        if (_sceneIndexCount > _sceneName.Length)
+        switch (_gameType)
         {
-            _sceneIndexCount = 0;
+            case GameType.title:
+                break;
+
+            case GameType.nextstage:
+                _sceneIndexCount += 1;
+                if (_sceneIndexCount > _sceneName.Length)
+                {
+                    _sceneIndexCount = 0;
+                }
+                break;
         }
+
     }
 
     // Update is called once per frame
@@ -39,8 +56,10 @@ public class SceneChangeManager : MonoBehaviour
     {
         if (_isActive)
         {
+            DOTween.To(() => 1f, x => _bgm.volume = x, 0f, _fadeTime);
+            _audio.Play();
             _isActive = false;
-                Debug.Log(_sceneName[_sceneIndexCount]);
+            Debug.Log(_sceneName[_sceneIndexCount]);
             _image.gameObject.SetActive(true);
             _image.DOFade(1, _fadeTime).OnComplete(() =>
             {
@@ -48,12 +67,17 @@ public class SceneChangeManager : MonoBehaviour
             });
         }
     }
-    public void GetSceneChangeToTutorial(string sceneName)
+    public void GetSceneChange(string sceneName)
     {
         if (_isActive)
         {
+            DOTween.To(() => 1f, x => _bgm.volume = x, 0f, _fadeTime);
+            _audio.Play();
             _image.gameObject.SetActive(true);
-            _image.DOFade(1, _fadeTime).OnComplete(() => SceneChange(sceneName));
+            _image.DOFade(1, _fadeTime).OnComplete(() =>
+            {
+                SceneChange(sceneName);
+            });
             _isActive = false;
         }
     }

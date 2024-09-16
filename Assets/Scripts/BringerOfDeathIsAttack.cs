@@ -67,7 +67,9 @@ public class BringerOfDeathIsAttack : MonoBehaviour
         gm.IsMovie = false;
         foreach (var spark in _spark)
         {
-            Destroy(spark.gameObject);
+            var s = spark.GetComponent<MeshRenderer>();
+            s.enabled = false;
+            Destroy(spark.gameObject,2);
         }
     }
 }

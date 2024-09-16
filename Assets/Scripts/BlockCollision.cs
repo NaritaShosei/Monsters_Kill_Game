@@ -10,6 +10,7 @@ public class BlockCollision : MonoBehaviour
     BringerOfDeath _bringerOfDeath;
     [SerializeField] float _damage;
     [SerializeField] ParentType _parentType;
+    [SerializeField] AudioSource _audio;
     BoxCollider2D _boxCollider;
     enum ParentType
     {
@@ -44,6 +45,7 @@ public class BlockCollision : MonoBehaviour
             if (_fallBlock.IsFall)
             {
                 Destroy(_boxCollider);
+                _audio.Play();
                 switch (_parentType)
                 {
                     case ParentType.player:

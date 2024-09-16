@@ -14,6 +14,14 @@ public class Sunrise : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        var button = FindObjectsOfType<Button>();
+        foreach (var buttons in button)
+        {
+            var image = buttons.GetComponent<Image>();
+            var text = buttons.GetComponentInChildren<Text>();
+            image.DOFade(0,0);
+            text.DOFade(0,0);
+        }
         _sceneChangeManager = FindObjectOfType<SceneChangeManager>();
         _string = _titleText.text;
         _titleText.text = "";
