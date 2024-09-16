@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] AudioSource _bgm;
     [SerializeField] float _fadeTime;
     [SerializeField] AudioSource _bossArearbgm;
-
+    AudioSource _audio;
 
     // Start is called before the first frame update
     void Start()
@@ -74,6 +74,25 @@ public class GameManager : MonoBehaviour
                 pause.Resume();
             }
         }
+        //var audioSources = FindObjectsOfType<AudioSource>();
+        //foreach (var audioSource in audioSources)
+        //{
+        //    if (_isPause)
+        //    {
+        //        if (audioSource.isPlaying)
+        //        {
+        //            _audio = audioSource;
+        //            _audio.Pause();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (!audioSource.isPlaying)
+        //        {
+        //            _audio.Play();
+        //        }
+        //    }
+        //}
         var animObj = GameObject.FindGameObjectsWithTag("AnimationObject");
         foreach (var animObjects in animObj)
         {
