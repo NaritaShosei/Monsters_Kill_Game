@@ -253,7 +253,6 @@ Transform:
   - {fileID: 734990201}
   - {fileID: 1630756540}
   - {fileID: 336981209}
-  - {fileID: 1770482269}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &145882496
@@ -1554,7 +1553,7 @@ PolygonCollider2D:
     - - {x: 37.089756, y: 21.245619}
       - {x: -10.168565, y: 21.322561}
       - {x: -10.061128, y: -8.11963}
-      - {x: 37.01485, y: -7.95497}
+      - {x: 36.692024, y: -7.822041}
   m_UseDelaunayMesh: 0
 --- !u!4 &387158690
 Transform:
@@ -2576,7 +2575,7 @@ Transform:
   m_GameObject: {fileID: 614713786}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.7124434, y: 2.0252001, z: -10}
+  m_LocalPosition: {x: 2.7123013, y: 2.0621397, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2677,7 +2676,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 11.067146, y: 2.3244624}
@@ -6490,6 +6489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fadeTime: 1.4
   _sceneName: Stage1
+  _gameType: 0
 --- !u!114 &1607023355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6733,7 +6733,7 @@ MonoBehaviour:
   _collider: {fileID: 1630756544}
   _image: {fileID: 1607023355}
   _text: {fileID: 842104269}
-  _sceneName: Stage1
+  _sceneName: NextStage
 --- !u!61 &1630756544
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6995,11 +6995,11 @@ Transform:
   m_GameObject: {fileID: 1770482268}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.1, y: 0.3, z: 0}
+  m_LocalPosition: {x: 1.1, y: 3.0503, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 132433984}
+  m_Father: {fileID: 2118980807}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1770482270
 MonoBehaviour:
@@ -7555,6 +7555,7 @@ Transform:
   - {fileID: 996367141}
   - {fileID: 549240856}
   - {fileID: 555955207}
+  - {fileID: 1770482269}
   m_Father: {fileID: 132433984}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &2118980808

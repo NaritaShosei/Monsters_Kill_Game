@@ -6435,6 +6435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fadeTime: 1.4
   _sceneName: Tutorial
+  _gameType: 0
 --- !u!95 &1240199911
 Animator:
   serializedVersion: 5

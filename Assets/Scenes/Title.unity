@@ -1064,7 +1064,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa067573eb2b174cac5c8a07672c36e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneName: []
+  _sceneName:
+  - Stage1
+  - Title
   _fadeTime: 3
   _image: {fileID: 436395739}
 --- !u!114 &1239569023

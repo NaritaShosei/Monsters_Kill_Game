@@ -12,11 +12,18 @@ public class SceneChangeManager : MonoBehaviour
     [SerializeField] string[] _sceneName;
     [SerializeField] float _fadeTime;
     [SerializeField] Image _image;
-    [NonSerialized] public bool _isActive;
-    // Start is called before the first frame update
+    [NonSerialized] public bool _isActive = true;
+    public static int _sceneIndexLength;
+    static int _sceneIndexCount = -1;
+
     void Start()
     {
-
+        _sceneIndexLength = _sceneName.Length;
+        _sceneIndexCount += 1;
+        if (_sceneIndexCount > _sceneName.Length)
+        {
+            _sceneIndexCount = 0;
+        }
     }
 
     // Update is called once per frame
@@ -32,22 +39,17 @@ public class SceneChangeManager : MonoBehaviour
     {
         if (_isActive)
         {
+            _isActive = false;
+                Debug.Log(_sceneName[_sceneIndexCount]);
             _image.gameObject.SetActive(true);
             _image.DOFade(1, _fadeTime).OnComplete(() =>
             {
-                SceneChange(_sceneName[GoalBlock._sceneIndex]);
-                GoalBlock._sceneIndex = (GoalBlock._sceneIndex + 1 )% _sceneName.Length;
+                SceneChange(_sceneName[_sceneIndexCount]);
             });
-
-
-
-            _isActive = false;
         }
     }
     public void GetSceneChangeToTutorial(string sceneName)
     {
-        //SceneChange("Stage" + int);
-        // int += 1;
         if (_isActive)
         {
             _image.gameObject.SetActive(true);
