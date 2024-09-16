@@ -5,7 +5,6 @@ using System;
 using Cinemachine;
 using UnityEngine.UI;
 using DG.Tweening;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerManager : MonoBehaviour, IPause

@@ -26,6 +26,7 @@ public class GoalBlock : MonoBehaviour, IPause
     string _textString;
     [SerializeField] AudioSource _bossArearAudio;
     [SerializeField] AudioSource _goalBlockAudio;
+    [SerializeField] AudioSource _goalAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -69,9 +70,12 @@ public class GoalBlock : MonoBehaviour, IPause
         if (_gm.IsClearConditions)
         {
             //_text.DOText
-            _image.DOFade(1, 2).OnComplete(() => _text.DOText(_textString, 2).OnComplete(() => SceneChangeManager.SceneChange(_sceneName)));
+            _image.DOFade(1, 2).OnComplete(() =>
+            {
+                _text.DOText(_textString, 2).OnStart(() => _goalAudio.Play());
+                DOTween.To(() => 0f, x => _goalAudio.volume = x, 1f, 3).OnComplete(() => SceneChangeManager.SceneChange(_sceneName));
+            });
             DOTween.To(() => 1f, x => _bossArearAudio.volume = x, 0f, 3);
-            Debug.Log("GameClear");
         }
     }
     public void Pause()

@@ -42,6 +42,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5954841065573244498}
     m_Modifications:
+    - target: {fileID: 2399662902652970785, guid: 0afa4623b4a2c744eab7310a4e7a90f1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -0.9999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399662902652970785, guid: 0afa4623b4a2c744eab7310a4e7a90f1, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3475068466098031684, guid: 0afa4623b4a2c744eab7310a4e7a90f1, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4683867356953592760, guid: 0afa4623b4a2c744eab7310a4e7a90f1, type: 3}
       propertyPath: _moveSpeed
       value: 2.5
@@ -136,6 +148,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5954841065573244498}
     m_Modifications:
+    - target: {fileID: 2399662902652970785, guid: 0afa4623b4a2c744eab7310a4e7a90f1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -0.9999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399662902652970785, guid: 0afa4623b4a2c744eab7310a4e7a90f1, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2925907139556814104, guid: 0afa4623b4a2c744eab7310a4e7a90f1, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -234,6 +254,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5954841065573244498}
     m_Modifications:
+    - target: {fileID: 2399662902652970785, guid: 0afa4623b4a2c744eab7310a4e7a90f1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -0.9999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399662902652970785, guid: 0afa4623b4a2c744eab7310a4e7a90f1, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2925907139556814104, guid: 0afa4623b4a2c744eab7310a4e7a90f1, type: 3}
       propertyPath: m_Enabled
       value: 1

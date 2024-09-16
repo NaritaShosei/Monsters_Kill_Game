@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 public class BlockWall : MonoBehaviour
 {
     [SerializeField] GameObject _startPosition;
+    FallBlock _fallBlock;
     PlayerManager _player;
     BoxCollider2D[] _boxCollider;
     TilemapRenderer _tilemapRenderer;
@@ -13,6 +14,7 @@ public class BlockWall : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _fallBlock = FindObjectOfType<FallBlock>();
         _player = FindObjectOfType<PlayerManager>();
         _boxCollider = GetComponents<BoxCollider2D>();
         _tilemapRenderer = GetComponent<TilemapRenderer>();
@@ -25,14 +27,17 @@ public class BlockWall : MonoBehaviour
 
     private void Update()
     {
-        if (_player.transform.position.x >= _startPosition.transform.position.x && _isActive)
+        if (!_fallBlock.IsFall)
         {
-            foreach (var boxCollider in _boxCollider)
+            if (_player.transform.position.x >= _startPosition.transform.position.x && _isActive)
             {
-                boxCollider.enabled = true;
+                foreach (var boxCollider in _boxCollider)
+                {
+                    boxCollider.enabled = true;
+                }
+                _tilemapRenderer.enabled = true;
+                _isActive = false;
             }
-            _tilemapRenderer.enabled = true;
-            _isActive = false;
         }
     }
 }

@@ -6148,7 +6148,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 823b504520327814faed2119a36b6dfc, type: 3}
-    m_FontSize: 119
+    m_FontSize: 113
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
@@ -6159,7 +6159,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: YOU DIED
+  m_Text: "\u30B2\u30FC\u30E0\u30AA\u30FC\u30D0\u30FC"
 --- !u!222 &1071061427
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7762,6 +7762,7 @@ GameObject:
   - component: {fileID: 1752920635}
   - component: {fileID: 1752920637}
   - component: {fileID: 1752920638}
+  - component: {fileID: 1752920639}
   m_Layer: 9
   m_Name: Tilemap
   m_TagString: Wall
@@ -8001,6 +8002,7 @@ MonoBehaviour:
   _sceneName: Title
   _bossArearAudio: {fileID: 1999092087}
   _goalBlockAudio: {fileID: 1752920638}
+  _goalAudio: {fileID: 1752920639}
 --- !u!61 &1752920637
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8142,6 +8144,102 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!82 &1752920639
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752920631}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 1b6e4aee4570af043a49d28d467fe80d, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 8ffeacd63a30e534190622369eaa5b0d, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1820215236
 GameObject:
   m_ObjectHideFlags: 0
@@ -8167,7 +8265,7 @@ Transform:
   m_GameObject: {fileID: 1820215236}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 32.1, y: 0, z: 0}
+  m_LocalPosition: {x: 21.7, y: -0.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8411,7 +8509,7 @@ MonoBehaviour:
   - {fileID: 573595026}
   _enemy:
   - {fileID: 7948532902678152367, guid: 0afa4623b4a2c744eab7310a4e7a90f1, type: 3}
-  - {fileID: 6532020637144730515, guid: 76c2cfa17061d8d40883111de7cef318, type: 3}
+  - {fileID: 321672071574709549, guid: 018356cdd7a16b940b2a661c33105539, type: 3}
   _spawnPosition:
   - {fileID: 1480042149}
   - {fileID: 1820215236}
@@ -8734,7 +8832,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -284.13, y: 44.700012}
+  m_AnchoredPosition: {x: -269, y: 29}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2041281608
@@ -8773,9 +8871,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 9660946a171aaeb41b0d39cd43e9e7e5, type: 3}
     m_FontSize: 103
-    m_FontStyle: 3
+    m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 103
@@ -8785,7 +8883,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: STAGE CLEAR
+  m_Text: "\u30B9\u30C6\u30FC\u30B8\u30AF\u30EA\u30A2"
 --- !u!222 &2041281610
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9473,7 +9571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5454320670798071523, guid: 2e99f708bbbcfd54cb725b2b7eec9af9, type: 3}
       propertyPath: _longRangeAttackInterval
-      value: 5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 6069764463535087767, guid: 2e99f708bbbcfd54cb725b2b7eec9af9, type: 3}
       propertyPath: m_LocalPosition.x

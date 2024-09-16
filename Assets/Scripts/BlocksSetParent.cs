@@ -15,7 +15,10 @@ public class BlocksSetParent : MonoBehaviour
     {
         if (collision.gameObject.tag == "Block" || collision.gameObject.tag == "Rift")
         {
-            transform.SetParent(null);
+            if (transform.parent != null)
+            {
+                transform.SetParent(null);
+            }
         }
     }
 }
