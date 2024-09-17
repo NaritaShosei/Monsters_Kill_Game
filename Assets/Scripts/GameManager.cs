@@ -19,7 +19,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] AudioSource _bgm;
     [SerializeField] float _fadeTime;
     [SerializeField] AudioSource _bossArearbgm;
-    AudioSource _audio;
+    //List<AudioSource> _audio = new List<AudioSource>();
+    //List<float> _audioTime = new List<float>();
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !_player.IsDeath && !IsMovie)
+        if (Input.GetButtonDown("Cancel") && !_player.IsDeath && !IsMovie)
         {
             PauseResume();
         }
@@ -76,19 +77,35 @@ public class GameManager : MonoBehaviour
         //var audioSources = FindObjectsOfType<AudioSource>();
         //foreach (var audioSource in audioSources)
         //{
-        //    if (_isPause)
+        //    if (audioSource.isPlaying && !_isPause)
         //    {
-        //        if (audioSource.isPlaying)
-        //        {
-        //            _audio = audioSource;
-        //            _audio.Pause();
-        //        }
+        //        _audio.Add(audioSource);
         //    }
-        //    else
+        //    else if (_isPause)
         //    {
-        //        if (!audioSource.isPlaying)
+        //        _audio.Remove(audioSource);
+        //    }
+        //    foreach (var audio in _audio)
+        //    {
+        //        if (_isPause)
         //        {
-        //            _audio.Play();
+        //            _audioTime.Add(audio.time);
+        //        }
+        //        else if (!_isPause)
+        //        {
+        //            _audioTime.Remove(audio.time);
+        //        }
+        //        foreach (var time in _audioTime)
+        //        {
+        //            if (_isPause)
+        //            {
+        //                audio.Pause();
+        //            }
+        //            else if (!_isPause)
+        //            {
+        //                audio.time = time;
+        //                audio.Play();
+        //            }
         //        }
         //    }
         //}
