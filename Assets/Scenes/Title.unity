@@ -1089,7 +1089,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u30B9\u30C6\u30FC\u30B81"
+  m_Text: "\u30B9\u30C6\u30FC\u30B82"
 --- !u!222 &1158843946
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1271,7 +1271,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 150, y: -94}
+  m_AnchoredPosition: {x: -150, y: -94}
   m_SizeDelta: {x: 188.43, y: 46}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1239569022
@@ -1939,7 +1939,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -150, y: -94}
+  m_AnchoredPosition: {x: 150, y: -94}
   m_SizeDelta: {x: 188.43, y: 46}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1595147812
@@ -2617,7 +2617,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u30B9\u30C6\u30FC\u30B82"
+  m_Text: "\u30B9\u30C6\u30FC\u30B81"
 --- !u!222 &2049906016
 CanvasRenderer:
   m_ObjectHideFlags: 0

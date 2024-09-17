@@ -6733,7 +6733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fadeTime: 1.4
-  _sceneName: Tutorial
+  _sceneName: Title
   _bgm: {fileID: 2047441596}
   _bossArearbgm: {fileID: 1999092087}
   _gameOverAudio: {fileID: 1240199912}

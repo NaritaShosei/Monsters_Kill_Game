@@ -281,11 +281,14 @@ public class PlayerManager : MonoBehaviour, IPause
     IEnumerator StartBlockConditionTrue()
     {
         yield return new WaitForSeconds(2);
-        _healGaugeAudio.Play();
-        float currentGauge = _blockCount;
-        DOTween.To(() => currentGauge / _maxCount, x => _blockGauge.fillAmount = x, (currentGauge + _maxCount) / _maxCount, 0.3f);
-        _blockCount = _maxCount;
-        _isBlockCondition = true;
+        if (!IsDeath)
+        {
+            _healGaugeAudio.Play();
+            float currentGauge = _blockCount;
+            DOTween.To(() => currentGauge / _maxCount, x => _blockGauge.fillAmount = x, (currentGauge + _maxCount) / _maxCount, 0.3f);
+            _blockCount = _maxCount;
+            _isBlockCondition = true;
+        }
     }
     private void LateUpdate()
     {
